@@ -80,10 +80,14 @@ public class God : MonoBehaviour {
 		}
 	}
 
-	public int AddDemand(SacrificeResult satisfiedResult, SacrificeResult ignoredResult)
+	public int AddDemand(SacrificeResult satisfiedResult, SacrificeResult ignoredResult, string msg)
 	{
 		SacrificeDemand demand = new SacrificeDemand(satisfiedResult, ignoredResult);
 		mDemands.Add(demand);
+		if(msg != null) {
+			Utilities.LogEvent(msg + demand.GetString());
+		}
+
 		return(demand.mId);
 	}
 

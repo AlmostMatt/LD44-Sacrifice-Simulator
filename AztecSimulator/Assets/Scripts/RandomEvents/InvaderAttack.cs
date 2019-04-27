@@ -6,8 +6,8 @@ public class InvaderAttack : RandomEventSystem.RandomEvent {
 
 	private float mDuration;
 	private int mRequiredWarriors;
-	private bool mIntervened = false;
-	private int mDemandId = 0;
+	private bool mIntervened;
+	private int mDemandId;
 
 	private class GodIntervention : SacrificeResult {
 		private InvaderAttack mAttack;
@@ -29,11 +29,13 @@ public class InvaderAttack : RandomEventSystem.RandomEvent {
 
 	public override void Start () {
 		Utilities.LogEvent("Your people are under attack by invaders!");
+		mDemandId = 0;
+		mIntervened = false;
 		mDuration = 30;
 		mRequiredWarriors = Random.Range(1, 6);
 
 		if(Random.value < 0.7) {
-			mDemandId = Utilities.GetGod().AddDemand(new InvaderAttack.GodIntervention(this), null); // for now, will just let the god generate the random demand
+			mDemandId = Utilities.GetGod().AddDemand(new InvaderAttack.GodIntervention(this), null, "God offers PROTECTION in exchange for "); // for now, will just let the god generate the random demand
 		}
 	}
 
