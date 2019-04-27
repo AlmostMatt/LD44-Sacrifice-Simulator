@@ -29,6 +29,10 @@ public static class Utilities {
 			return Person.AttributeType.NONE;
 		}
 	}
+	public static Person.Attribute GetRandomAttr(Person.AttributeType attrType) {
+		Person.Attribute[] possibleValues = System.Array.FindAll<Person.Attribute>((Person.Attribute[])System.Enum.GetValues(typeof(Person.Attribute)), attr => GetAttrType(attr) == attrType);
+		return possibleValues[Random.Range(0,possibleValues.Length)];
+	}
 
 	public static PersonManager GetPersonManager()
 	{
@@ -60,6 +64,26 @@ public static class Utilities {
 			availableChoices[pick] = availableChoices[--totalPossibilities];
 		}
 		return(chosenIndices);
+	}
+
+	public static T[] RandomSubset<T>(T[] possibleValues, int numToChoose) {
+		int[] listOfIndexes = new int[possibleValues.Length];
+		for(int i= 0; i< possibleValues.Length; ++i) {
+			listOfIndexes[i] = i;
+		}
+		for(int numChosen = 0; numChosen < numToChoose; ++numChosen) {
+			// choose a random index (excluding those that have been moved to the front of the list)
+			int randomIndex = Random.Range(numChosen, possibleValues.Length);
+			// swap the randomly selected index with an index at the front of the list
+			var tmp = listOfIndexes[randomIndex];
+			listOfIndexes[randomIndex] = listOfIndexes[numChosen];
+			listOfIndexes[numChosen] = tmp;
+		}
+		T[] result = new T[numToChoose];
+		for(int i = 0; i < numToChoose; ++i) {
+			result[i] = possibleValues[listOfIndexes[i]];
+		}
+		return result;
 	}
 
 	// Joins a list of strings with commas and AND.

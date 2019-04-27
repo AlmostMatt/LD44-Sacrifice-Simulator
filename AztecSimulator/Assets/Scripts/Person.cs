@@ -99,14 +99,21 @@ public class Person : MonoBehaviour {
 		mName = NAMES[UnityEngine.Random.Range(0, NAMES.Length)];
 		mLevel = 1;
 
-		int numAttributes = Random.Range(1,4);
-		mAttributes = new Attribute[numAttributes];
 
-		var numAttrs = System.Enum.GetValues(typeof(Attribute)).Length-1;
-		int[] attributeSelection = Utilities.RandomList(numAttrs, numAttributes);
-		for(int i = 0; i < mAttributes.Length; ++i)
+		var attrTypes = new [] {
+			AttributeType.PERSONALITY,
+			AttributeType.HEIGHT,
+			AttributeType.STRENGTH,
+			AttributeType.EYE_COLOR,
+		};
+		int numRandomAttributes = Random.Range(1,4);
+		AttributeType[] randomAttributes = Utilities.RandomSubset(attrTypes, numRandomAttributes);
+
+		mAttributes = new Attribute[numRandomAttributes + 1];
+		mAttributes[numRandomAttributes] = Utilities.GetRandomAttr(AttributeType.PROFESSION);
+		for(int i = 0; i < numRandomAttributes; ++i)
 		{
-			mAttributes[i] = (Attribute)attributeSelection[i];
+			mAttributes[i] = Utilities.GetRandomAttr(randomAttributes[i]);
 		}
 
 		mIsHungry = false;
@@ -146,7 +153,9 @@ public class Person : MonoBehaviour {
 	{
 		string attrString = "";
 		for(int i = 0; i < mAttributes.Length; ++i) {
-			attrString += System.Enum.GetName(typeof(Attribute), (int)mAttributes[i]) + ", ";
+			if (mAttributes[i].GetAttrType() != AttributeType.PROFESSION) {
+				attrString += System.Enum.GetName(typeof(Attribute), (int)mAttributes[i]) + ", ";
+			}
 		}
 		if(mIsHungry) { attrString += "  HUNGRY!"; }
 		string profString = "Lv " + mLevel + " " + GetAttribute(AttributeType.PROFESSION).ToString();
