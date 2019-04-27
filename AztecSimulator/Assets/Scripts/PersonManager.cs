@@ -81,6 +81,17 @@ public class PersonManager : MonoBehaviour {
 		PeopleChanged();
 	}
 
+	public List<Person> FindPeople(Person.AttributeType attrType, Person.Attribute attrValue)
+	{
+		List<Person> results = new List<Person>();
+		foreach(Person p in mPeople) {
+			if(p.GetAttribute(attrType) == attrValue) {
+				results.Add(p);
+			}
+		}
+		return(results);
+	}
+
 	private void PeopleChanged()
 	{
 		// not sure if these might dangle... careful about adding listeners that could be destroyed!
