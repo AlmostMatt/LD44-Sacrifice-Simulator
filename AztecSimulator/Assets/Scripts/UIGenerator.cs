@@ -20,6 +20,7 @@ public class UIGenerator : MonoBehaviour {
 	// TODO: use people-changed-listener instead of update
 	void Update () {
 		List<Person> people = mPersonManager.People;
+		Transform peoplePanel = transform.Find("Left/People");
 		for(int i = 0; i < Mathf.Max(people.Count, mUiPeoplePool.Count); i++)
 		{
 			GameObject uiPerson;
@@ -27,13 +28,14 @@ public class UIGenerator : MonoBehaviour {
 			if (i >= mUiPeoplePool.Count) {
 				uiPerson = Instantiate(uiPersonObject);
 				mUiPeoplePool.Add(uiPerson);
-				uiPerson.transform.SetParent(transform);
+				uiPerson.transform.SetParent(peoplePanel);
 			} else {
 				uiPerson = mUiPeoplePool[i];
 			}
 			// Update position
 			RectTransform rt = uiPerson.GetComponent<RectTransform>();
-			rt.anchoredPosition = new Vector2(0f,0f+30f*(i-people.Count/2));
+			float verticalOffset = 0.05f * peoplePanel.GetComponent<RectTransform>().rect.height;
+			rt.anchoredPosition = new Vector2(0f,verticalOffset-30f*(i-(people.Count-1)/2f));
 			// Update visibility
 			uiPerson.transform.gameObject.SetActive(i < people.Count);
 			if (i < people.Count) {
