@@ -8,6 +8,7 @@ public class UIManager : MonoBehaviour {
 
 	public GameObject uiPersonObject;
 
+	private God mGod;
 	private PersonManager mPersonManager;
 	private List<GameObject> mUiPeoplePool;
 	private int mMaxEventMessages = 10;
@@ -15,6 +16,7 @@ public class UIManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		mGod = Utilities.GetGod();
 		mPersonManager = Utilities.GetPersonManager();
 		mUiPeoplePool = new List<GameObject>();
 	}
@@ -47,6 +49,16 @@ public class UIManager : MonoBehaviour {
 		}
 		transform.Find("Top/PopulationText").GetComponent<Text>().text = "Population: " + people.Count;
 		transform.Find("Top/ResourceText").GetComponent<Text>().text = "Food: " + GameState.FoodSupply;
+
+		if(mGod != null) {
+			string godMsg = "YOUR GOD DEMANDS:\r\n";
+			List<God.SacrificeDemand> demands = mGod.Demands;
+			foreach(God.SacrificeDemand demand in demands) {
+				godMsg += demand.GetString() + "\r\n";
+			}
+			transform.Find("Right/God/GodText").GetComponent<Text>().text = godMsg;
+		}
+
 	}
 
 	private List<Person> getSelectedPeople() {
@@ -70,9 +82,8 @@ public class UIManager : MonoBehaviour {
 		string sacrificedNames = Utilities.ConcatStrings(selectedPeople.ConvertAll(person => person.Name));
 		LogEvent("You sacrifice " + sacrificedNames + " to the god.");
         
-		God god = Utilities.GetGod();
-		if(god != null) {
-			god.MakeSacrifice(0, selectedPeople);
+		if(mGod != null) {
+			mGod.MakeSacrifice(0, selectedPeople);
         }
 
 		for(int i = 0; i < mUiPeoplePool.Count; i++)

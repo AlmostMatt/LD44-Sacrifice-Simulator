@@ -34,6 +34,11 @@ public class God : MonoBehaviour {
 
 	private List<SacrificeDemand> mDemands;
 
+	public List<SacrificeDemand> Demands
+	{
+		get { return(mDemands); }
+	}
+
 	// Use this for initialization
 	void Start () {
 		mDemands = new List<SacrificeDemand>();
