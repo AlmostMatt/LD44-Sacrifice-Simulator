@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq; // for First()
 
 // Creates and manages UI objects.
 public class UIManager : MonoBehaviour {
@@ -81,7 +82,8 @@ public class UIManager : MonoBehaviour {
 				rt.anchoredPosition = new Vector2(0f,60f*(i-(demands.Count-1)/2f));
 				// Update visibility
 				uiDemand.transform.gameObject.SetActive(i < demands.Count);
-				// Update text
+				// Update text and store id in name
+				uiDemand.name = demands[i].mId.ToString();
 				if (i < demands.Count) {
 					uiDemand.transform.Find("Text").GetComponent<Text>().text = demands[i].GetString(); 
 				}
@@ -107,15 +109,27 @@ public class UIManager : MonoBehaviour {
 		return result;
 	}
 
+	private int getSelectedDemandId() {
+		if (!mDemandToggleGroup.AnyTogglesOn()) {
+			return 0;
+		}
+		Toggle activeDemand = mDemandToggleGroup.ActiveToggles().First();
+		int demandId;
+		System.Int32.TryParse(activeDemand.gameObject.name, out demandId);
+		return demandId;
+	}
+
 	public void OnSacrifice() {
 		List<Person> selectedPeople = getSelectedPeople();
 		Debug.Log("Sacrificing " + selectedPeople.Count + " people.");
 		if (selectedPeople.Count == 0) { return; }
-		string sacrificedNames = Utilities.ConcatStrings(selectedPeople.ConvertAll(person => person.Name));
-		LogEvent("You sacrifice " + sacrificedNames + " to the god.");
+
         
 		if(mGod != null) {
-			mGod.MakeSacrifice(0, selectedPeople);
+			string sacrificedNames = Utilities.ConcatStrings(selectedPeople.ConvertAll(person => person.Name));
+			LogEvent("You sacrifice " + sacrificedNames + " to " + mGod.Name);
+			mGod.MakeSacrifice(getSelectedDemandId(), selectedPeople);
+			mDemandToggleGroup.SetAllTogglesOff();
         }
 
 		for(int i = 0; i < mUiPeoplePool.Count; i++)

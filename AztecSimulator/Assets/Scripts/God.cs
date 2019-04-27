@@ -163,32 +163,7 @@ public class God : MonoBehaviour {
 			}
 		}
 		else {
-			
-			// temp: match against all demands
-			List<SacrificeDemand> matchedDemands = new List<SacrificeDemand>();
-			foreach(SacrificeDemand demand in mDemands) {
-				if(SatisfyDemand(demand, people))
-				{
-					SacrificeResult sr = demand.mSatisfiedResult;
-					if(sr != null) {
-						results.Add(sr);
-					}
-
-					matchedDemands.Add(demand);
-				}
-			}
-
-			if(matchedDemands.Count > 0) {
-				Utilities.LogEvent("YES, THIS SACRIFICE PLEASES ME");
-			}
-
-			foreach(SacrificeDemand d in matchedDemands) {
-				mDemands.Remove(d);
-			}
-
-			if(mDemands.Count == 0) {
-				mDemands.Add(new SacrificeDemand(new GoodCropBoon(), null));
-			}
+			Utilities.LogEvent("THIS POINTLESS SACRIFICE PLEASES ME");
 		}
 
 		foreach(Person p in people)
