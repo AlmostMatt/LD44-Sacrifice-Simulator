@@ -24,7 +24,7 @@ public class UIManager : MonoBehaviour {
 	// TODO: use people-changed-listener instead of update
 	void Update () {
 		List<Person> people = mPersonManager.People;
-		Transform peoplePanel = transform.Find("Right/People");
+		Transform peoplePanel = transform.Find("Right/People/PeopleList");
 		for(int i = 0; i < Mathf.Max(people.Count, mUiPeoplePool.Count); i++)
 		{
 			GameObject uiPerson;
@@ -38,8 +38,7 @@ public class UIManager : MonoBehaviour {
 			}
 			// Update position
 			RectTransform rt = uiPerson.GetComponent<RectTransform>();
-			float verticalOffset = 0.05f * peoplePanel.GetComponent<RectTransform>().rect.height;
-			rt.anchoredPosition = new Vector2(0f,verticalOffset-35f*(i-(people.Count-1)/2f));
+			rt.anchoredPosition = new Vector2(0f,35f*(i-(people.Count-1)/2f));
 			// Update visibility
 			uiPerson.transform.gameObject.SetActive(i < people.Count);
 			if (i < people.Count) {
