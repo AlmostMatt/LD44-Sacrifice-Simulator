@@ -21,6 +21,11 @@ public class FoodSystem : MonoBehaviour {
 			totalFarmingLevel += p.Level;
 		}
 
+		if(GameState.Drought)
+		{
+			totalFarmingLevel /= 2;
+		}
+
 		GameState.FoodSupply = totalFarmingLevel;
 	}
 }

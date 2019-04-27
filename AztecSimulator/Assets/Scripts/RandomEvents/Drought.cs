@@ -26,6 +26,7 @@ public class Drought : RandomEventSystem.RandomEvent {
 	}
 
 	public override void Start () {
+		GameState.Drought = true;
 		mDuration = 60;
 		mIntervened = false;
 
@@ -36,19 +37,23 @@ public class Drought : RandomEventSystem.RandomEvent {
 	public override bool Update () {
 		if(mIntervened)
 		{
-			Utilities.LogEvent("God blessed the rains down in your city. The drought has ended and your food supply is fine.");
+			Utilities.LogEvent("God blessed the rains down in your city. The drought has ended and food production can return to normal.");
+			GameState.Drought = false;
 			return(true);
 		}
 
 		mDuration -= Time.deltaTime;
 		if(mDuration <= 0)
 		{
-			int cropsLost = Mathf.Min(GameState.FoodSupply, Random.Range(1, 6));
-			Utilities.LogEvent("Your people lost crops to the drought. -" + cropsLost + " food supply");
-			GameState.FoodSupply -= cropsLost;
+			//int cropsLost = Mathf.Min(GameState.FoodSupply, Random.Range(1, 6));
+			//Utilities.LogEvent("Your people lost crops to the drought. -" + cropsLost + " food supply");
+			//GameState.FoodSupply -= cropsLost;
+
+			Utilities.LogEvent("The drought has ended.");
 
 			if(mDemandId > 0) Utilities.GetGod().RemoveDemand(mDemandId);
 
+			GameState.Drought = false;
 			return(true);
 		}
 
