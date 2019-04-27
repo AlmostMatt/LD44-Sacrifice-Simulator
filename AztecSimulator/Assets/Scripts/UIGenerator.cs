@@ -8,13 +8,13 @@ public class UIGenerator : MonoBehaviour {
 
 	public GameObject uiPersonObject;
 
-	public PersonManager mPersonManager;
+	private PersonManager mPersonManager;
 	private List<GameObject> mUiPeoplePool;
 
 	// Use this for initialization
 	void Start () {
+		mPersonManager = Utilities.GetPersonManager();
 		mUiPeoplePool = new List<GameObject>();
-		// FindWithTag   mPersonManager = (PersonManager)FindObjectOfType(typeof(PersonManager));
 	}
 
 	
@@ -39,5 +39,10 @@ public class UIGenerator : MonoBehaviour {
 			Text uiText = uiPerson.GetComponentInChildren<Text>();
 			uiText.text = people[i].GetUIDescription();
 		}
+	}
+
+	public void OnSacrifice() {
+		// sacrifice the selected people
+		Debug.Log("SACRIFICE");
 	}
 }
