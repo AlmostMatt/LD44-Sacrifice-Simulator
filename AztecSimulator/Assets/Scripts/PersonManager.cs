@@ -12,6 +12,9 @@ public class PersonManager : MonoBehaviour {
 		get { return(mPeople); }
 	}
 
+	private float mRepopulateInterval = 15;
+	private float mRepopulateTimer;
+
 	private List<GameObject> mPeopleChangedListeners;
 
 	// Use this for initialization
@@ -20,24 +23,55 @@ public class PersonManager : MonoBehaviour {
 		mPeople = new List<Person>();
 		for(int i = 0; i < numStartingPeople; ++i)
 		{
-			// not sure this needs to be a gameobject but whatever
-			// actually it could be fine if people update in real time from sickness or to elapse training time, etc.
-			GameObject go = new GameObject("Person");
-			go.AddComponent<Person>();
-			mPeople.Add(go.GetComponent<Person>());
+			SpawnPerson();
 		}
 
 		mPeopleChangedListeners = new List<GameObject>();
+
+		mRepopulateTimer = mRepopulateInterval;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+
+		// repopulate. todo: figure out what actual logic we want for this,
+		// e.g. if it depends on other factors, if there's a hard cap, etc.
+		if(mPeople.Count < numStartingPeople)
+		{
+			if(mRepopulateTimer > 0)
+			{
+				mRepopulateTimer -= Time.deltaTime;
+			}
+			else
+			{
+				Person p = SpawnPerson();
+				Debug.Log(p.Name + " was born!");
+				mRepopulateTimer = mRepopulateInterval;
+			}
+
+		}
+
+	}
+
+	private Person SpawnPerson()
+	{
+		GameObject go = new GameObject("Person");
+		go.AddComponent<Person>();
+		Person p = go.GetComponent<Person>();
+		mPeople.Add(p);
+		return(p);
 	}
 
 	public void AddPeopleChangedListener(GameObject go)
 	{
 		mPeopleChangedListeners.Add(go);
+	}
+
+	public void RemovePerson(Person p)
+	{
+		mPeople.Remove(p);
+		GameObject.Destroy(p.gameObject);
+		PeopleChanged();
 	}
 
 	public void RemovePeople(List<Person> people)

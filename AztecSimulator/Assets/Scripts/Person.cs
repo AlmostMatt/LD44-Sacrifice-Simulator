@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Person : MonoBehaviour { // probably doesn't even need to be a mono 
+public class Person : MonoBehaviour {
 
 	public enum Attribute {
 		FARMER = 0,
@@ -23,8 +23,13 @@ public class Person : MonoBehaviour { // probably doesn't even need to be a mono
 		"Bob"
 	};
 
+	public float startingHealth = 30; // todo: for this to be data-driven, we'll need an actual Person prefab with this as the component...
+
 	private string mName;
 	private Attribute[] mAttributes;
+
+	private float mHealth;
+	private float mHealthDecayRate;
 
 	public string Name {
 		get { return(mName); } 
@@ -34,7 +39,8 @@ public class Person : MonoBehaviour { // probably doesn't even need to be a mono
 	}
 
 	// Use this for initialization
-	void Start () {
+	//void Start () {
+	void Awake() {
 		mName = NAMES[UnityEngine.Random.Range(0, NAMES.Length)];
 
 		int numAttributes = Random.Range(1,3);
@@ -46,12 +52,21 @@ public class Person : MonoBehaviour { // probably doesn't even need to be a mono
 			mAttributes[i] = (Attribute)attributeSelection[i];
 		}
 
-		DebugPrint();
+		mHealth = startingHealth;
+		mHealthDecayRate = Random.Range(0.5f, 1.5f);
+
+		// DebugPrint();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+
+		mHealth -= mHealthDecayRate * Time.deltaTime;
+		if(mHealth <= 0)
+		{
+			Debug.Log(mName + " died of old age!");
+			Utilities.GetPersonManager().RemovePerson(this);
+		}
 	}
 		
 	public string GetUIDescription()
