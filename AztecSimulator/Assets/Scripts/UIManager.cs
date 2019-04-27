@@ -42,11 +42,11 @@ public class UIManager : MonoBehaviour {
 			uiPerson.transform.gameObject.SetActive(i < people.Count);
 			if (i < people.Count) {
 				Text uiText = uiPerson.GetComponentInChildren<Text>();
-				uiText.text = people[i].GetUIDescription();
+				uiText.text = people[i].GetUIDescription(); // todo: get separate text elements so we can layout the info in a nicer way
 			}
 		}
 		transform.Find("Top/PopulationText").GetComponent<Text>().text = "Population: " + people.Count;
-		transform.Find("Top/ResourceText").GetComponent<Text>().text = "Resources: " + 0;
+		transform.Find("Top/ResourceText").GetComponent<Text>().text = "Food: " + GameState.FoodSupply;
 	}
 
 	private List<Person> getSelectedPeople() {

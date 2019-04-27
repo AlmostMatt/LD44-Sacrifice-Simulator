@@ -12,7 +12,7 @@ public class PersonManager : MonoBehaviour {
 		get { return(mPeople); }
 	}
 
-	private float mRepopulateInterval = 15;
+	private float mRepopulateInterval = 20;
 	private float mRepopulateTimer;
 
 	private List<GameObject> mPeopleChangedListeners;
@@ -36,7 +36,7 @@ public class PersonManager : MonoBehaviour {
 
 		// repopulate. todo: figure out what actual logic we want for this,
 		// e.g. if it depends on other factors, if there's a hard cap, etc.
-		if(mPeople.Count < numStartingPeople)
+		// if(mPeople.Count < numStartingPeople)
 		{
 			if(mRepopulateTimer > 0)
 			{

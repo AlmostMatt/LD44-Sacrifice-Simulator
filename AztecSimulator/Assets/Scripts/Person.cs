@@ -40,19 +40,32 @@ public class Person : MonoBehaviour {
 		"Atik"
 	};
 
-	public float startingHealth = 30; // todo: for this to be data-driven, we'll need an actual Person prefab with this as the component...
+	public float startingHealth = 100; // todo: for this to be data-driven, we'll need an actual Person prefab with this as the component...
 
 	private string mName;
 	private Attribute[] mAttributes;
 
 	private float mHealth;
-	private float mHealthDecayRate;
+	private float mBaseHealthDecayRate;
 
 	public string Name {
 		get { return(mName); } 
 	}
 	public Attribute[] Attributes {
 		get { return(mAttributes); }
+	}
+	public float Health
+	{
+		get { return(mHealth); }
+		set { mHealth = value; }
+	}
+
+
+	private bool mIsHungry;
+	public bool Hungry
+	{
+		get { return(mIsHungry); }
+		set { mIsHungry = value; }
 	}
 
 	// Use this for initialization
@@ -69,28 +82,38 @@ public class Person : MonoBehaviour {
 			mAttributes[i] = (Attribute)attributeSelection[i];
 		}
 
+		mIsHungry = false;
 		mHealth = startingHealth;
-		mHealthDecayRate = Random.Range(0.5f, 1.5f);
+		mBaseHealthDecayRate = Random.Range(0.5f, 1.5f);
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
-		mHealth -= mHealthDecayRate * Time.deltaTime;
+		float healthDecayRate = mBaseHealthDecayRate;
+		if(mIsHungry)
+		{
+			healthDecayRate *= 2;
+		}
+		mHealth -= healthDecayRate * Time.deltaTime;
+
 		if(mHealth <= 0)
 		{
-			Debug.Log(mName + " died of old age!");
-			Utilities.LogEvent(mName + " died of old age!");
+			string deathMsg = mName + " has passed. Their lifeforce returns to the earth.";
+			Debug.Log(deathMsg);
+			Utilities.LogEvent(deathMsg);
 			Utilities.GetPersonManager().RemovePerson(this);
 		}
 	}
-		
+
 	public string GetUIDescription()
 	{
 		string desc = mName + " - ";
 		for(int i = 0; i < mAttributes.Length; ++i) {
 			desc += System.Enum.GetName(typeof(Attribute), (int)mAttributes[i]) + ", ";
 		}
+		desc += "\r\nLifeforce: " + Mathf.Ceil(mHealth);
+		if(mIsHungry) desc += "  HUNGRY!";
 		return(desc);
 	}
 
