@@ -19,7 +19,11 @@ public class PersonManager : MonoBehaviour {
 
 		for(int i = 0; i < numStartingPeople; ++i)
 		{
-			mPeople.Add(new Person());
+			// not sure this needs to be a gameobject but whatever
+			// actually it could be fine if people update in real time from sickness or to elapse training time, etc.
+			GameObject go = new GameObject("Person");
+			go.AddComponent<Person>();
+			mPeople.Add(go.GetComponent<Person>());
 		}
 	}
 	
