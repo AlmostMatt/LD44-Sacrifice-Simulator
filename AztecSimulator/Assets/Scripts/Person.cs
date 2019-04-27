@@ -19,8 +19,24 @@ public class Person : MonoBehaviour {
 		"Nathan",
 		"Matt",
 		"Brendan",
-		"Joe",
-		"Bob"
+		"Coyotl",
+		"Coatl",
+		"Mazatl",
+		"Tototl",
+		"Zolin",
+		"Nochtli",
+		"Aapo",
+		"Sachihiro",
+		"Cipactli",
+		"Itzel",
+		"Akna",
+		"Nina",
+		"Xoc",
+		"Kusi",
+		"Koya",
+		"Kayara",
+		"Manko",
+		"Atik"
 	};
 
 	public float startingHealth = 30; // todo: for this to be data-driven, we'll need an actual Person prefab with this as the component...
