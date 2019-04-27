@@ -49,9 +49,9 @@ public class UIGenerator : MonoBehaviour {
 		for(int i = 0; i < Mathf.Min(people.Count, mUiPeoplePool.Count); i++)
 		{
 			GameObject uiPerson = mUiPeoplePool[i];
-			Toggle selectedToggle = GetComponentInChildren<Toggle>();
+			Toggle selectedToggle = uiPerson.transform.GetComponentInChildren<Toggle>();
 			Debug.Log("checking if someone is selected");
-			if (true || selectedToggle.isOn) {
+			if (selectedToggle.isOn) {
 				result.Add(people[i]);
 			}
 		}
@@ -63,5 +63,11 @@ public class UIGenerator : MonoBehaviour {
 		Debug.Log("Sacrificing " + selectedPeople.Count + " people.");
 		// TODO: sacrifice to a god instead of just removing.
 		mPersonManager.RemovePeople(selectedPeople);
+		for(int i = 0; i < mUiPeoplePool.Count; i++)
+		{
+			GameObject uiPerson = mUiPeoplePool[i];
+			Toggle selectedToggle = uiPerson.transform.GetComponentInChildren<Toggle>();
+			selectedToggle.isOn = false;
+		}
 	}
 }
