@@ -6,9 +6,17 @@ public class God : MonoBehaviour {
 
 	public class SacrificeDemand
 	{
-		public List<Person.Attribute> mDemandedAttributes;
+		private static int sId = 0;
 
-		public SacrificeDemand() {
+		public int mId;
+		public List<Person.Attribute> mDemandedAttributes;
+		public SacrificeResult mSatisfiedResult;
+		public SacrificeResult mIgnoredResult;
+
+		public SacrificeDemand(SacrificeResult satisfiedResult, SacrificeResult ignoredResult) {
+
+			mId = ++sId;
+
 			mDemandedAttributes = new List<Person.Attribute>();
 			int numAttributes = Random.Range(1,3);
 
@@ -18,6 +26,9 @@ public class God : MonoBehaviour {
 			{
 				mDemandedAttributes.Add((Person.Attribute)attributes[i]);
 			}
+
+			mSatisfiedResult = satisfiedResult;
+			mIgnoredResult = ignoredResult;
 		}
 
 		public string GetString()
@@ -47,7 +58,7 @@ public class God : MonoBehaviour {
 		int numDemands = 1; // Random.Range(1, 3);
 		for(int i = 0; i < numDemands; ++i)
 		{
-			mDemands.Add(new SacrificeDemand());
+			mDemands.Add(new SacrificeDemand(new GoodCropBoon(), null));
 		}
 
 		DebugPrint();
@@ -63,6 +74,23 @@ public class God : MonoBehaviour {
 		foreach(SacrificeDemand sd in mDemands)
 		{
 			Utilities.LogEvent("YOUR GOD DEMANDS A PERSON WITH " + sd.GetString());
+		}
+	}
+
+	public int AddDemand(SacrificeResult satisfiedResult, SacrificeResult ignoredResult)
+	{
+		SacrificeDemand demand = new SacrificeDemand(satisfiedResult, ignoredResult);
+		mDemands.Add(demand);
+		return(demand.mId);
+	}
+
+	public void RemoveDemand(int demandId)
+	{
+		foreach(SacrificeDemand d in mDemands) {
+			if(d.mId == demandId) {
+				mDemands.Remove(d);
+				return;
+			}
 		}
 	}
 
@@ -98,11 +126,13 @@ public class God : MonoBehaviour {
 		if(demandsCopy.Count == 0)
 		{
 			Utilities.LogEvent("YES, THIS SACRIFICE PLEASES ME");
-			SacrificeResult sr = new GoodCropBoon();
-			results.Add(sr);
+			SacrificeResult sr = demand.mSatisfiedResult;
+			if(sr != null) {
+				results.Add(sr);
+			}
 
 			mDemands.RemoveAt(demandIdx);
-			mDemands.Add(new SacrificeDemand());
+			mDemands.Add(new SacrificeDemand(new GoodCropBoon(), null));
 		}
 		else
 		{
