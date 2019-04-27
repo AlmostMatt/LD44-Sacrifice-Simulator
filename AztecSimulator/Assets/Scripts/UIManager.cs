@@ -46,6 +46,7 @@ public class UIManager : MonoBehaviour {
 			}
 		}
 		transform.Find("Top/PopulationText").GetComponent<Text>().text = "Population: " + people.Count;
+		transform.Find("Top/ResourceText").GetComponent<Text>().text = "Resources: " + 0;
 	}
 
 	private List<Person> getSelectedPeople() {

@@ -15,6 +15,7 @@ public class Person : MonoBehaviour {
 		MAX_VALUE
 	}
 
+	// TODO: group names by gender
 	private static string[] NAMES = {
 		"Nathan",
 		"Matt",
