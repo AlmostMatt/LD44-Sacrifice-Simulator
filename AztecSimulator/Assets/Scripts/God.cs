@@ -45,7 +45,9 @@ public class God : MonoBehaviour {
 	}
 
 	private List<SacrificeDemand> mDemands;
+	private string mName;
 
+	public string Name { get { return mName;}}
 	public List<SacrificeDemand> Demands
 	{
 		get { return(mDemands); }
@@ -53,6 +55,7 @@ public class God : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		mName = "MACUILCUETZPALIN, GOD OF AWESOME";
 		mDemands = new List<SacrificeDemand>();
 
 		int numDemands = 1; // Random.Range(1, 3);
