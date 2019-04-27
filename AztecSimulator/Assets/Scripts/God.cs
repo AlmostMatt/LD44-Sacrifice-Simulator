@@ -33,6 +33,13 @@ public class God : MonoBehaviour {
 
 		public string GetString()
 		{
+			string satisfiedString = mSatisfiedResult == null ? "<demanded>" : mSatisfiedResult.mName;
+			string costString = GetDemandedAttributes();
+			return satisfiedString + "\r\nDEMAND\r\n" + costString;
+		}
+
+		public string GetDemandedAttributes()
+		{
 			return Utilities.ConcatStrings(mDemandedAttributes.ConvertAll(
 				attr => System.Enum.GetName(typeof(Person.Attribute), (int)attr)
 			), true);
@@ -76,7 +83,7 @@ public class God : MonoBehaviour {
 	{
 		foreach(SacrificeDemand sd in mDemands)
 		{
-			Utilities.LogEvent("YOUR GOD DEMANDS A PERSON WITH " + sd.GetString());
+			Utilities.LogEvent("YOUR GOD DEMANDS A PERSON WITH " + sd.GetDemandedAttributes());
 		}
 	}
 
