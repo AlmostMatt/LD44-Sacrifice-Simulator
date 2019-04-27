@@ -94,11 +94,84 @@ public class God : MonoBehaviour {
 		}
 	}
 
-	public List<SacrificeResult> MakeSacrifice(int demandIdx, List<Person> people) {
+	public List<SacrificeResult> MakeSacrifice(int demandId, List<Person> people) {
 
+		List<SacrificeResult> results = new List<SacrificeResult>();
+
+		if(demandId > 0) {
+			SacrificeDemand demand = mDemands.Find(x => x.mId == demandId);
+			if(demand == null)
+			{
+				Debug.Log("No demand with id " + demandId);
+				return(results);
+			}
+
+			if(SatisfyDemand(demand, people))
+			{
+				Utilities.LogEvent("YES, THIS SACRIFICE PLEASES ME");
+				SacrificeResult sr = demand.mSatisfiedResult;
+				if(sr != null)
+				{
+					results.Add(sr);
+				}
+
+				mDemands.Remove(demand);
+				mDemands.Add(new SacrificeDemand(new GoodCropBoon(), null));
+			}
+			else
+			{
+				Utilities.LogEvent("NO WHAT ARE YOU DOING");
+			}
+		}
+		else {
+			
+			// temp: match against all demands
+			List<SacrificeDemand> matchedDemands = new List<SacrificeDemand>();
+			foreach(SacrificeDemand demand in mDemands) {
+				if(SatisfyDemand(demand, people))
+				{
+					SacrificeResult sr = demand.mSatisfiedResult;
+					if(sr != null) {
+						results.Add(sr);
+					}
+
+					matchedDemands.Add(demand);
+				}
+			}
+
+			if(matchedDemands.Count > 0) {
+				Utilities.LogEvent("YES, THIS SACRIFICE PLEASES ME");
+			}
+
+			foreach(SacrificeDemand d in matchedDemands) {
+				mDemands.Remove(d);
+			}
+
+			if(mDemands.Count == 0) {
+				mDemands.Add(new SacrificeDemand(new GoodCropBoon(), null));
+			}
+		}
+
+		foreach(Person p in people)
+		{
+			Debug.Log("goodbye " + p.Name);
+		}
 		PersonManager personMgr = Utilities.GetPersonManager();
+		personMgr.RemovePeople(people);
 
-		SacrificeDemand demand = mDemands[demandIdx];
+		// for now just apply the results here, whatever...
+		foreach(SacrificeResult r in results)
+		{
+			r.DoEffect();
+		}
+
+		DebugPrint(); // temp hack: print out new demands (after other messages happen)
+
+		return(results);
+	}
+
+	private bool SatisfyDemand(SacrificeDemand demand, List<Person> people)
+	{
 		List<Person.Attribute> demandsCopy = new List<Person.Attribute>(demand.mDemandedAttributes);
 		foreach(Person p in people)
 		{
@@ -115,39 +188,6 @@ public class God : MonoBehaviour {
 			}
 		}
 
-		foreach(Person p in people)
-		{
-			Debug.Log("goodbye " + p.Name);
-		}
-		personMgr.RemovePeople(people);
-
-		List<SacrificeResult> results = new List<SacrificeResult>();
-
-		if(demandsCopy.Count == 0)
-		{
-			Utilities.LogEvent("YES, THIS SACRIFICE PLEASES ME");
-			SacrificeResult sr = demand.mSatisfiedResult;
-			if(sr != null) {
-				results.Add(sr);
-			}
-
-			mDemands.RemoveAt(demandIdx);
-			mDemands.Add(new SacrificeDemand(new GoodCropBoon(), null));
-		}
-		else
-		{
-			Utilities.LogEvent("NO WHAT ARE YOU DOING");
-			results.Add(new PlagueCurse());
-		}
-
-		// for now just apply the results here, whatever...
-		foreach(SacrificeResult r in results)
-		{
-			r.DoEffect();
-		}
-
-		DebugPrint(); // temp hack: print out new demand (after other messages happen)
-
-		return(results);
+		return(demandsCopy.Count == 0);
 	}
 }
