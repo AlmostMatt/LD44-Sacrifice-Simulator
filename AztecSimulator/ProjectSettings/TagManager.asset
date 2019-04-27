@@ -6,6 +6,7 @@ TagManager:
   tags:
   - PersonManager
   - God
+  - UIManager
   layers:
   - Default
   - TransparentFX

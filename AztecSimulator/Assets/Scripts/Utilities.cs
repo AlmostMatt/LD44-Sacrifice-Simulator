@@ -14,6 +14,12 @@ public class Utilities {
 		return((God)GameObject.FindGameObjectWithTag("God").GetComponent<God>());
 	}
 
+	// TODO: Have a LogEvent function that handles the no-UIManager case
+	public static UIManager GetUIManager()
+	{
+		return((UIManager)GameObject.FindGameObjectWithTag("UIManager").GetComponent<UIManager>());
+	}
+
 	public static int[] RandomList(int totalPossibilities, int numChoices) {
 		int[] availableChoices = new int[totalPossibilities];
 		for(int i = 0; i < totalPossibilities; ++i) {
@@ -27,5 +33,16 @@ public class Utilities {
 			availableChoices[pick] = availableChoices[--totalPossibilities];
 		}
 		return(chosenIndices);
+	}
+
+	// Joins a list of strings with commas and AND.
+	public static string ConcatStrings(List<string> strings, bool useAllCaps = false) {
+		string result = "";
+		for (int i = 0; i < strings.Count; i++) {
+			result += strings[i];
+			if (i == strings.Count - 2) { result += useAllCaps ? " AND " : " and "; }
+			else if (i < strings.Count - 2) { result += ", "; }
+		}
+		return result;
 	}
 }

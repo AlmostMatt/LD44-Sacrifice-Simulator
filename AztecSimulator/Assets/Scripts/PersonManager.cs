@@ -46,6 +46,7 @@ public class PersonManager : MonoBehaviour {
 			{
 				Person p = SpawnPerson();
 				Debug.Log(p.Name + " was born!");
+				Utilities.GetUIManager().LogEvent(p.Name + " was born!");
 				mRepopulateTimer = mRepopulateInterval;
 			}
 

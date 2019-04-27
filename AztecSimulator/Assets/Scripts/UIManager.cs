@@ -10,6 +10,8 @@ public class UIManager : MonoBehaviour {
 
 	private PersonManager mPersonManager;
 	private List<GameObject> mUiPeoplePool;
+	private int mMaxEventMessages = 10;
+	private List<string> mEventMessages = new List<string>();
 
 	// Use this for initialization
 	void Start () {
@@ -63,6 +65,9 @@ public class UIManager : MonoBehaviour {
 	public void OnSacrifice() {
 		List<Person> selectedPeople = getSelectedPeople();
 		Debug.Log("Sacrificing " + selectedPeople.Count + " people.");
+		if (selectedPeople.Count == 0) { return; }
+		string sacrificedNames = Utilities.ConcatStrings(selectedPeople.ConvertAll(person => person.Name));
+		LogEvent("You sacrifice " + sacrificedNames + " to the god.");
         
 		God god = Utilities.GetGod();
 		if(god != null) {
@@ -75,5 +80,15 @@ public class UIManager : MonoBehaviour {
 			Toggle selectedToggle = uiPerson.transform.GetComponentInChildren<Toggle>();
 			selectedToggle.isOn = false;
 		}
+	}
+
+	public void LogEvent(string message) {
+		mEventMessages.Add(message);
+		string newLogText = "";
+		// Concatenate the last K messages
+		for (int i = Mathf.Max(0, mEventMessages.Count-mMaxEventMessages); i < mEventMessages.Count; i++) {
+			newLogText += mEventMessages[i] + "\n";
+		}
+		transform.Find("Right/Log/LogText").GetComponent<Text>().text = newLogText;
 	}
 }

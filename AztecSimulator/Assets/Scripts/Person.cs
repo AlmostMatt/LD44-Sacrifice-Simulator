@@ -63,6 +63,7 @@ public class Person : MonoBehaviour {
 		if(mHealth <= 0)
 		{
 			Debug.Log(mName + " died of old age!");
+			Utilities.GetUIManager().LogEvent(mName + " died of old age!");
 			Utilities.GetPersonManager().RemovePerson(this);
 		}
 	}

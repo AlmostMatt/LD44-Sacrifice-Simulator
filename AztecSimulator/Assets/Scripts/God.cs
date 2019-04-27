@@ -19,12 +19,16 @@ public class God : MonoBehaviour {
 			}
 		}
 
+		public string GetString()
+		{
+			return Utilities.ConcatStrings(mDemandedAttributes.ConvertAll(
+				attr => System.Enum.GetName(typeof(Person.Attribute), (int)attr)
+			), true);
+		}
+
 		public void DebugPrint()
 		{
-			foreach(Person.Attribute attr in mDemandedAttributes)
-			{
-				Debug.Log(System.Enum.GetName(typeof(Person.Attribute), (int)attr));
-			}
+			Debug.Log(GetString());
 		}
 	}
 
@@ -52,8 +56,7 @@ public class God : MonoBehaviour {
 	{
 		foreach(SacrificeDemand sd in mDemands)
 		{
-			Debug.Log("YOUR GOD DEMANDS A PERSON WITH:");
-			sd.DebugPrint();
+			Utilities.GetUIManager().LogEvent("YOUR GOD DEMANDS A PERSON WITH " + sd.GetString());
 		}
 	}
 
@@ -88,13 +91,13 @@ public class God : MonoBehaviour {
 
 		if(demandsCopy.Count == 0)
 		{
-			Debug.Log("YES, THIS SACRIFICE PLEASES ME");
+			Utilities.GetUIManager().LogEvent("YES, THIS SACRIFICE PLEASES ME");
 			SacrificeResult sr = new GoodCropBoon();
 			results.Add(sr);
 		}
 		else
 		{
-			Debug.Log("NO WHAT ARE YOU DOING");
+			Utilities.GetUIManager().LogEvent("NO WHAT ARE YOU DOING");
 			results.Add(new PlagueCurse());
 		}
 
