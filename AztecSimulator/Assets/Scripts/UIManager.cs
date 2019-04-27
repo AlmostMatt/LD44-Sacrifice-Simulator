@@ -66,7 +66,7 @@ public class UIManager : MonoBehaviour {
 		// Update the god and demands
 		if(mGod != null) {
 			transform.Find("Left/God/Name").GetComponent<Text>().text = mGod.Name;
-			List<God.SacrificeDemand> demands = mGod.Demands;
+			List<SacrificeDemand> demands = mGod.Demands;
 			Transform demandContainer = transform.Find("Left/God/DemandList");
 			for(int i = 0; i < Mathf.Max(demands.Count, mUiDemandPool.Count); i++)
 			{

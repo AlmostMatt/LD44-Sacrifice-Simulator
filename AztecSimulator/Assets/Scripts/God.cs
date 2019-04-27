@@ -4,78 +4,6 @@ using UnityEngine;
 
 public class God : MonoBehaviour {
 
-	public class SacrificeDemand
-	{
-		private static int sId = 0;
-
-		public int mId;
-		public List<Person.Attribute> mDemandedAttributes;
-		public SacrificeResult mSatisfiedResult;
-		public SacrificeResult mIgnoredResult;
-
-		public SacrificeDemand(SacrificeResult satisfiedResult, SacrificeResult ignoredResult) {
-
-			mId = ++sId;
-
-			int numAttributes = Random.Range(1,3);
-			mDemandedAttributes = GenerateSatisfiableDemands(numAttributes);		
-
-			mSatisfiedResult = satisfiedResult;
-			mIgnoredResult = ignoredResult;
-		}
-
-		public string GetString()
-		{
-			string satisfiedString = mSatisfiedResult == null ? "<demanded>" : mSatisfiedResult.mName;
-			string costString = GetDemandedAttributes();
-			return satisfiedString + "\r\nDEMAND\r\n" + costString;
-		}
-
-		public string GetDemandedAttributes()
-		{
-			return Utilities.ConcatStrings(mDemandedAttributes.ConvertAll(
-				attr => System.Enum.GetName(typeof(Person.Attribute), (int)attr)
-			), true);
-		}
-
-		public void DebugPrint()
-		{
-			Debug.Log(GetString());
-		}
-
-		public static List<Person.Attribute> GenerateSatisfiableDemands(int preferredNum)
-		{
-			List<Person.Attribute> demands = new List<Person.Attribute>(); 
-
-			// naive (or clever?): if we just pick a person at random and an attribute at random,
-			// then we're guaranted to be able to satisfy it. The bonus is that 
-			// some other people might share that attribute, so we get player choice involved basically for free
-			List<Person> people = Utilities.GetPersonManager().People;
-
-			while(preferredNum-- > 0)
-			{
-				Person p = people[Random.Range(0, people.Count)];
-				Person.Attribute attribute = p.Attributes[Random.Range(0, p.Attributes.Length)];
-				if(!demands.Contains(attribute))
-					demands.Add(attribute);
-			}
-			
-			return(demands);
-		}
-
-		public static List<Person.Attribute> GenerateRandomDemands(int preferredNum)
-		{
-			List<Person.Attribute> demands = new List<Person.Attribute>();
-			var numAttrs = System.Enum.GetValues(typeof(Person.Attribute)).Length-1;
-			int[] attributes = Utilities.RandomList(numAttrs, preferredNum);
-			for(int i = 0; i < preferredNum; ++i)
-			{
-				demands.Add((Person.Attribute)attributes[i]);
-			}
-			return(demands);
-		}
-	}
-
 	private List<SacrificeDemand> mDemands;
 	private string mName;
 
@@ -93,8 +21,10 @@ public class God : MonoBehaviour {
 		int numDemands = 1; // Random.Range(1, 3);
 		for(int i = 0; i < numDemands; ++i)
 		{
-			mDemands.Add(new SacrificeDemand(new GoodCropBoon(), null));
+			mDemands.Add(new SimpleDemand(new GoodCropBoon(), null));
 		}
+
+		mDemands.Add(new WarriorDemand());
 
 		DebugPrint();
 	}
@@ -108,13 +38,13 @@ public class God : MonoBehaviour {
 	{
 		foreach(SacrificeDemand sd in mDemands)
 		{
-			Utilities.LogEvent("YOUR GOD DEMANDS A PERSON WITH " + sd.GetDemandedAttributes());
+			Utilities.LogEvent("YOUR GOD DEMANDS " + sd.GetString());
 		}
 	}
 
 	public int AddDemand(SacrificeResult satisfiedResult, SacrificeResult ignoredResult, string msg)
 	{
-		SacrificeDemand demand = new SacrificeDemand(satisfiedResult, ignoredResult);
+		SacrificeDemand demand = new SimpleDemand(satisfiedResult, ignoredResult);
 		mDemands.Add(demand);
 		if(msg != null) {
 			Utilities.LogEvent(msg + demand.GetString());
@@ -145,7 +75,7 @@ public class God : MonoBehaviour {
 				return(results);
 			}
 
-			if(SatisfyDemand(demand, people))
+			if(demand.CheckSatisfaction(people))
 			{
 				Utilities.LogEvent("YES, THIS SACRIFICE PLEASES ME");
 				SacrificeResult sr = demand.mSatisfiedResult;
@@ -155,7 +85,7 @@ public class God : MonoBehaviour {
 				}
 
 				mDemands.Remove(demand);
-				mDemands.Add(new SacrificeDemand(new GoodCropBoon(), null));
+				mDemands.Add(new SimpleDemand(new GoodCropBoon(), null));
 			}
 			else
 			{
@@ -182,26 +112,5 @@ public class God : MonoBehaviour {
 		DebugPrint(); // temp hack: print out new demands (after other messages happen)
 
 		return(results);
-	}
-
-	private bool SatisfyDemand(SacrificeDemand demand, List<Person> people)
-	{
-		List<Person.Attribute> demandsCopy = new List<Person.Attribute>(demand.mDemandedAttributes);
-		foreach(Person p in people)
-		{
-			foreach(Person.Attribute attr in p.Attributes)
-			{
-				foreach(Person.Attribute demandedAttr in demandsCopy)
-				{
-					if(attr == demandedAttr)
-					{
-						demandsCopy.Remove(demandedAttr);
-						break;
-					}
-				}
-			}
-		}
-
-		return(demandsCopy.Count == 0);
 	}
 }
