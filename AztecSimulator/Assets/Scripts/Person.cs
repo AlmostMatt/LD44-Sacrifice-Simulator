@@ -54,8 +54,6 @@ public class Person : MonoBehaviour {
 
 		mHealth = startingHealth;
 		mHealthDecayRate = Random.Range(0.5f, 1.5f);
-
-		// DebugPrint();
 	}
 	
 	// Update is called once per frame
