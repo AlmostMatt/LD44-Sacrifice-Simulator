@@ -36,6 +36,10 @@ public class UIGenerator : MonoBehaviour {
 			rt.anchoredPosition = new Vector2(0f,0f+30f*(i-people.Count/2));
 			// Update visibility
 			uiPerson.transform.gameObject.SetActive(i < people.Count);
+			if (i < people.Count) {
+				Text uiText = uiPerson.GetComponentInChildren<Text>();
+				uiText.text = people[i].GetUIDescription();
+			}
 		}
 	}
 
