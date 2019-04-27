@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Person : MonoBehaviour {
+public class Person : MonoBehaviour { // probably doesn't even need to be a mono 
 
 	public enum Attribute {
 		FARMER = 0,
@@ -40,7 +40,7 @@ public class Person : MonoBehaviour {
 		int numAttributes = Random.Range(1,3);
 		mAttributes = new Attribute[numAttributes];
 
-		int[] attributeSelection = RandomList((int)Attribute.MAX_VALUE, numAttributes);
+		int[] attributeSelection = Utilities.RandomList((int)Attribute.MAX_VALUE, numAttributes);
 		for(int i = 0; i < mAttributes.Length; ++i)
 		{
 			mAttributes[i] = (Attribute)attributeSelection[i];
@@ -62,19 +62,5 @@ public class Person : MonoBehaviour {
 		}
 	}
 
-	private int[] RandomList(int totalPossibilities, int numChoices) {
-		int[] availableChoices = new int[totalPossibilities];
-		for(int i = 0; i < totalPossibilities; ++i) {
-			availableChoices[i] = i;
-		}
-
-		int[] chosenIndices = new int[numChoices];
-		for(int i = 0; i < numChoices; ++i) {
-			int pick = Random.Range(i, totalPossibilities);
-			chosenIndices[i] = availableChoices[pick];
-			availableChoices[pick] = availableChoices[--totalPossibilities];
-		}
-		return(chosenIndices);
-	}
 }
 
