@@ -84,7 +84,7 @@ public class Person : MonoBehaviour {
 
 		mIsHungry = false;
 		mHealth = startingHealth;
-		mBaseHealthDecayRate = Random.Range(0.5f, 1.5f);
+		mBaseHealthDecayRate = 0.1f;
 	}
 	
 	// Update is called once per frame
@@ -93,7 +93,7 @@ public class Person : MonoBehaviour {
 		float healthDecayRate = mBaseHealthDecayRate;
 		if(mIsHungry)
 		{
-			healthDecayRate *= 2;
+			healthDecayRate *= 5;
 		}
 		mHealth -= healthDecayRate * Time.deltaTime;
 

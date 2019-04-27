@@ -36,22 +36,17 @@ public class PersonManager : MonoBehaviour {
 
 		// repopulate. todo: figure out what actual logic we want for this,
 		// e.g. if it depends on other factors, if there's a hard cap, etc.
-		// if(mPeople.Count < numStartingPeople)
+		if(mRepopulateTimer > 0)
 		{
-			if(mRepopulateTimer > 0)
-			{
-				mRepopulateTimer -= Time.deltaTime;
-			}
-			else
-			{
-				Person p = SpawnPerson();
-				Debug.Log(p.Name + " was born!");
-				Utilities.LogEvent(p.Name + " was born!");
-				mRepopulateTimer = mRepopulateInterval;
-			}
-
+			mRepopulateTimer -= Time.deltaTime;
 		}
-
+		else
+		{
+			Person p = SpawnPerson();
+			Debug.Log(p.Name + " was born!");
+			Utilities.LogEvent(p.Name + " was born!");
+			mRepopulateTimer = mRepopulateInterval;
+		}
 	}
 
 	private Person SpawnPerson()
