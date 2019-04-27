@@ -2,7 +2,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Utilities {
+public static class Utilities {
+
+	// Extenstion method. called with attr.GetAttrType()
+	public static Person.AttributeType GetAttrType(this Person.Attribute attr)
+	{
+		switch(attr){
+		case Person.Attribute.FARMER:
+		case Person.Attribute.WARRIOR:
+			return Person.AttributeType.PROFESSION;
+		case Person.Attribute.TALL:
+		case Person.Attribute.SHORT:
+			return Person.AttributeType.HEIGHT;
+		case Person.Attribute.BLUE_EYES:
+		case Person.Attribute.GREEN_EYES:
+		case Person.Attribute.BROWN_EYES:
+			return Person.AttributeType.EYE_COLOR;
+		case Person.Attribute.STRONG:
+		case Person.Attribute.WEAK:
+			return Person.AttributeType.STRENGTH;
+		case Person.Attribute.SMART:
+		case Person.Attribute.CARING:
+		case Person.Attribute.STUPID:
+			return Person.AttributeType.PERSONALITY;
+		default:
+			return Person.AttributeType.NONE;
+		}
+	}
 
 	public static PersonManager GetPersonManager()
 	{

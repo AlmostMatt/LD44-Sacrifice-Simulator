@@ -12,7 +12,8 @@ public class God : MonoBehaviour {
 			mDemandedAttributes = new List<Person.Attribute>();
 			int numAttributes = Random.Range(1,3);
 
-			int[] attributes = Utilities.RandomList((int)Person.Attribute.MAX_VALUE, numAttributes);
+			var numAttrs = System.Enum.GetValues(typeof(Person.Attribute)).Length-1;
+			int[] attributes = Utilities.RandomList(numAttrs, numAttributes);
 			for(int i = 0; i < numAttributes; ++i)
 			{
 				mDemandedAttributes.Add((Person.Attribute)attributes[i]);

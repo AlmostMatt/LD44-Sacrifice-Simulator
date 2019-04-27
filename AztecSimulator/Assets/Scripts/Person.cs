@@ -3,7 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Person : MonoBehaviour {
-
+	// Utility functions to go from attr > type are in Utilities
+	public enum AttributeType {
+		PROFESSION = 0,
+		HEIGHT,
+		EYE_COLOR,
+		STRENGTH,
+		PERSONALITY,
+		NONE
+	}
 	public enum Attribute {
 		FARMER = 0,
 		WARRIOR,
@@ -13,11 +21,13 @@ public class Person : MonoBehaviour {
 		GREEN_EYES,
 		BROWN_EYES,
 		STRONG,
+		WEAK,
 		SMART,
 		CARING,
-		MAX_VALUE
+		STUPID,
+		// When picking a random attr, subtract max value by 1 to not select the following
+		NONE
 	}
-
 	// TODO: group names by gender
 	private static string[] NAMES = {
 		"Nathan",
@@ -43,7 +53,8 @@ public class Person : MonoBehaviour {
 		"Atik"
 	};
 
-	public float startingHealth = 100; // todo: for this to be data-driven, we'll need an actual Person prefab with this as the component...
+	// todo: for this to be data-driven, we'll need an actual Person prefab with this as the component...
+	public float startingHealth = 100;
 
 	private string mName;
 	private Attribute[] mAttributes;
@@ -71,6 +82,15 @@ public class Person : MonoBehaviour {
 		set { mIsHungry = value; }
 	}
 
+	public Attribute GetAttribute(Person.AttributeType attrType) {
+		foreach (Attribute attr in mAttributes) {
+			if (attr.GetAttrType() == attrType) {
+				return attr;
+			}
+		}
+		return Attribute.NONE;
+	}
+
 	// Use this for initialization
 	//void Start () {
 	void Awake() {
@@ -79,7 +99,8 @@ public class Person : MonoBehaviour {
 		int numAttributes = Random.Range(1,4);
 		mAttributes = new Attribute[numAttributes];
 
-		int[] attributeSelection = Utilities.RandomList((int)Attribute.MAX_VALUE, numAttributes);
+		var numAttrs = System.Enum.GetValues(typeof(Attribute)).Length-1;
+		int[] attributeSelection = Utilities.RandomList(numAttrs, numAttributes);
 		for(int i = 0; i < mAttributes.Length; ++i)
 		{
 			mAttributes[i] = (Attribute)attributeSelection[i];
