@@ -83,8 +83,8 @@ public class UIManager : MonoBehaviour {
 				// Update visibility
 				uiDemand.transform.gameObject.SetActive(i < demands.Count);
 				// Update text and store id in name
-				uiDemand.name = demands[i].mId.ToString();
 				if (i < demands.Count) {
+					uiDemand.name = demands[i].mId.ToString();
 					uiDemand.transform.Find("Text").GetComponent<Text>().text = demands[i].GetString(); 
 				}
 			}
