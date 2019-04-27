@@ -50,7 +50,6 @@ public class UIGenerator : MonoBehaviour {
 		{
 			GameObject uiPerson = mUiPeoplePool[i];
 			Toggle selectedToggle = uiPerson.transform.GetComponentInChildren<Toggle>();
-			Debug.Log("checking if someone is selected");
 			if (selectedToggle.isOn) {
 				result.Add(people[i]);
 			}

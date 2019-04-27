@@ -45,8 +45,6 @@ public class Person : MonoBehaviour { // probably doesn't even need to be a mono
 		{
 			mAttributes[i] = (Attribute)attributeSelection[i];
 		}
-
-		DebugPrint();
 	}
 	
 	// Update is called once per frame
