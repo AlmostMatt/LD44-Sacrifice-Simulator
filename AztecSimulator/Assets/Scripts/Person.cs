@@ -75,6 +75,10 @@ public class Person : MonoBehaviour {
 		get { return(mHealth); }
 		set { mHealth = value; }
 	}
+	public int Level 
+	{
+		get { return(mLevel); }
+	}
 
 
 	private bool mIsHungry;

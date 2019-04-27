@@ -52,20 +52,14 @@ public class InvaderAttack : RandomEventSystem.RandomEvent {
 			// maybe this should be in its own method, like Ended()?
 			Utilities.LogEvent("The forces have left.");
 
-			int warriorCount = 0;
-			// TODO: genericize, move into PersonManager (getting a list of people that satisfy certain criteria will be useful for the UI too)
-			List<Person> people = Utilities.GetPersonManager().People;
-			foreach(Person p in people) {
-				if(p.GetAttribute(Person.AttributeType.PROFESSION) == Person.Attribute.WARRIOR) {
-					++warriorCount;
-				}
-			}
-
-			int warriorDiff = mRequiredWarriors - warriorCount;
+			PersonManager personMgr = Utilities.GetPersonManager();
+			List<Person> warriors = personMgr.FindPeople(Person.AttributeType.PROFESSION, Person.Attribute.WARRIOR);
+			int warriorDiff = mRequiredWarriors - warriors.Count;
 			if(warriorDiff <= 0) {
 				Utilities.LogEvent("Your warriors fended off the invaders and your people took no casualties.");
 			}
 			else if(warriorDiff > 0) {
+				List<Person> people = personMgr.People;
 				Utilities.LogEvent("Your warriors weren't able to stop all of the invaders.");
 				string msg = "";
 				int[] hurtPeople = Utilities.RandomList(people.Count, warriorDiff);
