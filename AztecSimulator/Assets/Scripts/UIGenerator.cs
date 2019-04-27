@@ -38,7 +38,8 @@ public class UIGenerator : MonoBehaviour {
 		}
 	}
 
-	void OnSacrifice() {
+	public void OnSacrifice() {
 		// sacrifice the selected people
+		Debug.Log("SACRIFICE");
 	}
 }
