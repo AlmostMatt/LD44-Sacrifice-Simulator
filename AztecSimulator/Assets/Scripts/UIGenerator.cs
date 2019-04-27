@@ -61,7 +61,9 @@ public class UIGenerator : MonoBehaviour {
 	public void OnSacrifice() {
 		List<Person> selectedPeople = getSelectedPeople();
 		Debug.Log("Sacrificing " + selectedPeople.Count + " people.");
-		// TODO: sacrifice to a god instead of just removing.
-		mPersonManager.RemovePeople(selectedPeople);
+		God god = Utilities.GetGod();
+		if(god != null) {
+			god.MakeSacrifice(0, selectedPeople);
+		}
 	}
 }

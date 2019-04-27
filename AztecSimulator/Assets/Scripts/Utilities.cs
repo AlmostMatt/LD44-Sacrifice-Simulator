@@ -9,6 +9,11 @@ public class Utilities {
 		return((PersonManager)GameObject.FindGameObjectWithTag("PersonManager").GetComponent<PersonManager>());
 	}
 
+	public static God GetGod()
+	{
+		return((God)GameObject.FindGameObjectWithTag("God").GetComponent<God>());
+	}
+
 	public static int[] RandomList(int totalPossibilities, int numChoices) {
 		int[] availableChoices = new int[totalPossibilities];
 		for(int i = 0; i < totalPossibilities; ++i) {
