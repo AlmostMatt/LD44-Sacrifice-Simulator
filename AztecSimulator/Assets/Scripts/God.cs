@@ -38,7 +38,7 @@ public class God : MonoBehaviour {
 	void Start () {
 		mDemands = new List<SacrificeDemand>();
 
-		int numDemands = Random.Range(1, 3);
+		int numDemands = 1; // Random.Range(1, 3);
 		for(int i = 0; i < numDemands; ++i)
 		{
 			mDemands.Add(new SacrificeDemand());
@@ -94,6 +94,9 @@ public class God : MonoBehaviour {
 			Utilities.LogEvent("YES, THIS SACRIFICE PLEASES ME");
 			SacrificeResult sr = new GoodCropBoon();
 			results.Add(sr);
+
+			mDemands.RemoveAt(demandIdx);
+			mDemands.Add(new SacrificeDemand());
 		}
 		else
 		{
@@ -106,6 +109,8 @@ public class God : MonoBehaviour {
 		{
 			r.DoEffect();
 		}
+
+		DebugPrint(); // temp hack: print out new demand (after other messages happen)
 
 		return(results);
 	}
