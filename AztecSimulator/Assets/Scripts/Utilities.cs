@@ -6,18 +6,19 @@ public class Utilities {
 
 	public static PersonManager GetPersonManager()
 	{
-		return((PersonManager)GameObject.FindGameObjectWithTag("PersonManager").GetComponent<PersonManager>());
+		return GameObject.FindGameObjectWithTag("PersonManager").GetComponent<PersonManager>();
 	}
 
 	public static God GetGod()
 	{
-		return((God)GameObject.FindGameObjectWithTag("God").GetComponent<God>());
+		return GameObject.FindGameObjectWithTag("God").GetComponent<God>();
 	}
 
-	// TODO: Have a LogEvent function that handles the no-UIManager case
-	public static UIManager GetUIManager()
+	public static void LogEvent(string message)
 	{
-		return((UIManager)GameObject.FindGameObjectWithTag("UIManager").GetComponent<UIManager>());
+		GameObject uiManager = GameObject.FindGameObjectWithTag("UIManager");
+		if (uiManager != null) { uiManager.GetComponent<UIManager>().LogEvent(message); }
+		else { Debug.Log("Logged event: " + message); }
 	}
 
 	public static int[] RandomList(int totalPossibilities, int numChoices) {

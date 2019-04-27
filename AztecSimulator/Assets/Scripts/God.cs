@@ -56,7 +56,7 @@ public class God : MonoBehaviour {
 	{
 		foreach(SacrificeDemand sd in mDemands)
 		{
-			Utilities.GetUIManager().LogEvent("YOUR GOD DEMANDS A PERSON WITH " + sd.GetString());
+			Utilities.LogEvent("YOUR GOD DEMANDS A PERSON WITH " + sd.GetString());
 		}
 	}
 
@@ -91,13 +91,13 @@ public class God : MonoBehaviour {
 
 		if(demandsCopy.Count == 0)
 		{
-			Utilities.GetUIManager().LogEvent("YES, THIS SACRIFICE PLEASES ME");
+			Utilities.LogEvent("YES, THIS SACRIFICE PLEASES ME");
 			SacrificeResult sr = new GoodCropBoon();
 			results.Add(sr);
 		}
 		else
 		{
-			Utilities.GetUIManager().LogEvent("NO WHAT ARE YOU DOING");
+			Utilities.LogEvent("NO WHAT ARE YOU DOING");
 			results.Add(new PlagueCurse());
 		}
 

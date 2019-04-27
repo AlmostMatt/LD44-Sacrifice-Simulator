@@ -11,6 +11,6 @@ public class GoodCropBoon : SacrificeResult {
 
 	public override void DoEffect()
 	{
-		Utilities.GetUIManager().LogEvent("Your crops have been blessed by god. Your people will have mini-wheats for days.");
+		Utilities.LogEvent("Your crops have been blessed by god. Your people will have mini-wheats for days.");
 	}
 }

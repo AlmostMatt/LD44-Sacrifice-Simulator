@@ -11,6 +11,6 @@ public class PlagueCurse : SacrificeResult {
 
 	public override void DoEffect()
 	{
-		Utilities.GetUIManager().LogEvent("A terrible plague befalls your people");
+		Utilities.LogEvent("A terrible plague befalls your people");
 	}
 }
