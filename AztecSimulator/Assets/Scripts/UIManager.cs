@@ -61,7 +61,7 @@ public class UIManager : MonoBehaviour {
 		}
 
 		List<Person> selectedPeople = getSelectedPeople();
-		transform.Find("Right/People/SacrificeButton").GetComponent<Button>().enabled = (selectedPeople.Count > 0);
+		transform.Find("Right/People/SacrificeButton").GetComponent<Button>().interactable = (selectedPeople.Count > 0);
 
 		// Update the god and demands
 		if(mGod != null) {
