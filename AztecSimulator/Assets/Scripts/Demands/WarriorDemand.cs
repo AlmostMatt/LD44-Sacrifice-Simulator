@@ -25,9 +25,14 @@ public class WarriorDemand : SacrificeDemand {
 		return(okPeople >= mNumWarriors);
 	}
 
-	public override string GetString()
+	public override string GetShortDescription() 
 	{
 		return("10 Level 20 Warriors");
+	}
+
+	public override string GetLongDescription() 
+	{
+		return("VICTORY\r\nDEMAND\r\n10 Level 20 Warriors");
 	}
 
 	private bool checkPerson(Person p)

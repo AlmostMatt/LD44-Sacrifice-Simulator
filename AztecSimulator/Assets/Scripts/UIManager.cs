@@ -85,7 +85,7 @@ public class UIManager : MonoBehaviour {
 				// Update text and store id in name
 				if (i < demands.Count) {
 					uiDemand.name = demands[i].mId.ToString();
-					uiDemand.transform.Find("Text").GetComponent<Text>().text = demands[i].GetString(); 
+					uiDemand.transform.Find("Text").GetComponent<Text>().text = demands[i].GetLongDescription(); 
 				}
 			}
 		}

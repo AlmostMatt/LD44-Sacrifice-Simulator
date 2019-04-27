@@ -12,7 +12,12 @@ public class SimpleDemand : SacrificeDemand {
 		mDemandedAttributes = GenerateSatisfiableDemands(numAttributes);		
 	}
 
-	public override string GetString()
+	public override string GetShortDescription()
+	{
+		return(GetDemandedAttributes());
+	}
+
+	public override string GetLongDescription()
 	{
 		string satisfiedString = mSatisfiedResult == null ? "<demanded>" : mSatisfiedResult.mName;
 		string costString = GetDemandedAttributes();

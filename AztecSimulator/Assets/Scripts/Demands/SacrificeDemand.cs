@@ -19,10 +19,11 @@ public abstract class SacrificeDemand
 	}
 
 	public abstract bool CheckSatisfaction(List<Person> people);
-	public abstract string GetString();
+	public abstract string GetShortDescription();
+	public abstract string GetLongDescription();
 
 	public void DebugPrint()
 	{
-		Debug.Log(GetString());
+		Debug.Log(GetShortDescription());
 	}
 }

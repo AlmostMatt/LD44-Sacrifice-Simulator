@@ -38,7 +38,7 @@ public class God : MonoBehaviour {
 	{
 		foreach(SacrificeDemand sd in mDemands)
 		{
-			Utilities.LogEvent("YOUR GOD DEMANDS " + sd.GetString());
+			Utilities.LogEvent("YOUR GOD DEMANDS " + sd.GetShortDescription());
 		}
 	}
 
@@ -47,7 +47,7 @@ public class God : MonoBehaviour {
 		SacrificeDemand demand = new SimpleDemand(satisfiedResult, ignoredResult);
 		mDemands.Add(demand);
 		if(msg != null) {
-			Utilities.LogEvent(msg + demand.GetString());
+			Utilities.LogEvent(msg + demand.GetShortDescription());
 		}
 
 		return(demand.mId);
