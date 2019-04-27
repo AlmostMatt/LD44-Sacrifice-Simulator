@@ -61,8 +61,7 @@ public class God : MonoBehaviour {
 
 		List<SacrificeResult> results = new List<SacrificeResult>();
 
-		SacrificeResult sr = new SacrificeResult();
-		sr.mDescription = "GREAT CROPS!";
+		SacrificeResult sr = new GoodCropBoon();
 		results.Add(sr);
 
 		return(results);

@@ -2,12 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SacrificeResult : ScriptableObject {
+public abstract class SacrificeResult {
 
+	public string mName;
 	public string mDescription;
 
-	public void Awake()
+	public SacrificeResult(string name, string description)
 	{
-		
+		mName = name;
+		mDescription = description;
 	}
+
+	public void DebugPrint()
+	{
+		Debug.Log(mName + " -- " + mDescription);
+	}
+
+	public abstract void DoEffect();
 }
