@@ -11,12 +11,18 @@ public class RandomEventSystem : MonoBehaviour {
 		public abstract bool Update();
 	}
 
+	public int debugAttackIdx = -1;
 	public float initialEventDelay;
 	public float minEventInterval = 45;
 	public float maxEventInterval = 75;
 
 	private float mEventTimer;
 	private RandomEvent mEvent;
+
+	private RandomEvent[] mPossibleEvents = {
+		new InvaderAttack(),
+		new Drought()
+	};
 
 	private enum EventSystemState
 	{
@@ -26,7 +32,6 @@ public class RandomEventSystem : MonoBehaviour {
 	};
 
 	private EventSystemState mState;
-	private bool mEventActive;
 
 	// Use this for initialization
 	void Start () {
@@ -78,8 +83,8 @@ public class RandomEventSystem : MonoBehaviour {
 
 	private void ScheduleEvent()
 	{
-		mEventActive = false;
-		mEvent = new InvaderAttack();
+		if(debugAttackIdx >= 0) mEvent = mPossibleEvents[debugAttackIdx];
+		else mEvent = mPossibleEvents[Random.Range(0, mPossibleEvents.Length)];
 		mEventTimer = Random.Range(maxEventInterval, maxEventInterval);
 	}
 }
