@@ -58,6 +58,7 @@ public class Person : MonoBehaviour {
 
 	private string mName;
 	private Attribute[] mAttributes;
+	private int mLevel;
 
 	private float mHealth;
 	private float mBaseHealthDecayRate;
@@ -95,6 +96,7 @@ public class Person : MonoBehaviour {
 	//void Start () {
 	void Awake() {
 		mName = NAMES[UnityEngine.Random.Range(0, NAMES.Length)];
+		mLevel = 1;
 
 		int numAttributes = Random.Range(1,4);
 		mAttributes = new Attribute[numAttributes];
