@@ -39,12 +39,15 @@ public class UIManager : MonoBehaviour {
 			// Update position
 			RectTransform rt = uiPerson.GetComponent<RectTransform>();
 			float verticalOffset = 0.05f * peoplePanel.GetComponent<RectTransform>().rect.height;
-			rt.anchoredPosition = new Vector2(0f,verticalOffset-30f*(i-(people.Count-1)/2f));
+			rt.anchoredPosition = new Vector2(0f,verticalOffset-35f*(i-(people.Count-1)/2f));
 			// Update visibility
 			uiPerson.transform.gameObject.SetActive(i < people.Count);
 			if (i < people.Count) {
-				Text uiText = uiPerson.GetComponentInChildren<Text>();
-				uiText.text = people[i].GetUIDescription(); // todo: get separate text elements so we can layout the info in a nicer way
+				string[] descriptionStrings = people[i].GetUIDescription();
+				uiPerson.transform.Find("Toggle/TextTL").GetComponent<Text>().text = descriptionStrings[0];
+				uiPerson.transform.Find("Toggle/TextTR").GetComponent<Text>().text = descriptionStrings[1];
+				uiPerson.transform.Find("Toggle/TextBL").GetComponent<Text>().text = descriptionStrings[2];
+				uiPerson.transform.Find("Toggle/TextBR").GetComponent<Text>().text = descriptionStrings[3];
 			}
 		}
 		transform.Find("Top/PopulationText").GetComponent<Text>().text = "Population: " + people.Count;

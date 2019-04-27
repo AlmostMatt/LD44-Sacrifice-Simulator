@@ -132,15 +132,17 @@ public class Person : MonoBehaviour {
 		}
 	}
 
-	public string GetUIDescription()
+	// Returns a list of strings to be used in top-left, top-right, bottom-left, bottom-right order
+	public string[] GetUIDescription()
 	{
-		string desc = mName + " - ";
+		string attrString = "";
 		for(int i = 0; i < mAttributes.Length; ++i) {
-			desc += System.Enum.GetName(typeof(Attribute), (int)mAttributes[i]) + ", ";
+			attrString += System.Enum.GetName(typeof(Attribute), (int)mAttributes[i]) + ", ";
 		}
-		desc += "\r\nLifeforce: " + Mathf.Ceil(mHealth);
-		if(mIsHungry) desc += "  HUNGRY!";
-		return(desc);
+		if(mIsHungry) { attrString += "  HUNGRY!"; }
+		string profString = "Lv " + mLevel + " " + GetAttribute(AttributeType.PROFESSION).ToString();
+		string lifeString = "Lifeforce: " + Mathf.Ceil(mHealth);
+		return new [] {mName, attrString, profString, lifeString};
 	}
 
 	public void DebugPrint() {
