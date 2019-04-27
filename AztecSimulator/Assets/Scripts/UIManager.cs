@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-// Generates UIPerson objects. Can be merged into PersonManager later
-public class UIGenerator : MonoBehaviour {
+// Creates and manages UI objects.
+public class UIManager : MonoBehaviour {
 
 	public GameObject uiPersonObject;
 
@@ -43,6 +43,7 @@ public class UIGenerator : MonoBehaviour {
 				uiText.text = people[i].GetUIDescription();
 			}
 		}
+		transform.Find("Top/PopulationText").GetComponent<Text>().text = "Population: " + people.Count;
 	}
 
 	private List<Person> getSelectedPeople() {
