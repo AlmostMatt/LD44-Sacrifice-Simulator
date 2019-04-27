@@ -36,7 +36,7 @@ public class HungerSystem : MonoBehaviour {
 			foreach(int i in choices)
 			{
 				hungryPeople[i].Hungry = false;
-				Utilities.LogEvent(fedPeople[i].Name + " is no longer starving.");
+				Utilities.LogEvent(hungryPeople[i].Name + " is no longer starving.");
 			}
 		}
 	}
