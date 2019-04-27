@@ -4,9 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - PersonManager
-  - God
   - UIManager
+  - SystemsAndManagers
   layers:
   - Default
   - TransparentFX

@@ -32,12 +32,12 @@ public static class Utilities {
 
 	public static PersonManager GetPersonManager()
 	{
-		return GameObject.FindGameObjectWithTag("PersonManager").GetComponent<PersonManager>();
+		return GameObject.FindGameObjectWithTag("SystemsAndManagers").GetComponent<PersonManager>();
 	}
 
 	public static God GetGod()
 	{
-		return GameObject.FindGameObjectWithTag("God").GetComponent<God>();
+		return GameObject.FindGameObjectWithTag("SystemsAndManagers").GetComponent<God>();
 	}
 
 	public static void LogEvent(string message)
