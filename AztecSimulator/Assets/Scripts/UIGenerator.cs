@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 // Generates UIPerson objects. Can be merged into PersonManager later
 public class UIGenerator : MonoBehaviour {
@@ -35,6 +36,8 @@ public class UIGenerator : MonoBehaviour {
 			rt.anchoredPosition = new Vector2(0f,0f+30f*(i-people.Count/2));
 			// Update visibility
 			uiPerson.transform.gameObject.SetActive(i <= people.Count);
+			Text uiText = uiPerson.GetComponentInChildren<Text>();
+			uiText.text = people[i].GetUIDescription();
 		}
 	}
 }

@@ -54,6 +54,15 @@ public class Person : MonoBehaviour { // probably doesn't even need to be a mono
 		
 	}
 		
+	public string GetUIDescription()
+	{
+		string desc = mName + " - ";
+		for(int i = 0; i < mAttributes.Length; ++i) {
+			desc += System.Enum.GetName(typeof(Attribute), (int)mAttributes[i]) + ", ";
+		}
+		return(desc);
+	}
+
 	public void DebugPrint() {
 		
 		Debug.Log(mName + " has: ");
