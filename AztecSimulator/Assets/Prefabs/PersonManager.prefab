@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 114288387810958036}
   m_Layer: 0
   m_Name: PersonManager
-  m_TagString: Untagged
+  m_TagString: PersonManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

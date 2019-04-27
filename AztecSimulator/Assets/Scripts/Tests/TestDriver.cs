@@ -22,8 +22,10 @@ public class TestDriver : MonoBehaviour {
 	private void RunTests()
 	{
 		God g = godGameObject.GetComponent<God>();
-		List<Person> people = new List<Person>(); // for now
-		List<SacrificeResult> results = g.MakeSacrifice(people);
+		PersonManager personMgr = Utilities.GetPersonManager();
+		List<Person> people = new List<Person>();
+		people.Add(personMgr.People[Random.Range(0, personMgr.People.Count)]);
+		List<SacrificeResult> results = g.MakeSacrifice(0, people);
 		foreach(SacrificeResult r in results)
 		{
 			Debug.Log("YOUR SACRIFICE YIELDED:");

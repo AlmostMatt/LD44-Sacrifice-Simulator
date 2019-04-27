@@ -6,7 +6,7 @@ public class God : MonoBehaviour {
 
 	public class SacrificeDemand
 	{
-		List<Person.Attribute> mDemandedAttributes;
+		public List<Person.Attribute> mDemandedAttributes;
 
 		public SacrificeDemand() {
 			mDemandedAttributes = new List<Person.Attribute>();
@@ -57,12 +57,46 @@ public class God : MonoBehaviour {
 		}
 	}
 
-	public List<SacrificeResult> MakeSacrifice(List<Person> people) {
+	public List<SacrificeResult> MakeSacrifice(int demandIdx, List<Person> people) {
+
+		PersonManager personMgr = Utilities.GetPersonManager();
+
+		SacrificeDemand demand = mDemands[demandIdx];
+		List<Person.Attribute> demandsCopy = new List<Person.Attribute>(demand.mDemandedAttributes);
+		foreach(Person p in people)
+		{
+			foreach(Person.Attribute attr in p.Attributes)
+			{
+				foreach(Person.Attribute demandedAttr in demandsCopy)
+				{
+					if(attr == demandedAttr)
+					{
+						demandsCopy.Remove(demandedAttr);
+						break;
+					}
+				}
+			}
+		}
+
+		foreach(Person p in people)
+		{
+			Debug.Log("goodbye " + p.Name);
+		}
+		personMgr.RemovePeople(people);
 
 		List<SacrificeResult> results = new List<SacrificeResult>();
 
-		SacrificeResult sr = new GoodCropBoon();
-		results.Add(sr);
+		if(demandsCopy.Count == 0)
+		{
+			Debug.Log("YES, THIS SACRIFICE PLEASES ME");
+			SacrificeResult sr = new GoodCropBoon();
+			results.Add(sr);
+		}
+		else
+		{
+			Debug.Log("NO WHAT ARE YOU DOING");
+			// results.Add(new PlagueCurse());
+		}
 
 		return(results);
 	}
