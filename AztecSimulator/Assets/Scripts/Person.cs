@@ -12,6 +12,9 @@ public class Person : MonoBehaviour {
 		BLUE_EYES,
 		GREEN_EYES,
 		BROWN_EYES,
+		STRONG,
+		SMART,
+		CARING,
 		MAX_VALUE
 	}
 
@@ -73,7 +76,7 @@ public class Person : MonoBehaviour {
 	void Awake() {
 		mName = NAMES[UnityEngine.Random.Range(0, NAMES.Length)];
 
-		int numAttributes = Random.Range(1,3);
+		int numAttributes = Random.Range(1,4);
 		mAttributes = new Attribute[numAttributes];
 
 		int[] attributeSelection = Utilities.RandomList((int)Attribute.MAX_VALUE, numAttributes);
