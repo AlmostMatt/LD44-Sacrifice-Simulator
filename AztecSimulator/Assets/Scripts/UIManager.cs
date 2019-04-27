@@ -11,7 +11,7 @@ public class UIManager : MonoBehaviour {
 	private God mGod;
 	private PersonManager mPersonManager;
 	private List<GameObject> mUiPeoplePool;
-	private int mMaxEventMessages = 10;
+	private int mMaxEventMessages = 8;
 	private List<string> mEventMessages = new List<string>();
 
 	// Use this for initialization
@@ -24,7 +24,7 @@ public class UIManager : MonoBehaviour {
 	// TODO: use people-changed-listener instead of update
 	void Update () {
 		List<Person> people = mPersonManager.People;
-		Transform peoplePanel = transform.Find("Left/People");
+		Transform peoplePanel = transform.Find("Right/People");
 		for(int i = 0; i < Mathf.Max(people.Count, mUiPeoplePool.Count); i++)
 		{
 			GameObject uiPerson;
@@ -54,12 +54,15 @@ public class UIManager : MonoBehaviour {
 		transform.Find("Top/ResourceText").GetComponent<Text>().text = "Food: " + GameState.FoodSupply;
 
 		if(mGod != null) {
-			string godMsg = "YOUR GOD DEMANDS:\r\n";
+			string godMsg = "";
 			List<God.SacrificeDemand> demands = mGod.Demands;
 			foreach(God.SacrificeDemand demand in demands) {
-				godMsg += demand.GetString() + "\r\n";
+				string satisfiedString = demand.mSatisfiedResult == null ? "<demanded>" : demand.mSatisfiedResult.mName;
+				string costString = demand.GetString();
+				godMsg += "\r\n" + satisfiedString + "\r\nDEMAND\r\n" + costString + "\r\n";
 			}
-			transform.Find("Right/God/GodText").GetComponent<Text>().text = godMsg;
+			transform.Find("Left/God/Name").GetComponent<Text>().text = mGod.Name;
+			transform.Find("Left/God/Demands").GetComponent<Text>().text = godMsg;
 		}
 
 	}
@@ -104,6 +107,6 @@ public class UIManager : MonoBehaviour {
 		for (int i = Mathf.Max(0, mEventMessages.Count-mMaxEventMessages); i < mEventMessages.Count; i++) {
 			newLogText += mEventMessages[i] + "\n";
 		}
-		transform.Find("Right/Log/LogText").GetComponent<Text>().text = newLogText;
+		transform.Find("Left/Log/LogText").GetComponent<Text>().text = newLogText;
 	}
 }

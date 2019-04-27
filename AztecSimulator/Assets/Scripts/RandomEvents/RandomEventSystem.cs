@@ -11,7 +11,7 @@ public class RandomEventSystem : MonoBehaviour {
 		public abstract bool Update();
 	}
 
-	public float initialEventDelay;
+	public float initialEventDelay = 3;
 	public float minEventInterval = 45;
 	public float maxEventInterval = 75;
 
@@ -31,8 +31,8 @@ public class RandomEventSystem : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		ScheduleEvent();
-
-		mEventTimer += initialEventDelay;
+		// todo: have randomization of event intervals affect initial event delay
+		mEventTimer = initialEventDelay;
 	}
 	
 	// Update is called once per frame
