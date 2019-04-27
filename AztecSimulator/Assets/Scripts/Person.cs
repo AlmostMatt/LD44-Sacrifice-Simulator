@@ -59,6 +59,7 @@ public class Person : MonoBehaviour {
 	private string mName;
 	private Attribute[] mAttributes;
 	private int mLevel;
+	private float mXp = 0f;
 
 	private float mHealth;
 	private float mBaseHealthDecayRate;
@@ -122,6 +123,9 @@ public class Person : MonoBehaviour {
 			healthDecayRate *= 5;
 		}
 		mHealth -= healthDecayRate * Time.deltaTime;
+		if (GetAttribute(AttributeType.PROFESSION) != Attribute.NONE) {
+			mXp += Time.deltaTime; // 1 xp per second
+		}
 
 		if(mHealth <= 0)
 		{
@@ -129,6 +133,11 @@ public class Person : MonoBehaviour {
 			Debug.Log(deathMsg);
 			Utilities.LogEvent(deathMsg);
 			Utilities.GetPersonManager().RemovePerson(this);
+		}
+		float xpToLevelUp = 3f;
+		if (mXp>= xpToLevelUp) {
+			mXp -= xpToLevelUp;
+			mLevel += 1;
 		}
 	}
 
