@@ -95,7 +95,13 @@ public class God : MonoBehaviour {
 		else
 		{
 			Debug.Log("NO WHAT ARE YOU DOING");
-			// results.Add(new PlagueCurse());
+			results.Add(new PlagueCurse());
+		}
+
+		// for now just apply the results here, whatever...
+		foreach(SacrificeResult r in results)
+		{
+			r.DoEffect();
 		}
 
 		return(results);
