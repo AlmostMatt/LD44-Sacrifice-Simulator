@@ -7,13 +7,13 @@ public class UIGenerator : MonoBehaviour {
 
 	public GameObject uiPersonObject;
 
-	public PersonManager mPersonManager;
+	private PersonManager mPersonManager;
 	private List<GameObject> mUiPeoplePool;
 
 	// Use this for initialization
 	void Start () {
+		mPersonManager = Utilities.GetPersonManager();
 		mUiPeoplePool = new List<GameObject>();
-		// FindWithTag   mPersonManager = (PersonManager)FindObjectOfType(typeof(PersonManager));
 	}
 
 	
@@ -36,5 +36,9 @@ public class UIGenerator : MonoBehaviour {
 			// Update visibility
 			uiPerson.transform.gameObject.SetActive(i <= people.Count);
 		}
+	}
+
+	void OnSacrifice() {
+		// sacrifice the selected people
 	}
 }
