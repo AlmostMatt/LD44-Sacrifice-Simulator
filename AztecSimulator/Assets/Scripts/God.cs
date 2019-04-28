@@ -28,6 +28,7 @@ public class God : MonoBehaviour {
 		mDemands.Add(new SimpleDemand(new FarmerXpBuff(), null));
 		mDemands.Add(new SimpleDemand(new WarriorXpBuff(), null));
 		mDemands.Add(new WarriorDemand());
+		Utilities.LogEvent("YOUR GOD HAS MULTIPLE DEMANDS");
 
 		DebugPrint();
 	}
@@ -41,7 +42,8 @@ public class God : MonoBehaviour {
 	{
 		foreach(SacrificeDemand sd in mDemands)
 		{
-			Utilities.LogEvent("YOUR GOD DEMANDS " + sd.GetShortDescription());
+			Debug.Log("YOUR GOD DEMANDS " + sd.GetShortDescription());
+			// Utilities.LogEvent("YOUR GOD DEMANDS " + sd.GetShortDescription());
 		}
 	}
 

@@ -7,6 +7,7 @@ using System.Linq; // for First()
 // Creates and manages UI objects.
 public class UIManager : MonoBehaviour {
 
+	public GameObject uiNotificationObject;
 	public GameObject uiPersonObject;
 	public GameObject uiDemandObject;
 
@@ -17,6 +18,10 @@ public class UIManager : MonoBehaviour {
 	private int mMaxEventMessages = 8;
 	private List<string> mEventMessages = new List<string>();
 	private ToggleGroup mDemandToggleGroup;
+
+	private List<GameObject> mUiNotificationPool = new List<GameObject>();
+	private List<string> mNotificationMessages = new List<string>();
+	private List<float> mNotificationDurations = new List<float>();
 
 	// Use this for initialization
 	void Start () {
@@ -94,6 +99,39 @@ public class UIManager : MonoBehaviour {
 			}
 		}
 
+		// Update notification objects
+		Transform notificationContainer = transform.Find("Corner");
+		for(int i = 0; i < Mathf.Max(mNotificationMessages.Count, mUiNotificationPool.Count); i++)
+		{
+			GameObject uiNotification;
+			// Spawn new UI demand
+			if (i >= mUiNotificationPool.Count) {
+				uiNotification = Instantiate(uiNotificationObject);
+				mUiNotificationPool.Add(uiNotification);
+				uiNotification.transform.SetParent(notificationContainer);
+			} else {
+				uiNotification = mUiNotificationPool[i];
+			}
+			// Update position
+			RectTransform rt = uiNotification.GetComponent<RectTransform>();
+			// TODO: slide down if others have faded
+			rt.anchoredPosition = new Vector2(0f,100f*i);
+			// Update visibility
+			uiNotification.transform.gameObject.SetActive(i < mNotificationMessages.Count);
+			// Update text and alpha
+			if (i < mNotificationMessages.Count) {
+				uiNotification.transform.Find("Text").GetComponent<Text>().text = mNotificationMessages[i]; 
+				uiNotification.GetComponent<CanvasGroup>().alpha = Mathf.Min(1f, mNotificationDurations[i] / 1f);
+			}
+		}
+		for (int i = mNotificationMessages.Count-1; i>= 0; i--) {
+			mNotificationDurations[i] -= Time.deltaTime;
+			if (mNotificationDurations[i] <= 0f) {
+				mNotificationMessages.RemoveAt(i);
+				mNotificationDurations.RemoveAt(i);
+			}
+		}
+
 		// Update the top UI bar
 		transform.Find("Top/PopulationText").GetComponent<Text>().text = "Population: " + people.Count;
 		transform.Find("Top/ResourceText").GetComponent<Text>().text = "Food: " + GameState.FoodSupply;
@@ -157,7 +195,7 @@ public class UIManager : MonoBehaviour {
 		}
 	}
 
-	public void LogEvent(string message) {
+	public void LogEvent(string message, float duration=4f) {
 		mEventMessages.Add(message);
 		string newLogText = "";
 		// Concatenate the last K messages
@@ -165,5 +203,8 @@ public class UIManager : MonoBehaviour {
 			newLogText += mEventMessages[i] + "\n";
 		}
 		transform.Find("Left/Log/LogText").GetComponent<Text>().text = newLogText;
+
+		mNotificationMessages.Add(message);
+		mNotificationDurations.Add(duration);
 	}
 }

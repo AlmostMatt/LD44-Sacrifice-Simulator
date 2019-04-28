@@ -210,6 +210,18 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114767449585317038, guid: 1bcf8527d7f90294ebeeb5a5b3be6c32,
+        type: 2}
+      propertyPath: notificationObject
+      value: 
+      objectReference: {fileID: 1256509187561746, guid: 8983bb212d90c554fb98a1b352fbda2b,
+        type: 2}
+    - target: {fileID: 114767449585317038, guid: 1bcf8527d7f90294ebeeb5a5b3be6c32,
+        type: 2}
+      propertyPath: uiNotificationObject
+      value: 
+      objectReference: {fileID: 1256509187561746, guid: 8983bb212d90c554fb98a1b352fbda2b,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1bcf8527d7f90294ebeeb5a5b3be6c32, type: 2}
   m_IsPrefabParent: 0
