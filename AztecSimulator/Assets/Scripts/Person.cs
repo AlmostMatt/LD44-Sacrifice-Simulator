@@ -58,6 +58,7 @@ public class Person : MonoBehaviour {
 	private string mName;
 	private Attribute[] mAttributes;
 	private int mLevel;
+	private float mAge;
 	private float mXp = 0f;
 
 	private float mHealth;
@@ -78,7 +79,10 @@ public class Person : MonoBehaviour {
 	{
 		get { return(mLevel); }
 	}
-
+	public int Age
+	{
+		get { return((int)Mathf.Floor(mAge)); }
+	}
 
 	private bool mIsHungry;
 	public bool Hungry
@@ -101,7 +105,7 @@ public class Person : MonoBehaviour {
 	void Awake() {
 		mName = NAMES[UnityEngine.Random.Range(0, NAMES.Length)];
 		mLevel = 1;
-
+		mAge = 0;
 
 		var attrTypes = new [] {
 			AttributeType.PERSONALITY,
@@ -121,12 +125,14 @@ public class Person : MonoBehaviour {
 
 		mIsHungry = false;
 		mHealth = startingHealth;
-		mBaseHealthDecayRate = 0.5f;
-		if(GameState.ImprovedLifespan1) mBaseHealthDecayRate = 0.25f;
+		mBaseHealthDecayRate = Random.Range(0.45f, 0.55f);
+		if(GameState.ImprovedLifespan1) mBaseHealthDecayRate *= 0.5f;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
+		mAge += 0.15f * Time.deltaTime;
 
 		float healthDecayRate = mBaseHealthDecayRate;
 		if(mIsHungry)
@@ -140,7 +146,7 @@ public class Person : MonoBehaviour {
 
 		if(mHealth <= 0)
 		{
-			string deathMsg = mName + " has passed. Their lifeforce returns to the earth.";
+			string deathMsg = mName + " has died at the age of " + Age + ". Their lifeforce returns to the earth.";
 			Debug.Log(deathMsg);
 			Utilities.LogEvent(deathMsg);
 			Utilities.GetPersonManager().RemovePerson(this);
@@ -164,7 +170,7 @@ public class Person : MonoBehaviour {
 		if(mIsHungry) { attrString += "  HUNGRY!"; }
 		string profString = "Lv " + mLevel + " " + GetAttribute(AttributeType.PROFESSION).ToString();
 		string lifeString = "Lifeforce: " + Mathf.Ceil(mHealth);
-		return new [] {mName, attrString, profString, lifeString};
+		return new [] {mName + " (" + Age + ")", attrString, profString, lifeString};
 	}
 
 	public void DebugPrint() {
