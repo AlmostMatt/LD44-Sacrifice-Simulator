@@ -114,6 +114,9 @@ public class Person : MonoBehaviour {
 		int numRandomAttributes = Random.Range(1,4);
 		mAttributes = RandomAttributes(numRandomAttributes);
 
+		// for now: always start as farmer
+		mAttributes[mAttributes.Length-1] = Attribute.FARMER;
+
 		mIsHungry = false;
 		mHealth = startingHealth;
 		mBaseHealthDecayRate = Random.Range(0.45f, 0.55f);
