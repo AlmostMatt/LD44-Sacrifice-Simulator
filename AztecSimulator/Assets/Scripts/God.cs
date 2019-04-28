@@ -15,6 +15,7 @@ public class God : MonoBehaviour {
 		}
 	}
 
+	public bool logDemandsOnStart = false;
 	public float fleetingDemandTimer = 30;
 	public int maxFleetingDemands = 2;
 
@@ -61,10 +62,14 @@ public class God : MonoBehaviour {
 		victoryDemand.mSatisfiedResult = new VictoryResult();
 		mDemands.Add(victoryDemand);
 
-		Utilities.LogEvent("YOUR GOD HAS MULTIPLE DEMANDS");
-		foreach(SacrificeDemand sd in mDemands)
+
+		if(logDemandsOnStart)
 		{
-			Utilities.LogEvent("YOUR GOD DEMANDS " + sd.GetShortDescription());
+			Utilities.LogEvent("YOUR GOD HAS MULTIPLE DEMANDS");
+			foreach(SacrificeDemand sd in mDemands)
+			{
+				Utilities.LogEvent("YOUR GOD DEMANDS " + sd.GetShortDescription());
+			}
 		}
 	}
 	
