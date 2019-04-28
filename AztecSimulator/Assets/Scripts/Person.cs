@@ -159,18 +159,23 @@ public class Person : MonoBehaviour {
 	}
 
 	// Returns a list of strings to be used in top-left, top-right, bottom-left, bottom-right order
-	public string[] GetUIDescription()
+	public string[] GetUIDescription(SacrificeDemand selectedDemand)
 	{
 		string attrString = "";
 		for(int i = 0; i < mAttributes.Length; ++i) {
 			if (mAttributes[i].GetAttrType() != AttributeType.PROFESSION) {
-				attrString += System.Enum.GetName(typeof(Attribute), (int)mAttributes[i]) + ", ";
+				string attr = System.Enum.GetName(typeof(Attribute), (int)mAttributes[i]);
+				bool isRelevant = selectedDemand != null && selectedDemand.IsRelevantAttribute(mAttributes[i]);
+				attrString += Utilities.ColorString(attr, "green", isRelevant) + ", ";
 			}
 		}
 		if(mIsHungry) { attrString += "  HUNGRY!"; }
-		string profString = "Lv " + mLevel + " " + GetAttribute(AttributeType.PROFESSION).ToString();
+		string prof = GetAttribute(AttributeType.PROFESSION).ToString();
+		bool isLevelRelevant = selectedDemand != null && selectedDemand.IsRelevantLevel(mLevel);
+		bool isProfessionRelevant = selectedDemand != null && selectedDemand.IsRelevantAttribute(GetAttribute(AttributeType.PROFESSION));
+		string profString = "Lv " + Utilities.ColorString(mLevel.ToString(), "green", isLevelRelevant) + " " + Utilities.ColorString(prof, "green", isProfessionRelevant);
 		string lifeString = "Lifeforce: " + Mathf.Ceil(mHealth);
-		return new [] {mName + " (" + Age + ")", attrString, profString, lifeString};
+		return new [] {mName + " (Age " + Age + ")", attrString, profString, lifeString};
 	}
 
 	public void DebugPrint() {

@@ -96,4 +96,10 @@ public static class Utilities {
 		}
 		return result;
 	}
+
+	// Conditionally color a string. "color" is a hex stirng like "#00ffffff" or a name like "yellow"
+	// https://docs.unity3d.com/Manual/StyledText.html
+	public static string ColorString(string text, string color, bool shouldApply) {
+		return shouldApply ? "<color=" + color + ">" + text + "</color>" : text;
+	}
 }

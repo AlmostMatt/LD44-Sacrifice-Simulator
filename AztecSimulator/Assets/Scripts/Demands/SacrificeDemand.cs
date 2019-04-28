@@ -19,6 +19,8 @@ public abstract class SacrificeDemand
 	}
 
 	public abstract bool CheckSatisfaction(List<Person> people);
+	public abstract bool IsRelevantAttribute(Person.Attribute attribute);
+	public abstract bool IsRelevantLevel(int level);
 	public abstract string GetShortDescription();
 	public abstract string GetLongDescription();
 

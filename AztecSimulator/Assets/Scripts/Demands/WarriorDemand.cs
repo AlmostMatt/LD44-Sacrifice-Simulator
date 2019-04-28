@@ -10,6 +10,14 @@ public class WarriorDemand : SacrificeDemand {
 		
 	}
 
+	public override bool IsRelevantAttribute(Person.Attribute attribute) {
+		return attribute == Person.Attribute.WARRIOR;
+	}
+
+	public override bool IsRelevantLevel(int level) {
+		return level >= 20;
+	}
+
 	public override bool CheckSatisfaction(List<Person> people)
 	{
 		// wants unique people!

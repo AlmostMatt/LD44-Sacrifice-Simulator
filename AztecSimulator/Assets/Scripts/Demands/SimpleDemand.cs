@@ -24,11 +24,19 @@ public class SimpleDemand : SacrificeDemand {
 		return satisfiedString + "\r\nDEMAND\r\n" + costString;
 	}
 
-	public string GetDemandedAttributes()
+	private string GetDemandedAttributes()
 	{
 		return Utilities.ConcatStrings(mDemandedAttributes.ConvertAll(
 			attr => System.Enum.GetName(typeof(Person.Attribute), (int)attr)
 		), true);
+	}
+
+	public override bool IsRelevantLevel(int level) {
+		return false;
+	}
+
+	public override bool IsRelevantAttribute(Person.Attribute attribute) {
+		return mDemandedAttributes.Contains(attribute);
 	}
 
 	public override bool CheckSatisfaction(List<Person> people)

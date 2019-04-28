@@ -30,6 +30,10 @@ public class UIManager : MonoBehaviour {
 	}
 
 	void Update () {
+		List<Person> selectedPeople = getSelectedPeople();
+		SacrificeDemand selectedDemand = getSelectedDemand();
+		transform.Find("Right/People/SacrificeButton").GetComponent<Button>().interactable = (selectedPeople.Count > 0);
+
 		// Update people
 		// TODO: use people-changed-listener instead of update
 		List<Person> people = mPersonManager.People;
@@ -52,16 +56,13 @@ public class UIManager : MonoBehaviour {
 			uiPerson.transform.gameObject.SetActive(i < people.Count);
 			// Update text
 			if (i < people.Count) {
-				string[] descriptionStrings = people[i].GetUIDescription();
+				string[] descriptionStrings = people[i].GetUIDescription(selectedDemand);
 				uiPerson.transform.Find("Toggle/TextTL").GetComponent<Text>().text = descriptionStrings[0];
 				uiPerson.transform.Find("Toggle/TextTR").GetComponent<Text>().text = descriptionStrings[1];
 				uiPerson.transform.Find("Toggle/TextBL").GetComponent<Text>().text = descriptionStrings[2];
 				uiPerson.transform.Find("Toggle/TextBR").GetComponent<Text>().text = descriptionStrings[3];
 			}
 		}
-
-		List<Person> selectedPeople = getSelectedPeople();
-		transform.Find("Right/People/SacrificeButton").GetComponent<Button>().interactable = (selectedPeople.Count > 0);
 
 		// Update the god and demands
 		if(mGod != null) {
@@ -120,6 +121,19 @@ public class UIManager : MonoBehaviour {
 		int demandId;
 		System.Int32.TryParse(activeDemand.gameObject.name, out demandId);
 		return demandId;
+
+	}
+
+	private SacrificeDemand getSelectedDemand() {
+		int demandId = getSelectedDemandId();
+		if(mGod != null && demandId != 0) {
+			foreach (SacrificeDemand demand in mGod.Demands) {
+				if (demand.mId == demandId) {
+					return demand;
+				}
+			}
+		}
+		return null;
 	}
 
 	public void OnSacrifice() {
