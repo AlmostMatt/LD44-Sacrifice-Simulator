@@ -71,6 +71,7 @@ public static class Utilities {
 	}
 
 	public static int[] RandomList(int totalPossibilities, int numChoices) {
+		numChoices = Mathf.Min(totalPossibilities, numChoices);
 		int[] availableChoices = new int[totalPossibilities];
 		for(int i = 0; i < totalPossibilities; ++i) {
 			availableChoices[i] = i;
