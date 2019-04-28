@@ -25,7 +25,8 @@ public class InvaderAttack : RandomEventSystem.RandomEvent {
 
 
 	public override float Warn() {
-		Utilities.LogEvent("Invaders are on the horizon!");
+		mRequiredWarriors = Random.Range(3, 10);
+		Utilities.LogEvent("An enemy army approaches! They look to be about " + mRequiredWarriors + " strong");
 		return(30);
 	}
 
@@ -34,16 +35,15 @@ public class InvaderAttack : RandomEventSystem.RandomEvent {
 		mDemandId = 0;
 		mIntervened = false;
 		mDuration = 30;
-		mRequiredWarriors = Random.Range(1, 6);
 
-		if(Random.value < 0.7) {
+	//	if(Random.value < 0.7) {
 			mDemandId = Utilities.GetGod().AddFleetingDemand(
 				new InvaderAttack.GodIntervention(this),
 				null, 
 				mDuration, 
 				"God offers PROTECTION in exchange for "
 			); // for now, will just let the god generate the random demand
-		}
+	//	}
 	}
 
 	public override bool Update () {
