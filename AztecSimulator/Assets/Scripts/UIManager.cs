@@ -51,7 +51,7 @@ public class UIManager : MonoBehaviour {
 		Person.Attribute[] professions = Utilities.GetAttrValues(Person.AttributeType.PROFESSION);
 		foreach (Person.Attribute profession in professions) {
 			GameObject professionObject = Instantiate(uiProfessionObject);
-			professionObject.transform.parent = transform.Find("Right/Person/Professions/ProfessionList");
+			professionObject.transform.SetParent(transform.Find("Right/Person/Professions/ProfessionList"), false);
 			professionObject.transform.Find("Toggle/Icon").GetComponent<Image>().sprite = mProfessionSprites[profession]; 
 			professionObject.transform.Find("Toggle/Name").GetComponent<Text>().text = profession.ToString(); 
 			professionObject.transform.Find("Toggle/InfoText").GetComponent<Text>().text = profession.GetDescription(); 
