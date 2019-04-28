@@ -25,7 +25,6 @@ public class UIManager : MonoBehaviour {
 	private God mGod;
 	private PersonManager mPersonManager;
 
-	private int mMaxEventMessages = 20;
 	private List<string> mEventMessages = new List<string>();
 	private List<string> mNotificationMessages = new List<string>();
 	private List<float> mNotificationDurations = new List<float>();
@@ -269,11 +268,10 @@ public class UIManager : MonoBehaviour {
 		message = message.Trim();
 		mEventMessages.Add(message);
 		string newLogText = "";
-		// Concatenate the last K messages
-		for (int i = Mathf.Max(0, mEventMessages.Count-mMaxEventMessages); i < mEventMessages.Count; i++) {
+		for (int i = 0; i < mEventMessages.Count; i++) {
 			newLogText += mEventMessages[i] + "\n";
 		}
-		transform.Find("Left/Log/LogText").GetComponent<Text>().text = newLogText;
+		transform.Find("Left/Log/Scroll View/Viewport/LogText").GetComponent<Text>().text = newLogText;
 
 		mNotificationMessages.Add(message);
 		mNotificationDurations.Add(duration);
