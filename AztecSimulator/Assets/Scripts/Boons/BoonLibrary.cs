@@ -23,6 +23,13 @@ public class BoonLibrary {
 		new Favour()
 	};
 
+	private static SacrificeResult[] sTierTwoBoons = {
+		new FarmerXpBuff(),
+		new ImprovedLifespan(),
+		new WarriorXpBuff(),
+		new Favour()
+	};
+
 	public static SacrificeResult RandomTemporaryBoon() {
 		return(Utilities.Random<SacrificeResult>(sTemporaryBoons));
 	}
@@ -37,7 +44,11 @@ public class BoonLibrary {
 
 	public static SacrificeResult[] RandomTierOneBoons(int howMany)
 	{
-		SacrificeResult[] boons = Utilities.RandomSubset<SacrificeResult>(sTierOneBoons, howMany);
-		return(boons);
+		return(Utilities.RandomSubset<SacrificeResult>(sTierOneBoons, howMany));
+	}
+
+	public static SacrificeResult[] RandomTierTwoBoons(int howMany)
+	{
+		return(Utilities.RandomSubset<SacrificeResult>(sTierTwoBoons, howMany));
 	}
 }

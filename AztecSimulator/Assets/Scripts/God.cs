@@ -48,6 +48,15 @@ public class God : MonoBehaviour {
 			mDemands.Add(demand);
 		}
 
+		int numTierTwoDemands = 2;
+		SacrificeResult[] tierTwoBoons = BoonLibrary.RandomTierTwoBoons(numTierTwoDemands);
+		for(int i = 0; i < numTierTwoDemands; ++i)
+		{
+			SacrificeDemand demand = DemandGenerator.TierTwoDemand();
+			demand.mSatisfiedResult = tierTwoBoons[i];
+			mDemands.Add(demand);
+		}
+
 		SacrificeDemand victoryDemand = DemandGenerator.VictoryDemand();
 		victoryDemand.mSatisfiedResult = new VictoryResult();
 		mDemands.Add(victoryDemand);
