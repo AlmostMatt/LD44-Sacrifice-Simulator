@@ -140,8 +140,11 @@ public class Person : MonoBehaviour {
 			healthDecayRate *= 5;
 		}
 		mHealth -= healthDecayRate * Time.deltaTime;
-		if (GetAttribute(AttributeType.PROFESSION) != Attribute.NONE) {
-			mXp += Time.deltaTime; // 1 xp per second
+		Attribute profession = GetAttribute(AttributeType.PROFESSION);
+		if (profession != Attribute.NONE) {
+			int xpGain = 1; // 1 xp per second;
+			xpGain = GameState.GetBuffedXp(profession, xpGain);
+			mXp += xpGain * Time.deltaTime;
 		}
 
 		if(mHealth <= 0)
@@ -151,7 +154,7 @@ public class Person : MonoBehaviour {
 			Utilities.LogEvent(deathMsg);
 			Utilities.GetPersonManager().RemovePerson(this);
 		}
-		float xpToLevelUp = 3f;
+		float xpToLevelUp = mLevel;
 		if (mXp>= xpToLevelUp) {
 			mXp -= xpToLevelUp;
 			mLevel += 1;

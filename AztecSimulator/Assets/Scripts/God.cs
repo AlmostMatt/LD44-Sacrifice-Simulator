@@ -25,6 +25,8 @@ public class God : MonoBehaviour {
 		}
 
 		mDemands.Add(new SimpleDemand(new ImprovedLifespan(), null));
+		mDemands.Add(new SimpleDemand(new FarmerXpBuff(), null));
+		mDemands.Add(new SimpleDemand(new WarriorXpBuff(), null));
 		mDemands.Add(new WarriorDemand());
 
 		DebugPrint();
