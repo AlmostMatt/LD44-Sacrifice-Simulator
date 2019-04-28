@@ -21,15 +21,23 @@ public class God : MonoBehaviour {
 		int numDemands = 1; // Random.Range(1, 3);
 		for(int i = 0; i < numDemands; ++i)
 		{
-			mDemands.Add(new SimpleDemand(new GoodCropBoon(), null));
+			mDemands.Add(DemandGenerator.SimpleDemand(new GoodCropBoon(), null));
 		}
 
-		mDemands.Add(new SimpleDemand(new ImprovedLifespan(), null));
-		mDemands.Add(new SimpleDemand(new FarmerXpBuff(), null));
-		mDemands.Add(new SimpleDemand(new WarriorXpBuff(), null));
-		mDemands.Add(new WarriorDemand());
-		Utilities.LogEvent("YOUR GOD HAS MULTIPLE DEMANDS");
+		int numTierOneDemands = 2;
+		SacrificeResult[] tierOneBoons = BoonLibrary.RandomTierOneBoons(numTierOneDemands);
+		for(int i = 0; i < numTierOneDemands; ++i)
+		{
+			SacrificeDemand demand = DemandGenerator.TierOneDemand();
+			demand.mSatisfiedResult = tierOneBoons[i];
+			mDemands.Add(demand);
+		}
 
+		SacrificeDemand victoryDemand = DemandGenerator.VictoryDemand();
+		victoryDemand.mSatisfiedResult = new VictoryResult();
+		mDemands.Add(victoryDemand);
+
+		Utilities.LogEvent("YOUR GOD HAS MULTIPLE DEMANDS");
 		DebugPrint();
 	}
 	
@@ -49,7 +57,7 @@ public class God : MonoBehaviour {
 
 	public int AddDemand(SacrificeResult satisfiedResult, SacrificeResult ignoredResult, string msg)
 	{
-		SacrificeDemand demand = new SimpleDemand(satisfiedResult, ignoredResult);
+		SacrificeDemand demand = DemandGenerator.SimpleDemand(satisfiedResult, ignoredResult);
 		mDemands.Add(demand);
 		if(msg != null) {
 			Utilities.LogEvent(msg + demand.GetShortDescription());
@@ -90,7 +98,10 @@ public class God : MonoBehaviour {
 				}
 
 				mDemands.Remove(demand);
-				mDemands.Add(new SimpleDemand(new GoodCropBoon(), null));
+
+				// TODO: don't always replace with a new demand.
+				// pace these out with a timer or something (timer could depend on personality)
+				mDemands.Add(DemandGenerator.SimpleDemand(new GoodCropBoon(), null));
 			}
 			else
 			{
