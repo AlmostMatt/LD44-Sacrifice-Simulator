@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PersonManager : MonoBehaviour {
 
-	public int numStartingPeople = 10;
+	public static int MAX_POPULATION = 10;
+	public int numStartingPeople = 8;
 
 	private List<Person> mPeople;
 
@@ -42,9 +43,11 @@ public class PersonManager : MonoBehaviour {
 		}
 		else
 		{
-			Person p = SpawnPerson();
-			Debug.Log(p.Name + " was born!");
-			Utilities.LogEvent(p.Name + " was born!");
+			if (mPeople.Count < MAX_POPULATION) {
+				Person p = SpawnPerson();
+				Debug.Log(p.Name + " was born!");
+				Utilities.LogEvent(p.Name + " was born!");
+			}
 			mRepopulateTimer = mRepopulateInterval;
 		}
 	}

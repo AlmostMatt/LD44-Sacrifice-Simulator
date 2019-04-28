@@ -155,7 +155,7 @@ public class UIManager : MonoBehaviour {
 		}
 
 		// Update the top UI bar
-		transform.Find("Top/PopulationText").GetComponent<Text>().text = "Population: " + people.Count;
+		transform.Find("Top/PopulationText").GetComponent<Text>().text = "Population: " + people.Count + "/" + PersonManager.MAX_POPULATION;
 		transform.Find("Top/ResourceText").GetComponent<Text>().text = "Food: " + GameState.FoodSupply;
 	}
 

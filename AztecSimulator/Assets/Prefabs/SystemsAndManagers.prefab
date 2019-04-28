@@ -93,4 +93,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 822affb471ca35244a618fb3b98e6ed9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numStartingPeople: 10
+  numStartingPeople: 8
