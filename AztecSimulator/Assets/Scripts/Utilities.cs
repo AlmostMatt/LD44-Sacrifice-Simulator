@@ -29,9 +29,25 @@ public static class Utilities {
 			return Person.AttributeType.NONE;
 		}
 	}
+
+	public static string GetDescription(this Person.Attribute attr) {
+		switch(attr){
+		case Person.Attribute.FARMER:
+			return "Capable of feeding a number of people equal to level.";
+		case Person.Attribute.WARRIOR:
+			return "Capable of fighting off a number of invaders equal to level.";
+		default:
+			return "<profession description>";
+		}
+	}
+
+	public static Person.Attribute[] GetAttrValues(Person.AttributeType attrType) {
+		return System.Array.FindAll<Person.Attribute>((Person.Attribute[])System.Enum.GetValues(typeof(Person.Attribute)), attr => GetAttrType(attr) == attrType);
+	}
+
 	public static Person.Attribute GetRandomAttr(Person.AttributeType attrType) {
-		Person.Attribute[] possibleValues = System.Array.FindAll<Person.Attribute>((Person.Attribute[])System.Enum.GetValues(typeof(Person.Attribute)), attr => GetAttrType(attr) == attrType);
-		return possibleValues[Random.Range(0,possibleValues.Length)];
+		Person.Attribute[] possibleValues = GetAttrValues(attrType);
+		return possibleValues[Random.Range(0, possibleValues.Length)];
 	}
 
 	public static PersonManager GetPersonManager()

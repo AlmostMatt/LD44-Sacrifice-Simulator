@@ -10,16 +10,23 @@ public class UIManager : MonoBehaviour {
 	public GameObject uiNotificationObject;
 	public GameObject uiPersonObject;
 	public GameObject uiDemandObject;
+	public GameObject uiProfessionObject;
+
+	private ToggleGroup mDemandToggleGroup;
+	private ToggleGroup mProfessionToggleGroup;
+	private ToggleGroup mPeopleToggleGroup;
+
+	private List<GameObject> mUiPeoplePool = new List<GameObject>();
+	private List<GameObject> mUiDemandPool = new List<GameObject>();
+	private List<GameObject> mUiNotificationPool = new List<GameObject>();
+
+	private Dictionary<Person.Attribute, Toggle> mProfessionToggles = new Dictionary<Person.Attribute, Toggle>();
 
 	private God mGod;
 	private PersonManager mPersonManager;
-	private List<GameObject> mUiPeoplePool = new List<GameObject>();
-	private List<GameObject> mUiDemandPool = new List<GameObject>();
+
 	private int mMaxEventMessages = 20;
 	private List<string> mEventMessages = new List<string>();
-	private ToggleGroup mDemandToggleGroup;
-
-	private List<GameObject> mUiNotificationPool = new List<GameObject>();
 	private List<string> mNotificationMessages = new List<string>();
 	private List<float> mNotificationDurations = new List<float>();
 
@@ -27,11 +34,22 @@ public class UIManager : MonoBehaviour {
 	void Start () {
 		mGod = Utilities.GetGod();
 		mPersonManager = Utilities.GetPersonManager();
-		// create an object for the demands toggle group.
-		GameObject emptyObj = new GameObject("demandToggleGroup");
-		emptyObj.transform.parent = transform;
-		mDemandToggleGroup = emptyObj.AddComponent<ToggleGroup>();
-		mDemandToggleGroup.allowSwitchOff = true;
+		// create toggle groups for dynaically instantiate toggles.
+		mDemandToggleGroup = CreateToggleGroup("demandToggleGroup", true);
+		mProfessionToggleGroup = CreateToggleGroup("professionToggleGroup", false);
+		mPeopleToggleGroup = CreateToggleGroup("peopleToggleGroup", false);
+
+		Person.Attribute[] professions = Utilities.GetAttrValues(Person.AttributeType.PROFESSION);
+		foreach (Person.Attribute profession in professions) {
+			GameObject professionObject = Instantiate(uiProfessionObject);
+			professionObject.transform.parent = transform.Find("Right/Person/Professions/ProfessionList");
+			professionObject.transform.Find("Toggle/Text").GetComponent<Text>().text = profession.ToString(); 
+			professionObject.transform.Find("InfoText").GetComponent<Text>().text = profession.GetDescription(); 
+			Toggle toggle = professionObject.GetComponentInChildren<Toggle>();
+			toggle.group = mProfessionToggleGroup;
+			mProfessionToggles.Add(profession, toggle);
+		}
+		mProfessionToggles[Person.Attribute.FARMER].isOn = true;
 	}
 
 	void Update () {
@@ -54,9 +72,6 @@ public class UIManager : MonoBehaviour {
 				uiPerson = mUiPeoplePool[i];
 			}
 			uiPerson.transform.SetParent(peopleContainer);
-			// Update position
-			RectTransform rt = uiPerson.GetComponent<RectTransform>();
-			//rt.anchoredPosition = new Vector2(0f,35f*(i-(people.Count-1)/2f));
 			// Update visibility
 			uiPerson.transform.gameObject.SetActive(i < people.Count);
 			// Update text
@@ -67,6 +82,12 @@ public class UIManager : MonoBehaviour {
 				uiPerson.transform.Find("Toggle/TextBL").GetComponent<Text>().text = descriptionStrings[2];
 				uiPerson.transform.Find("Toggle/TextBR").GetComponent<Text>().text = descriptionStrings[3];
 			}
+		}
+
+		// Update the single-person info view
+		if (selectedPeople.Count > 0) {
+			Person selectedPerson = selectedPeople[0];
+			transform.Find("Right/Person/PersonInfo/Text").GetComponent<Text>().text = selectedPerson.GetLongUIDescription();
 		}
 
 		// Update the god and demands
@@ -138,6 +159,15 @@ public class UIManager : MonoBehaviour {
 		transform.Find("Top/ResourceText").GetComponent<Text>().text = "Food: " + GameState.FoodSupply;
 	}
 
+	private void clearSelectedPeople() {
+		for(int i = 0; i < mUiPeoplePool.Count; i++)
+		{
+			GameObject uiPerson = mUiPeoplePool[i];
+			Toggle selectedToggle = uiPerson.transform.GetComponentInChildren<Toggle>();
+			selectedToggle.isOn = false;
+		}
+	}
+
 	private List<Person> getSelectedPeople() {
 		List<Person> people = mPersonManager.People;
 		List<Person> result = new List<Person>();
@@ -181,24 +211,43 @@ public class UIManager : MonoBehaviour {
 		return null;
 	}
 
+	private Person.Attribute getSelectedProfession() {
+		foreach (KeyValuePair<Person.Attribute, Toggle> entry in mProfessionToggles) {
+			if (entry.Value.isOn) {
+				return entry.Key;
+			}
+		}
+		return Person.Attribute.NONE;
+	}
+
+	// called when the sacrifice button is clicked
 	public void OnSacrifice() {
 		List<Person> selectedPeople = getSelectedPeople();
 		Debug.Log("Sacrificing " + selectedPeople.Count + " people.");
 		if (selectedPeople.Count == 0) { return; }
 
-        
+
 		if(mGod != null) {
 			string sacrificedNames = Utilities.ConcatStrings(selectedPeople.ConvertAll(person => person.Name));
 			LogEvent("You sacrifice " + sacrificedNames + " to " + mGod.Name);
 			mGod.MakeSacrifice(getSelectedDemandId(), selectedPeople);
 			mDemandToggleGroup.SetAllTogglesOff();
-        }
+		}
+	}
 
-		for(int i = 0; i < mUiPeoplePool.Count; i++)
-		{
-			GameObject uiPerson = mUiPeoplePool[i];
-			Toggle selectedToggle = uiPerson.transform.GetComponentInChildren<Toggle>();
-			selectedToggle.isOn = false;
+	// called when the change profession button is clicked
+	public void OnChangeProfession() {
+		List<Person> selectedPeople = getSelectedPeople();
+		Person.Attribute selectedProfession = getSelectedProfession();
+		if (selectedPeople.Count == 0) { return; }
+		foreach (Person person in selectedPeople) {
+			// note: this could rely on the fact that profession happens to be the last attribute
+			for (int i =0; i < person.Attributes.Length; i++) {
+				if (person.Attributes[i].GetAttrType() == Person.AttributeType.PROFESSION) {
+					person.Attributes[i] = selectedProfession;
+				}
+			}
+			person.ResetLevel();
 		}
 	}
 
@@ -230,5 +279,32 @@ public class UIManager : MonoBehaviour {
 		var leftPeopleList = transform.Find("Left/People/PeopleList/Viewport/Content");
 		var rightPeopleList = transform.Find("Right/People/PeopleList/Viewport/Content");
 		return tabIndex == 2 ? leftPeopleList : rightPeopleList;
+	}
+
+	private ToggleGroup CreateToggleGroup(string name, bool canUnselect) {
+		GameObject emptyObj = new GameObject(name);
+		emptyObj.transform.parent = transform;
+		ToggleGroup group = emptyObj.AddComponent<ToggleGroup>();
+		group.allowSwitchOff = canUnselect;
+		return group;
+	}
+
+	public void OnTabChanged(bool isTheActiveTab) {
+		// only do this logic once.
+		if (!isTheActiveTab) { return; }
+		clearSelectedPeople();
+		// todo: clear selected demand
+		int selectedTab = GetSelectedTabIndex();
+		if (selectedTab == 2 && mUiPeoplePool.Count > 0) {
+			// select the first person
+			mUiPeoplePool[0].GetComponentInChildren<Toggle>().isOn = true;
+		}
+		foreach (GameObject uiPerson in mUiPeoplePool) {
+			Toggle toggle = uiPerson.GetComponentInChildren<Toggle>();
+			// use a toggle group for the people tab.
+			toggle.group = selectedTab == 2 ? mPeopleToggleGroup : null;
+		}
+
+		// todo: update selected tab (demand list) and people container connections here
 	}
 }

@@ -79,6 +79,10 @@ public class Person : MonoBehaviour {
 	{
 		get { return(mLevel); }
 	}
+	public void ResetLevel() {
+		mLevel = 1;
+		mXp = 0f;
+	}
 	public int Age
 	{
 		get { return((int)Mathf.Floor(mAge)); }
@@ -148,7 +152,7 @@ public class Person : MonoBehaviour {
 		}
 	}
 
-	// Returns a list of strings to be used in top-left, top-right, bottom-left, bottom-right order
+	// Returns a list of strings to be used in top-left, top-right, bottom-left, bottom-right order in a list of people
 	public string[] GetUIDescription(SacrificeDemand selectedDemand)
 	{
 		string attrString = "";
@@ -166,6 +170,18 @@ public class Person : MonoBehaviour {
 		string profString = "Lv " + Utilities.ColorString(mLevel.ToString(), "green", isLevelRelevant) + " " + Utilities.ColorString(prof, "green", isProfessionRelevant);
 		string lifeString = "Lifeforce: " + Mathf.Ceil(mHealth);
 		return new [] {mName + " (Age " + Age + ")", attrString, profString, lifeString};
+	}
+
+	// Returns a single multiline string
+	public string GetLongUIDescription()
+	{
+		string result = "Name: " + mName + "\r\n";
+		result += "Level: " + mLevel + "\r\n";
+		result += "Profession: " + GetAttribute(AttributeType.PROFESSION).ToString() + "\r\n";
+		result += "Age: " + Age + "\r\n";
+		result += "Lifeforce: " + Mathf.Ceil(mHealth);
+		// todo: attributes
+		return result;
 	}
 
 	public void DebugPrint() {
