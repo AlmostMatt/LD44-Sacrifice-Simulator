@@ -60,7 +60,7 @@ public class Criterion {
 		string s = "";
 		if(mCount > 1)
 		{
-			s = mCount + " ";
+			s = mCount + "x ";
 		}
 
 		if(mMinAge >= 0)
