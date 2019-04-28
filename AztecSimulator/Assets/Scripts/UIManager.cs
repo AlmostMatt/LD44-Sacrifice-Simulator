@@ -73,7 +73,7 @@ public class UIManager : MonoBehaviour {
 		if(mGod != null) {
 			transform.Find("Left/Demands/Name").GetComponent<Text>().text = mGod.Name;
 			// todo: separate short term and long term demands
-			List<SacrificeDemand> demands = GetSelectedTabIndex() == 0 ? mGod.Demands : mGod.Demands;
+			List<SacrificeDemand> demands = GetSelectedTabIndex() == 0 ? mGod.FleetingDemands.ConvertAll(fD => fD.mDemand) : mGod.Demands;
 			Transform demandContainer = transform.Find("Left/Demands/DemandList");
 			for(int i = 0; i < Mathf.Max(demands.Count, mUiDemandPool.Count); i++)
 			{
