@@ -145,7 +145,7 @@ public class Person : MonoBehaviour {
 			Utilities.LogEvent(deathMsg);
 			Utilities.GetPersonManager().RemovePerson(this);
 		}
-		float xpToLevelUp = mLevel;
+		float xpToLevelUp = mLevel * 10;
 		if (mXp>= xpToLevelUp) {
 			mXp -= xpToLevelUp;
 			mLevel += 1;
