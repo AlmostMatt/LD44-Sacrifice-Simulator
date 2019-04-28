@@ -25,6 +25,7 @@ GameObject:
   - component: {fileID: 114418207911983054}
   - component: {fileID: 114413522496122568}
   - component: {fileID: 114526150567914390}
+  - component: {fileID: 114157725988542048}
   m_Layer: 0
   m_Name: SystemsAndManagers
   m_TagString: SystemsAndManagers
@@ -45,6 +46,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114157725988542048
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1964679472227468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d49b989c12e6b84aa4c57f4628626cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114164134493560948
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -104,6 +116,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b43f3afe0f8e577479fc8a99ab58ad58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  logDemandsOnStart: 0
   fleetingDemandTimer: 30
   maxFleetingDemands: 2
 --- !u!114 &114983575028213916
@@ -117,4 +130,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 822affb471ca35244a618fb3b98e6ed9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numStartingPeople: 8
+  numStartingPeople: 3
+  civilianBirthRateIncrease: 2
+  birthInterval: 20
