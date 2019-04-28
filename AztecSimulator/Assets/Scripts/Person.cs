@@ -52,9 +52,8 @@ public class Person : MonoBehaviour {
 		"Manko",
 		"Atik"
 	};
-
-	// todo: for this to be data-driven, we'll need an actual Person prefab with this as the component...
-	public float startingHealth = 100;
+		
+	private float startingHealth = 100;
 
 	private string mName;
 	private Attribute[] mAttributes;
@@ -122,7 +121,8 @@ public class Person : MonoBehaviour {
 
 		mIsHungry = false;
 		mHealth = startingHealth;
-		mBaseHealthDecayRate = 0.1f;
+		mBaseHealthDecayRate = 0.5f;
+		if(GameState.ImprovedLifespan1) mBaseHealthDecayRate = 0.25f;
 	}
 	
 	// Update is called once per frame

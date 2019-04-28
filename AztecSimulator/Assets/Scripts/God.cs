@@ -24,6 +24,7 @@ public class God : MonoBehaviour {
 			mDemands.Add(new SimpleDemand(new GoodCropBoon(), null));
 		}
 
+		mDemands.Add(new SimpleDemand(new ImprovedLifespan(), null));
 		mDemands.Add(new WarriorDemand());
 
 		DebugPrint();
