@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DemandGenerator {
 	
-	public static SacrificeDemand SimpleDemand(SacrificeResult satisfiedResult, SacrificeResult ignoredResult)
+	public static SacrificeDemand SimpleDemand(SacrificeResult satisfiedResult = null, SacrificeResult ignoredResult = null)
 	{
 		SacrificeDemand d = new SacrificeDemand(satisfiedResult, ignoredResult);
 

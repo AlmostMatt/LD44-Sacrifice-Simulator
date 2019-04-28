@@ -4,25 +4,37 @@ using UnityEngine;
 
 public class God : MonoBehaviour {
 
+	public class FleetingDemand {
+		public SacrificeDemand mDemand;
+		public float mTimeLeft;
+
+		public FleetingDemand(SacrificeDemand demand, float time)
+		{
+			mDemand = demand;
+			mTimeLeft = time;
+		}
+	}
+
+	private List<FleetingDemand> mFleetingDemands;
 	private List<SacrificeDemand> mDemands;
 	private string mName;
+	private float mFleetingDemandTimer;
 
 	public string Name { get { return mName;}}
 	public List<SacrificeDemand> Demands
 	{
 		get { return(mDemands); }
 	}
+	public List<FleetingDemand> FleetingDemands
+	{
+		get { return(mFleetingDemands); }
+	}
 
-	// Use this for initialization
 	void Start () {
 		mName = "MACUILCUETZPALIN, GOD OF AWESOME";
 		mDemands = new List<SacrificeDemand>();
-
-		int numDemands = 1; // Random.Range(1, 3);
-		for(int i = 0; i < numDemands; ++i)
-		{
-			mDemands.Add(DemandGenerator.SimpleDemand(new GoodCropBoon(), null));
-		}
+		mFleetingDemands = new List<FleetingDemand>();
+		mFleetingDemandTimer = 30;
 
 		int numTierOneDemands = 2;
 		SacrificeResult[] tierOneBoons = BoonLibrary.RandomTierOneBoons(numTierOneDemands);
@@ -37,26 +49,55 @@ public class God : MonoBehaviour {
 		victoryDemand.mSatisfiedResult = new VictoryResult();
 		mDemands.Add(victoryDemand);
 
-		DebugPrint();
+		foreach(SacrificeDemand sd in mDemands)
+		{
+			Utilities.LogEvent("YOUR GOD DEMANDS " + sd.GetShortDescription());
+		}
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+		mFleetingDemandTimer -= Time.deltaTime;
+		if(mFleetingDemandTimer <= 0)
+		{
+			SacrificeDemand d = DemandGenerator.SimpleDemand();
+			float negativeChance = 0.8f - GameState.Favour * 0.1f;
+			float specialChance = 0.0f + GameState.Favour * 0.05f;
+			float roll = Random.value;
+			if(roll <= negativeChance)
+				d.mIgnoredResult = new PlagueCurse();
+			else if(roll - negativeChance <= specialChance)
+				d.mSatisfiedResult = BoonLibrary.RandomTierOneBoon();
+			else
+				d.mSatisfiedResult = BoonLibrary.RandomTemporaryBoon();
+			
+			mFleetingDemands.Add(new FleetingDemand(d, 120));
+			mFleetingDemandTimer = Random.Range(30f,60f);
+		}
+
+		for(int i = mFleetingDemands.Count - 1; i >= 0; --i)
+		{
+			FleetingDemand d = mFleetingDemands[i];
+			d.mTimeLeft -= Time.deltaTime;
+			if(d.mTimeLeft <= 0)
+			{
+				mFleetingDemands.RemoveAt(i);
+			}
+		}
 	}
 
 	public void DebugPrint()
 	{
 		foreach(SacrificeDemand sd in mDemands)
 		{
-			Utilities.LogEvent("YOUR GOD DEMANDS " + sd.GetShortDescription());
+			Debug.Log("YOUR GOD DEMANDS " + sd.GetShortDescription());
 		}
 	}
 
-	public int AddDemand(SacrificeResult satisfiedResult, SacrificeResult ignoredResult, string msg)
+	public int AddFleetingDemand(SacrificeResult satisfiedResult, SacrificeResult ignoredResult, float time, string msg)
 	{
 		SacrificeDemand demand = DemandGenerator.SimpleDemand(satisfiedResult, ignoredResult);
-		mDemands.Add(demand);
+		mFleetingDemands.Add(new FleetingDemand(demand, time));
 		if(msg != null) {
 			Utilities.LogEvent(msg + demand.GetShortDescription());
 		}
@@ -64,11 +105,11 @@ public class God : MonoBehaviour {
 		return(demand.mId);
 	}
 
-	public void RemoveDemand(int demandId)
+	public void RemoveFleetingDemand(int demandId)
 	{
-		foreach(SacrificeDemand d in mDemands) {
-			if(d.mId == demandId) {
-				mDemands.Remove(d);
+		foreach(FleetingDemand d in mFleetingDemands) {
+			if(d.mDemand.mId == demandId) {
+				mFleetingDemands.Remove(d);
 				return;
 			}
 		}
@@ -79,7 +120,14 @@ public class God : MonoBehaviour {
 		List<SacrificeResult> results = new List<SacrificeResult>();
 
 		if(demandId > 0) {
-			SacrificeDemand demand = mDemands.Find(x => x.mId == demandId);
+			SacrificeDemand demand;
+			FleetingDemand fleetingDemand = mFleetingDemands.Find(x => x.mDemand.mId == demandId);
+			if(fleetingDemand != null) {
+				demand = fleetingDemand.mDemand;
+			} else {
+				demand = mDemands.Find(x => x.mId == demandId);	
+			}
+
 			if(demand == null)
 			{
 				Debug.Log("No demand with id " + demandId);
@@ -96,10 +144,6 @@ public class God : MonoBehaviour {
 				}
 
 				mDemands.Remove(demand);
-
-				// TODO: don't always replace with a new demand.
-				// pace these out with a timer or something (timer could depend on personality)
-				mDemands.Add(DemandGenerator.SimpleDemand(new GoodCropBoon(), null));
 			}
 			else
 			{
@@ -122,8 +166,6 @@ public class God : MonoBehaviour {
 		{
 			r.DoEffect();
 		}
-
-		DebugPrint(); // temp hack: print out new demands (after other messages happen)
 
 		return(results);
 	}

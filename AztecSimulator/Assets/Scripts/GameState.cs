@@ -50,4 +50,20 @@ public class GameState {
 		return(baseValue);
 	}
 
+	private int mFavour = 0;
+	public static int Favour
+	{
+		get { return(sGameState.mFavour); }
+		set { sGameState.mFavour = value; }
+	}
+
+	private float mFertilityBonus = 0;
+	public static float FertilityBonus
+	{
+		get { return(sGameState.mFertilityBonus); }
+		set { sGameState.mFertilityBonus = value; }
+	}
+
+
+
 }
