@@ -15,7 +15,7 @@ public class UIManager : MonoBehaviour {
 	private PersonManager mPersonManager;
 	private List<GameObject> mUiPeoplePool = new List<GameObject>();
 	private List<GameObject> mUiDemandPool = new List<GameObject>();
-	private int mMaxEventMessages = 8;
+	private int mMaxEventMessages = 20;
 	private List<string> mEventMessages = new List<string>();
 	private ToggleGroup mDemandToggleGroup;
 
@@ -56,7 +56,7 @@ public class UIManager : MonoBehaviour {
 			uiPerson.transform.SetParent(peopleContainer);
 			// Update position
 			RectTransform rt = uiPerson.GetComponent<RectTransform>();
-			rt.anchoredPosition = new Vector2(0f,35f*(i-(people.Count-1)/2f));
+			//rt.anchoredPosition = new Vector2(0f,35f*(i-(people.Count-1)/2f));
 			// Update visibility
 			uiPerson.transform.gameObject.SetActive(i < people.Count);
 			// Update text
@@ -227,8 +227,8 @@ public class UIManager : MonoBehaviour {
 
 	private Transform GetPeopleContainer() {
 		int tabIndex = GetSelectedTabIndex();
-		var leftPeopleList = transform.Find("Left/People/PeopleList");
-		var rightPeopleList = transform.Find("Right/People/PeopleList");
+		var leftPeopleList = transform.Find("Left/People/PeopleList/Viewport/Content");
+		var rightPeopleList = transform.Find("Right/People/PeopleList/Viewport/Content");
 		return tabIndex == 2 ? leftPeopleList : rightPeopleList;
 	}
 }
