@@ -150,7 +150,7 @@ public class UIManager : MonoBehaviour {
 			}
 		}
 		for (int i = mNotificationMessages.Count-1; i>= 0; i--) {
-			mNotificationDurations[i] -= GameState.GameDeltaTime;
+			mNotificationDurations[i] -= Time.deltaTime;
 			if (mNotificationDurations[i] <= 0f) {
 				mNotificationMessages.RemoveAt(i);
 				mNotificationDurations.RemoveAt(i);
@@ -168,6 +168,15 @@ public class UIManager : MonoBehaviour {
 		{
 			GameObject uiPerson = mUiPeoplePool[i];
 			Toggle selectedToggle = uiPerson.transform.GetComponentInChildren<Toggle>();
+			selectedToggle.isOn = false;
+		}
+	}
+
+	private void clearSelectedDemands() {
+		for(int i = 0; i < mUiDemandPool.Count; i++)
+		{
+			GameObject uiDemand = mUiDemandPool[i];
+			Toggle selectedToggle = uiDemand.transform.GetComponentInChildren<Toggle>();
 			selectedToggle.isOn = false;
 		}
 	}
@@ -237,6 +246,7 @@ public class UIManager : MonoBehaviour {
 			mGod.MakeSacrifice(getSelectedDemandId(), selectedPeople);
 			mDemandToggleGroup.SetAllTogglesOff();
 		}
+		clearSelectedPeople();
 	}
 
 	// called when the change profession button is clicked
@@ -297,6 +307,7 @@ public class UIManager : MonoBehaviour {
 		// only do this logic once.
 		if (!isTheActiveTab) { return; }
 		clearSelectedPeople();
+		clearSelectedDemands();
 		// todo: clear selected demand
 		int selectedTab = GetSelectedTabIndex();
 		if (selectedTab == 2 && mUiPeoplePool.Count > 0) {
