@@ -90,6 +90,10 @@ public class God : MonoBehaviour {
 			d.mTimeLeft -= Time.deltaTime;
 			if(d.mTimeLeft <= 0)
 			{
+				if(d.mDemand.mIgnoredResult != null)
+				{
+					d.mDemand.mIgnoredResult.DoEffect();
+				}
 				mFleetingDemands.RemoveAt(i);
 			}
 		}

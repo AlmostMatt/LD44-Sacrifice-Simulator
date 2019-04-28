@@ -12,5 +12,12 @@ public class PlagueCurse : SacrificeResult {
 	public override void DoEffect()
 	{
 		Utilities.LogEvent("A terrible plague befalls your people");
+		foreach(Person p in Utilities.GetPersonManager().People)
+		{
+			if(Random.value < 0.3)
+			{
+				p.Health -= Mathf.Min(p.Health, 20);
+			}
+		}
 	}
 }
