@@ -7,6 +7,7 @@ using System.Linq; // for First()
 // Creates and manages UI objects.
 public class UIManager : MonoBehaviour {
 
+	public GameObject uiNotificationObject;
 	public GameObject uiPersonObject;
 	public GameObject uiDemandObject;
 
@@ -17,6 +18,10 @@ public class UIManager : MonoBehaviour {
 	private int mMaxEventMessages = 8;
 	private List<string> mEventMessages = new List<string>();
 	private ToggleGroup mDemandToggleGroup;
+
+	private List<GameObject> mUiNotificationPool = new List<GameObject>();
+	private List<string> mNotificationMessages = new List<string>();
+	private List<float> mNotificationDurations = new List<float>();
 
 	// Use this for initialization
 	void Start () {
@@ -37,7 +42,7 @@ public class UIManager : MonoBehaviour {
 		// Update people
 		// TODO: use people-changed-listener instead of update
 		List<Person> people = mPersonManager.People;
-		Transform peopleContainer = transform.Find("Right/People/PeopleList");
+		Transform peopleContainer = GetPeopleContainer();
 		for(int i = 0; i < Mathf.Max(people.Count, mUiPeoplePool.Count); i++)
 		{
 			GameObject uiPerson;
@@ -45,10 +50,10 @@ public class UIManager : MonoBehaviour {
 			if (i >= mUiPeoplePool.Count) {
 				uiPerson = Instantiate(uiPersonObject);
 				mUiPeoplePool.Add(uiPerson);
-				uiPerson.transform.SetParent(peopleContainer);
 			} else {
 				uiPerson = mUiPeoplePool[i];
 			}
+			uiPerson.transform.SetParent(peopleContainer);
 			// Update position
 			RectTransform rt = uiPerson.GetComponent<RectTransform>();
 			rt.anchoredPosition = new Vector2(0f,35f*(i-(people.Count-1)/2f));
@@ -66,9 +71,9 @@ public class UIManager : MonoBehaviour {
 
 		// Update the god and demands
 		if(mGod != null) {
-			transform.Find("Left/God/Name").GetComponent<Text>().text = mGod.Name;
+			transform.Find("Left/Demands/Name").GetComponent<Text>().text = mGod.Name;
 			List<SacrificeDemand> demands = mGod.Demands;
-			Transform demandContainer = transform.Find("Left/God/DemandList");
+			Transform demandContainer = transform.Find("Left/Demands/DemandList");
 			for(int i = 0; i < Mathf.Max(demands.Count, mUiDemandPool.Count); i++)
 			{
 				GameObject uiDemand;
@@ -91,6 +96,39 @@ public class UIManager : MonoBehaviour {
 					uiDemand.name = demands[i].mId.ToString();
 					uiDemand.transform.Find("Text").GetComponent<Text>().text = demands[i].GetLongDescription(); 
 				}
+			}
+		}
+
+		// Update notification objects
+		Transform notificationContainer = transform.Find("Corner");
+		for(int i = 0; i < Mathf.Max(mNotificationMessages.Count, mUiNotificationPool.Count); i++)
+		{
+			GameObject uiNotification;
+			// Spawn new UI demand
+			if (i >= mUiNotificationPool.Count) {
+				uiNotification = Instantiate(uiNotificationObject);
+				mUiNotificationPool.Add(uiNotification);
+				uiNotification.transform.SetParent(notificationContainer);
+			} else {
+				uiNotification = mUiNotificationPool[i];
+			}
+			// Update position
+			RectTransform rt = uiNotification.GetComponent<RectTransform>();
+			// TODO: slide down if others have faded
+			rt.anchoredPosition = new Vector2(0f,100f*i);
+			// Update visibility
+			uiNotification.transform.gameObject.SetActive(i < mNotificationMessages.Count);
+			// Update text and alpha
+			if (i < mNotificationMessages.Count) {
+				uiNotification.transform.Find("Text").GetComponent<Text>().text = mNotificationMessages[i]; 
+				uiNotification.GetComponent<CanvasGroup>().alpha = Mathf.Min(1f, mNotificationDurations[i] / 1f);
+			}
+		}
+		for (int i = mNotificationMessages.Count-1; i>= 0; i--) {
+			mNotificationDurations[i] -= Time.deltaTime;
+			if (mNotificationDurations[i] <= 0f) {
+				mNotificationMessages.RemoveAt(i);
+				mNotificationDurations.RemoveAt(i);
 			}
 		}
 
@@ -157,7 +195,7 @@ public class UIManager : MonoBehaviour {
 		}
 	}
 
-	public void LogEvent(string message) {
+	public void LogEvent(string message, float duration=4f) {
 		mEventMessages.Add(message);
 		string newLogText = "";
 		// Concatenate the last K messages
@@ -165,5 +203,24 @@ public class UIManager : MonoBehaviour {
 			newLogText += mEventMessages[i] + "\n";
 		}
 		transform.Find("Left/Log/LogText").GetComponent<Text>().text = newLogText;
+
+		mNotificationMessages.Add(message);
+		mNotificationDurations.Add(duration);
+	}
+
+	private int GetSelectedTabIndex() {
+		// TODO: use the toggle group to find the tab more easily
+		if (transform.Find("Left/TabGroup/Tab1").GetComponent<Toggle>().isOn) { return 0; }
+		else if (transform.Find("Left/TabGroup/Tab2").GetComponent<Toggle>().isOn) { return 1; }
+		else if (transform.Find("Left/TabGroup/Tab3").GetComponent<Toggle>().isOn) { return 2; }
+		else if (transform.Find("Left/TabGroup/Tab4").GetComponent<Toggle>().isOn) { return 3; }
+		return -1;
+	}
+
+	private Transform GetPeopleContainer() {
+		int tabIndex = GetSelectedTabIndex();
+		var leftPeopleList = transform.Find("Left/People/PeopleList");
+		var rightPeopleList = transform.Find("Right/People/PeopleList");
+		return tabIndex == 2 ? leftPeopleList : rightPeopleList;
 	}
 }

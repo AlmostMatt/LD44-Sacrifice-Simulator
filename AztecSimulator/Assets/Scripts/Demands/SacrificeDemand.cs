@@ -86,7 +86,7 @@ public class SacrificeDemand
 		string satisfiedString = mSatisfiedResult == null ? "<demanded>" : mSatisfiedResult.mName;
 		string costString = GetShortDescription();
 
-		return satisfiedString + "\r\nDEMAND\r\n" + costString;
+		return (satisfiedString + "\r\nDEMAND\r\n" + costString).Trim();
 	}
 
 	public void DebugPrint()

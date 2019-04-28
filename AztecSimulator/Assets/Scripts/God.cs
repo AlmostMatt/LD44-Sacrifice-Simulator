@@ -49,6 +49,7 @@ public class God : MonoBehaviour {
 		victoryDemand.mSatisfiedResult = new VictoryResult();
 		mDemands.Add(victoryDemand);
 
+		Utilities.LogEvent("YOUR GOD HAS MULTIPLE DEMANDS");
 		foreach(SacrificeDemand sd in mDemands)
 		{
 			Utilities.LogEvent("YOUR GOD DEMANDS " + sd.GetShortDescription());
