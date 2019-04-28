@@ -26,6 +26,7 @@ public class InvaderAttack : RandomEventSystem.RandomEvent {
 
 	public override float Warn() {
 		mRequiredWarriors = Random.Range(3, 10);
+		GameState.InvaderSize = mRequiredWarriors;
 		Utilities.LogEvent("An enemy army approaches! They look to be about " + mRequiredWarriors + " strong");
 		return(30);
 	}
@@ -61,12 +62,7 @@ public class InvaderAttack : RandomEventSystem.RandomEvent {
 
 			PersonManager personMgr = Utilities.GetPersonManager();
 
-			int warriorStrength = 0;
-			List<Person> warriors = personMgr.FindPeople(Person.AttributeType.PROFESSION, Person.Attribute.WARRIOR);
-			foreach(Person p in warriors) {
-				warriorStrength += p.Level;
-			}
-
+			int warriorStrength = GameState.ArmySize;
 			int warriorDiff = mRequiredWarriors - warriorStrength;
 			if(warriorDiff <= 0) {
 				Utilities.LogEvent("Your warriors fended off the invaders and your people took no casualties.");
@@ -83,7 +79,9 @@ public class InvaderAttack : RandomEventSystem.RandomEvent {
 				Utilities.LogEvent(msg);
 			}
 
+			// cleanup things related to the invasion
 			if(mDemandId > 0) Utilities.GetGod().RemoveDemand(mDemandId);
+			GameState.InvaderSize = 0;
 
 			return(true);
 		}

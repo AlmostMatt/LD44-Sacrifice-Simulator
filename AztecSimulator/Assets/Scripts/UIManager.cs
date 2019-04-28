@@ -160,6 +160,10 @@ public class UIManager : MonoBehaviour {
 		transform.Find("Top/PopulationText").GetComponent<Text>().text = "Population: " + people.Count + "/" + PersonManager.MAX_POPULATION;
 		string foodString = Utilities.ColorString("Food: " + GameState.FoodSupply + "/" + people.Count, "red", people.Count > GameState.FoodSupply);
 		transform.Find("Top/ResourceText").GetComponent<Text>().text = foodString;
+		string armyString = GameState.InvaderSize == 0
+			? "Army: " + GameState.ArmySize
+			: Utilities.ColorString("Army: " + GameState.ArmySize + "/" + GameState.InvaderSize, "red", GameState.InvaderSize > GameState.ArmySize);
+		transform.Find("Top/ResourceText2").GetComponent<Text>().text = armyString;
 	}
 
 	private void clearSelectedPeople() {

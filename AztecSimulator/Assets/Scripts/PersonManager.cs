@@ -50,6 +50,13 @@ public class PersonManager : MonoBehaviour {
 			}
 			mRepopulateTimer = mRepopulateInterval;
 		}
+		// Update ArmySize
+		int armySize = 0;
+		List<Person> warriors = FindPeople(Person.AttributeType.PROFESSION, Person.Attribute.WARRIOR);
+		foreach(Person p in warriors) {
+			armySize += p.Level;
+		}
+		GameState.ArmySize = armySize;
 	}
 
 	private Person SpawnPerson()

@@ -22,11 +22,25 @@ public class GameState {
 		set { sGameState.mGameSpeed = value; }
 	}
 
-	private int mFoodSupply = 10;
+	private int mFoodSupply = 0;
 	public static int FoodSupply // wow I didn't think this would actually work
 	{
 		get { return(sGameState.mFoodSupply); }
 		set { sGameState.mFoodSupply = value; }
+	}
+
+	private int mArmySize = 0;
+	public static int ArmySize // wow I didn't think this would actually work
+	{
+		get { return(sGameState.mArmySize); }
+		set { sGameState.mArmySize = value; }
+	}
+
+	private int mInvaderSize = 0;
+	public static int InvaderSize // wow I didn't think this would actually work
+	{
+		get { return(sGameState.mInvaderSize); }
+		set { sGameState.mInvaderSize = value; }
 	}
 
 	private bool mDrought = false;
