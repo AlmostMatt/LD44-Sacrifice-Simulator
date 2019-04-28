@@ -22,6 +22,29 @@ public class DemandGenerator {
 		return(d);
 	}
 
+	public static SacrificeDemand TierOneDemand()
+	{
+		SacrificeDemand d = new SacrificeDemand();
+
+		Criterion c = new Criterion();
+
+		if(Random.value < 0.5)
+		{
+			c.mMinLevel = 5;
+		}
+		else
+		{
+			c.mMinAge = 20;
+		}
+
+		int numAttrs = Random.Range(1, 2);
+		c.mAttributes = GenerateRandomDemands(numAttrs);
+
+		d.mCriteria.Add(c);
+
+		return(d);
+	}
+
 	public static SacrificeDemand VictoryDemand()
 	{
 		// appropriately tuned demands to win the game
@@ -29,7 +52,7 @@ public class DemandGenerator {
 		Criterion c = new Criterion();
 		c.mMinLevel = 20;
 		c.mAttributes.Add(Person.Attribute.WARRIOR);
-		c.mCount = 10;
+		c.mCount = 5;
 		warriorDemand.mCriteria.Add(c);
 		return(warriorDemand);
 	}

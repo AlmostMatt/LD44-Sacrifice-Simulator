@@ -24,9 +24,14 @@ public class God : MonoBehaviour {
 			mDemands.Add(DemandGenerator.SimpleDemand(new GoodCropBoon(), null));
 		}
 
-		mDemands.Add(DemandGenerator.SimpleDemand(new ImprovedLifespan(), null));
-		mDemands.Add(DemandGenerator.SimpleDemand(new FarmerXpBuff(), null));
-		mDemands.Add(DemandGenerator.SimpleDemand(new WarriorXpBuff(), null));
+		int numTierOneDemands = 2;
+		SacrificeResult[] tierOneBoons = BoonLibrary.RandomTierOneBoons(numTierOneDemands);
+		for(int i = 0; i < numTierOneDemands; ++i)
+		{
+			SacrificeDemand demand = DemandGenerator.TierOneDemand();
+			demand.mSatisfiedResult = tierOneBoons[i];
+			mDemands.Add(demand);
+		}
 
 		SacrificeDemand victoryDemand = DemandGenerator.VictoryDemand();
 		victoryDemand.mSatisfiedResult = new VictoryResult();
