@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SimpleDemand : SacrificeDemand {
-
+public class SimpleDemand {
+	/*
 	public List<Person.Attribute> mDemandedAttributes;
 
 	public SimpleDemand(SacrificeResult satisfiedResult, SacrificeResult ignoredResult) : base(satisfiedResult, ignoredResult)
@@ -58,6 +58,25 @@ public class SimpleDemand : SacrificeDemand {
 		}
 
 		return(demandsCopy.Count == 0);
+	}
+	*/
+
+	public static SacrificeDemand New(SacrificeResult satisfiedResult, SacrificeResult ignoredResult)
+	{
+		SacrificeDemand d = new SacrificeDemand(satisfiedResult, ignoredResult);
+
+		int numAttributes = Random.Range(1,3);
+		List<Person.Attribute> attributes = GenerateSatisfiableDemands(numAttributes);
+
+		// add them as separate criteria so that they're easier to satisfy
+		foreach(Person.Attribute attr in attributes)
+		{
+			Criterion c = new Criterion();
+			c.mAttributes.Add(attr);
+			d.mCriteria.Add(c);
+		}
+
+		return(d);
 	}
 
 	public static List<Person.Attribute> GenerateSatisfiableDemands(int preferredNum)

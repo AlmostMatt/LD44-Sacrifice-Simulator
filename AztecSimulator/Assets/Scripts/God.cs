@@ -21,13 +21,24 @@ public class God : MonoBehaviour {
 		int numDemands = 1; // Random.Range(1, 3);
 		for(int i = 0; i < numDemands; ++i)
 		{
-			mDemands.Add(new SimpleDemand(new GoodCropBoon(), null));
+			mDemands.Add(SimpleDemand.New(new GoodCropBoon(), null));
 		}
 
-		mDemands.Add(new SimpleDemand(new ImprovedLifespan(), null));
-		mDemands.Add(new SimpleDemand(new FarmerXpBuff(), null));
-		mDemands.Add(new SimpleDemand(new WarriorXpBuff(), null));
-		mDemands.Add(new WarriorDemand());
+		mDemands.Add(SimpleDemand.New(new ImprovedLifespan(), null));
+		mDemands.Add(SimpleDemand.New(new FarmerXpBuff(), null));
+		mDemands.Add(SimpleDemand.New(new WarriorXpBuff(), null));
+		// mDemands.Add(new WarriorDemand());
+
+
+		SacrificeDemand warriorDemand = new SacrificeDemand();
+		Criterion c = new Criterion();
+		c.mMinLevel = 20;
+		c.mAttributes.Add(Person.Attribute.WARRIOR);
+		c.mCount = 10;
+		warriorDemand.mCriteria.Add(c);
+		//warriorDemand.mShortDescOverride = "";
+		//warriorDemand.mLongDescOverride = "VICTORY\r\nDEMAND\r\n10 Level 20 Warriors";
+		mDemands.Add(warriorDemand);
 
 		DebugPrint();
 	}
@@ -47,7 +58,7 @@ public class God : MonoBehaviour {
 
 	public int AddDemand(SacrificeResult satisfiedResult, SacrificeResult ignoredResult, string msg)
 	{
-		SacrificeDemand demand = new SimpleDemand(satisfiedResult, ignoredResult);
+		SacrificeDemand demand = SimpleDemand.New(satisfiedResult, ignoredResult);
 		mDemands.Add(demand);
 		if(msg != null) {
 			Utilities.LogEvent(msg + demand.GetShortDescription());
@@ -88,7 +99,7 @@ public class God : MonoBehaviour {
 				}
 
 				mDemands.Remove(demand);
-				mDemands.Add(new SimpleDemand(new GoodCropBoon(), null));
+				mDemands.Add(SimpleDemand.New(new GoodCropBoon(), null));
 			}
 			else
 			{

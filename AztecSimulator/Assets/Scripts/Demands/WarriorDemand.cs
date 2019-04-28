@@ -4,10 +4,16 @@ using UnityEngine;
 
 public class WarriorDemand : SacrificeDemand {
 
+	/*
 	private int mNumWarriors = 10;
 
 	public WarriorDemand() : base(null, null) {
-		
+
+		Criterion c = new Criterion();
+		c.mMinLevel = 20;
+		c.mAttributes.Add(Person.Attribute.WARRIOR);
+		c.mCount = mNumWarriors;
+		mCriteria.Add(c);
 	}
 
 	public override bool IsRelevantAttribute(Person.Attribute attribute) {
@@ -17,7 +23,7 @@ public class WarriorDemand : SacrificeDemand {
 	public override bool IsRelevantLevel(int level) {
 		return level >= 20;
 	}
-
+	
 	public override bool CheckSatisfaction(List<Person> people)
 	{
 		// wants unique people!
@@ -50,4 +56,5 @@ public class WarriorDemand : SacrificeDemand {
 			&&	(p.Level >= 20)
 		);
 	}
+	*/
 }
