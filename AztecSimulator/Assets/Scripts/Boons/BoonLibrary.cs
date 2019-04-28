@@ -31,15 +31,15 @@ public class BoonLibrary {
 	};
 
 	public static SacrificeResult RandomTemporaryBoon() {
-		return(Utilities.Random<SacrificeResult>(sTemporaryBoons));
+		return(Utilities.RandomSelection<SacrificeResult>(sTemporaryBoons));
 	}
 
 	public static SacrificeResult RandomTemporaryCurse() {
-		return(Utilities.Random<SacrificeResult>(sTemporaryCurses));
+		return(Utilities.RandomSelection<SacrificeResult>(sTemporaryCurses));
 	}
 
 	public static SacrificeResult RandomTierOneBoon() {
-		return(Utilities.Random<SacrificeResult>(sTierOneBoons));
+		return(Utilities.RandomSelection<SacrificeResult>(sTierOneBoons));
 	}
 
 	public static SacrificeResult[] RandomTierOneBoons(int howMany)

@@ -82,7 +82,7 @@ public static class Utilities {
 		return(chosenIndices);
 	}
 
-	public static T Random<T>(T[] possibleValues) {
+	public static T RandomSelection<T>(T[] possibleValues) {
 		return(possibleValues[Random.Range(0, possibleValues.Length)]);
 	}
 
