@@ -61,6 +61,16 @@ public class PersonManager : MonoBehaviour {
 		foreach(Person p in warriors) {
 			armySize += p.Level;
 		}
+
+		if(GameState.HasBoon(BoonType.WARRIOR_CHILD_PROTECT))
+		{
+			List<Person> children = mPeople.FindAll(x => x.Age <= 10);
+			if(children != null)
+			{
+				armySize += children.Count;
+			}
+		}
+
 		GameState.ArmySize = armySize;
 	}
 

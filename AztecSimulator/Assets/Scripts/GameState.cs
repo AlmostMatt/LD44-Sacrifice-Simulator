@@ -8,6 +8,11 @@ public class GameState {
 
 	private static GameState sGameState = new GameState();
 
+	public static void NewGame()
+	{
+		sGameState = new GameState();
+	}
+
 	private float mGameDeltaTime;
 	public static float GameDeltaTime
 	{
@@ -92,6 +97,11 @@ public class GameState {
 		set { sGameState.mFertilityBonus = value; }
 	}
 
-
-
+	private bool[] mBoons = new bool[(int)BoonType.MAX_VALUE];
+	public static bool HasBoon(BoonType boon) {
+		return(sGameState.mBoons[(int)boon]);
+	}
+	public static void SetBoon(BoonType boon, bool has) {
+		sGameState.mBoons[(int)boon] = has;
+	}
 }

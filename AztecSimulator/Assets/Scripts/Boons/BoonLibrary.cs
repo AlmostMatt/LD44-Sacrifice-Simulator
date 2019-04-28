@@ -27,7 +27,8 @@ public class BoonLibrary {
 		new FarmerXpBuff(),
 		new ImprovedLifespan(),
 		new WarriorXpBuff(),
-		new Favour()
+		new Favour(),
+		new WarriorChildProtect()
 	};
 
 	public static SacrificeResult RandomTemporaryBoon() {
