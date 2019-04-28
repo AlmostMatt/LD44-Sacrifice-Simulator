@@ -107,21 +107,8 @@ public class Person : MonoBehaviour {
 		mLevel = 1;
 		mAge = 0;
 
-		var attrTypes = new [] {
-			AttributeType.PERSONALITY,
-			AttributeType.HEIGHT,
-			AttributeType.STRENGTH,
-			AttributeType.EYE_COLOR,
-		};
 		int numRandomAttributes = Random.Range(1,4);
-		AttributeType[] randomAttributes = Utilities.RandomSubset(attrTypes, numRandomAttributes);
-
-		mAttributes = new Attribute[numRandomAttributes + 1];
-		mAttributes[numRandomAttributes] = Utilities.GetRandomAttr(AttributeType.PROFESSION);
-		for(int i = 0; i < numRandomAttributes; ++i)
-		{
-			mAttributes[i] = Utilities.GetRandomAttr(randomAttributes[i]);
-		}
+		mAttributes = RandomAttributes(numRandomAttributes);
 
 		mIsHungry = false;
 		mHealth = startingHealth;
@@ -189,5 +176,25 @@ public class Person : MonoBehaviour {
 		}
 	}
 
+	public static Attribute[] RandomAttributes(int howMany)
+	{
+		AttributeType[] attrTypes = {
+			AttributeType.PERSONALITY,
+			AttributeType.HEIGHT,
+			AttributeType.STRENGTH,
+			AttributeType.EYE_COLOR,
+		};
+
+		AttributeType[] randomAttributes = Utilities.RandomSubset(attrTypes, howMany);
+
+		Attribute[] attributes = new Attribute[howMany + 1];
+		attributes[howMany] = Utilities.GetRandomAttr(AttributeType.PROFESSION);
+		for(int i = 0; i < howMany; ++i)
+		{
+			attributes[i] = Utilities.GetRandomAttr(randomAttributes[i]);
+		}
+
+		return(attributes);
+	}
 }
 

@@ -65,6 +65,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 539fa75aabef1a143a9c183daed904aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debugAttackIdx: -1
   initialEventDelay: 0
   minEventInterval: 45
   maxEventInterval: 75
@@ -79,6 +80,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b43f3afe0f8e577479fc8a99ab58ad58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fleetingDemandTimer: 30
+  maxFleetingDemands: 2
 --- !u!114 &114983575028213916
 MonoBehaviour:
   m_ObjectHideFlags: 1

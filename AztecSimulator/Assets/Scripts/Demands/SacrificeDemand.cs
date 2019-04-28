@@ -83,7 +83,7 @@ public class SacrificeDemand
 		if(mLongDescOverride != null)
 			return(mLongDescOverride);
 
-		string satisfiedString = mSatisfiedResult == null ? "<demanded>" : mSatisfiedResult.mName;
+		string satisfiedString = mSatisfiedResult == null ? "Fail to satisfy: " + mIgnoredResult.mName : mSatisfiedResult.mName;
 		string costString = GetShortDescription();
 
 		return (satisfiedString + "\r\nDEMAND\r\n" + costString).Trim();

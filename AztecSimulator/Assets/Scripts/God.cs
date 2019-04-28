@@ -15,6 +15,9 @@ public class God : MonoBehaviour {
 		}
 	}
 
+	public float fleetingDemandTimer = 30;
+	public int maxFleetingDemands = 2;
+
 	private List<FleetingDemand> mFleetingDemands;
 	private List<SacrificeDemand> mDemands;
 	private string mName;
@@ -34,7 +37,7 @@ public class God : MonoBehaviour {
 		mName = "MACUILCUETZPALIN, GOD OF AWESOME";
 		mDemands = new List<SacrificeDemand>();
 		mFleetingDemands = new List<FleetingDemand>();
-		mFleetingDemandTimer = 30;
+		mFleetingDemandTimer = fleetingDemandTimer;
 
 		int numTierOneDemands = 2;
 		SacrificeResult[] tierOneBoons = BoonLibrary.RandomTierOneBoons(numTierOneDemands);
@@ -42,6 +45,15 @@ public class God : MonoBehaviour {
 		{
 			SacrificeDemand demand = DemandGenerator.TierOneDemand();
 			demand.mSatisfiedResult = tierOneBoons[i];
+			mDemands.Add(demand);
+		}
+
+		int numTierTwoDemands = 2;
+		SacrificeResult[] tierTwoBoons = BoonLibrary.RandomTierTwoBoons(numTierTwoDemands);
+		for(int i = 0; i < numTierTwoDemands; ++i)
+		{
+			SacrificeDemand demand = DemandGenerator.TierTwoDemand();
+			demand.mSatisfiedResult = tierTwoBoons[i];
 			mDemands.Add(demand);
 		}
 
@@ -58,22 +70,27 @@ public class God : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		mFleetingDemandTimer -= Time.deltaTime;
-		if(mFleetingDemandTimer <= 0)
+
+		if(mFleetingDemands.Count < maxFleetingDemands)
 		{
-			SacrificeDemand d = DemandGenerator.SimpleDemand();
-			float negativeChance = 0.8f - GameState.Favour * 0.1f;
-			float specialChance = 0.0f + GameState.Favour * 0.05f;
-			float roll = Random.value;
-			if(roll <= negativeChance)
-				d.mIgnoredResult = new PlagueCurse();
-			else if(roll - negativeChance <= specialChance)
-				d.mSatisfiedResult = BoonLibrary.RandomTierOneBoon();
-			else
-				d.mSatisfiedResult = BoonLibrary.RandomTemporaryBoon();
-			
-			mFleetingDemands.Add(new FleetingDemand(d, 120));
-			mFleetingDemandTimer = Random.Range(30f,60f);
+			mFleetingDemandTimer -= Time.deltaTime;
+			if(mFleetingDemandTimer <= 0)
+			{
+				SacrificeDemand d = DemandGenerator.SimpleDemand();
+				float negativeChance = 0.8f - GameState.Favour * 0.1f;
+				float specialChance = 0.0f + GameState.Favour * 0.05f;
+				float roll = Random.value;
+				if(roll <= negativeChance)
+					d.mIgnoredResult = BoonLibrary.RandomTemporaryCurse();
+				else
+				if(roll - negativeChance <= specialChance)
+					d.mSatisfiedResult = BoonLibrary.RandomTierOneBoon();
+				else
+					d.mSatisfiedResult = BoonLibrary.RandomTemporaryBoon();
+				
+				mFleetingDemands.Add(new FleetingDemand(d, 30));
+				mFleetingDemandTimer = Random.Range(fleetingDemandTimer - (fleetingDemandTimer / 2), fleetingDemandTimer + (fleetingDemandTimer / 2));
+			}
 		}
 
 		for(int i = mFleetingDemands.Count - 1; i >= 0; --i)
@@ -82,6 +99,10 @@ public class God : MonoBehaviour {
 			d.mTimeLeft -= Time.deltaTime;
 			if(d.mTimeLeft <= 0)
 			{
+				if(d.mDemand.mIgnoredResult != null)
+				{
+					d.mDemand.mIgnoredResult.DoEffect();
+				}
 				mFleetingDemands.RemoveAt(i);
 			}
 		}
@@ -106,11 +127,19 @@ public class God : MonoBehaviour {
 		return(demand.mId);
 	}
 
-	public void RemoveFleetingDemand(int demandId)
-	{
+	public void RemoveDemand(int demandId)
+	{		
 		foreach(FleetingDemand d in mFleetingDemands) {
 			if(d.mDemand.mId == demandId) {
 				mFleetingDemands.Remove(d);
+				return;
+			}
+		}
+
+		foreach(SacrificeDemand d in mDemands)
+		{
+			if(d.mId == demandId) {
+				mDemands.Remove(d);
 				return;
 			}
 		}
@@ -144,7 +173,7 @@ public class God : MonoBehaviour {
 					results.Add(sr);
 				}
 
-				mDemands.Remove(demand);
+				RemoveDemand(demandId);
 			}
 			else
 			{

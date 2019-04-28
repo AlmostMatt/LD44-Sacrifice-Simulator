@@ -34,11 +34,32 @@ public class DemandGenerator {
 		}
 		else
 		{
-			c.mMinAge = 20;
+			c.mMinAge = 15;
 		}
 
-		int numAttrs = Random.Range(1, 2);
-		c.mAttributes = GenerateRandomDemands(numAttrs);
+		c.mAttributes = GenerateRandomDemands(1);
+
+		d.mCriteria.Add(c);
+
+		return(d);
+	}
+
+	public static SacrificeDemand TierTwoDemand()
+	{
+		SacrificeDemand d = new SacrificeDemand();
+
+		Criterion c = new Criterion();
+
+		if(Random.value < 0.5)
+		{
+			c.mMinLevel = 10;
+		}
+		else
+		{
+			c.mMinAge = 30;
+		}
+
+		c.mAttributes = GenerateRandomDemands(2);
 
 		d.mCriteria.Add(c);
 
@@ -77,8 +98,23 @@ public class DemandGenerator {
 		return(demands);
 	}
 
-	public static List<Person.Attribute> GenerateRandomDemands(int preferredNum)
+	public static List<Person.Attribute> GenerateRandomDemands(int tier)
 	{
+		List<Person.Attribute> attrs = new List<Person.Attribute>();
+		Person.Attribute[] attributeAndProfession = Person.RandomAttributes(tier);
+		if(tier == 1)
+		{
+			attrs.Add(attributeAndProfession[Random.Range(0, attributeAndProfession.Length)]);
+		}
+		else if(tier == 2)
+		{
+			// restrict to profession + one other attribute...
+			// asking for two random attributes that you have no control over just feels bad
+			attrs.Add(attributeAndProfession[Random.Range(0, attributeAndProfession.Length -1)]);
+			attrs.Add(attributeAndProfession[attributeAndProfession.Length-1]);
+		}
+		return(attrs);
+		/*
 		List<Person.Attribute> demands = new List<Person.Attribute>();
 		var numAttrs = System.Enum.GetValues(typeof(Person.Attribute)).Length-1;
 		int[] attributes = Utilities.RandomList(numAttrs, preferredNum);
@@ -87,6 +123,7 @@ public class DemandGenerator {
 			demands.Add((Person.Attribute)attributes[i]);
 		}
 		return(demands);
+		*/
 	}
 
 }

@@ -56,7 +56,7 @@ public class Drought : RandomEventSystem.RandomEvent {
 
 			Utilities.LogEvent("The drought has ended.");
 
-			if(mDemandId > 0) Utilities.GetGod().RemoveFleetingDemand(mDemandId);
+			if(mDemandId > 0) Utilities.GetGod().RemoveDemand(mDemandId);
 
 			GameState.Drought = false;
 			return(true);
