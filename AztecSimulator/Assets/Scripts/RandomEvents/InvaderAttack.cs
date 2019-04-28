@@ -60,8 +60,14 @@ public class InvaderAttack : RandomEventSystem.RandomEvent {
 			Utilities.LogEvent("The forces have left.");
 
 			PersonManager personMgr = Utilities.GetPersonManager();
+
+			int warriorStrength = 0;
 			List<Person> warriors = personMgr.FindPeople(Person.AttributeType.PROFESSION, Person.Attribute.WARRIOR);
-			int warriorDiff = mRequiredWarriors - warriors.Count;
+			foreach(Person p in warriors) {
+				warriorStrength += p.Level;
+			}
+
+			int warriorDiff = mRequiredWarriors - warriorStrength;
 			if(warriorDiff <= 0) {
 				Utilities.LogEvent("Your warriors fended off the invaders and your people took no casualties.");
 			}
