@@ -7,13 +7,15 @@ public class PersonManager : MonoBehaviour {
 	public static int MAX_POPULATION = 10;
 	public int numStartingPeople = 8;
 
+	public float civilianBirthRateIncrease = 2;
+	public float birthInterval = 20;
+
 	private List<Person> mPeople;
 
 	public List<Person> People {
 		get { return(mPeople); }
 	}
 
-	private float mRepopulateInterval = 20;
 	private float mRepopulateTimer;
 
 	private List<GameObject> mPeopleChangedListeners;
@@ -29,7 +31,7 @@ public class PersonManager : MonoBehaviour {
 
 		mPeopleChangedListeners = new List<GameObject>();
 
-		mRepopulateTimer = mRepopulateInterval;
+		mRepopulateTimer = birthInterval;
 	}
 	
 	// Update is called once per frame
@@ -37,9 +39,11 @@ public class PersonManager : MonoBehaviour {
 
 		// repopulate. todo: figure out what actual logic we want for this,
 		// e.g. if it depends on other factors, if there's a hard cap, etc.
+		List<Person> civilians = FindPeople(Person.AttributeType.PROFESSION, Person.Attribute.CIVILIAN);
+		float birthRate = civilians.Count * civilianBirthRateIncrease;
 		if(mRepopulateTimer > 0)
 		{
-			mRepopulateTimer -= GameState.GameDeltaTime;
+			mRepopulateTimer -= GameState.GameDeltaTime * birthRate;
 		}
 		else
 		{
@@ -48,8 +52,9 @@ public class PersonManager : MonoBehaviour {
 				Debug.Log(p.Name + " was born!");
 				Utilities.LogEvent(p.Name + " was born!");
 			}
-			mRepopulateTimer = mRepopulateInterval;
+			mRepopulateTimer = birthInterval;
 		}
+
 		// Update ArmySize
 		int armySize = 0;
 		List<Person> warriors = FindPeople(Person.AttributeType.PROFESSION, Person.Attribute.WARRIOR);
