@@ -13,6 +13,7 @@ public class Person : MonoBehaviour {
 		NONE
 	}
 	public enum Attribute {
+		// When adding new professions, update the Utilities maps from attr to type and prof to description. Update the UIManager sprites.
 		FARMER = 0,
 		WARRIOR,
 		CIVILIAN,
@@ -159,6 +160,7 @@ public class Person : MonoBehaviour {
 	}
 
 	// Returns a list of strings to be used in top-left, top-right, bottom-left, bottom-right order in a list of people
+	// Icons (profession and health) are added by the UI Manager
 	public string[] GetUIDescription(SacrificeDemand selectedDemand)
 	{
 		string attrString = "";
@@ -170,12 +172,10 @@ public class Person : MonoBehaviour {
 			}
 		}
 		if(mIsHungry) { attrString += "  HUNGRY!"; }
-		string prof = GetAttribute(AttributeType.PROFESSION).ToString();
 		bool isLevelRelevant = selectedDemand != null && selectedDemand.IsRelevantLevel(mLevel);
-		bool isProfessionRelevant = selectedDemand != null && selectedDemand.IsRelevantAttribute(GetAttribute(AttributeType.PROFESSION));
-		string profString = "Lv " + Utilities.ColorString(mLevel.ToString(), "green", isLevelRelevant) + " " + Utilities.ColorString(prof, "green", isProfessionRelevant);
-		string lifeString = "Lifeforce: " + Mathf.Ceil(mHealth);
-		return new [] {mName + " (Age " + Age + ")", attrString, profString, lifeString};
+		string levelString = "Lv " + Utilities.ColorString(mLevel.ToString(), "green", isLevelRelevant) + " ";
+		string lifeString = " " + Mathf.Ceil(mHealth);
+		return new [] {mName + " (Age " + Age + ")", attrString, levelString, lifeString};
 	}
 
 	// Returns a single multiline string

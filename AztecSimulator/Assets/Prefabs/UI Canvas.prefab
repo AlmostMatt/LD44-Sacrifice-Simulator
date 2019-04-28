@@ -3247,6 +3247,9 @@ MonoBehaviour:
     type: 2}
   uiProfessionObject: {fileID: 1561607604244672, guid: b464a62562cb7214f99ad6973ec65d4f,
     type: 2}
+  warriorSprite: {fileID: 21300000, guid: 8557d86868293c347a760152ebc63f9a, type: 3}
+  farmerSprite: {fileID: 21300000, guid: 162db63a4fbf95446ba3a472f2cf5b5e, type: 3}
+  civilianSprite: {fileID: 21300000, guid: a8d2678b3f2cc264380c44cf2174b265, type: 3}
 --- !u!114 &114778536560228356
 MonoBehaviour:
   m_ObjectHideFlags: 1
