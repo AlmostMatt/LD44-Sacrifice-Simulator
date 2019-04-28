@@ -2,66 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SimpleDemand {
-	/*
-	public List<Person.Attribute> mDemandedAttributes;
-
-	public SimpleDemand(SacrificeResult satisfiedResult, SacrificeResult ignoredResult) : base(satisfiedResult, ignoredResult)
-	{
-		int numAttributes = Random.Range(1,3);
-		mDemandedAttributes = GenerateSatisfiableDemands(numAttributes);		
-	}
-
-	public override string GetShortDescription()
-	{
-		return(GetDemandedAttributes());
-	}
-
-	public override string GetLongDescription()
-	{
-		string satisfiedString = mSatisfiedResult == null ? "<demanded>" : mSatisfiedResult.mName;
-		string costString = GetDemandedAttributes();
-		return satisfiedString + "\r\nDEMAND\r\n" + costString;
-	}
-
-	private string GetDemandedAttributes()
-	{
-		return Utilities.ConcatStrings(mDemandedAttributes.ConvertAll(
-			attr => System.Enum.GetName(typeof(Person.Attribute), (int)attr)
-		), true);
-	}
-
-	public override bool IsRelevantLevel(int level) {
-		return false;
-	}
-
-	public override bool IsRelevantAttribute(Person.Attribute attribute) {
-		return mDemandedAttributes.Contains(attribute);
-	}
-
-	public override bool CheckSatisfaction(List<Person> people)
-	{
-		List<Person.Attribute> demandsCopy = new List<Person.Attribute>(mDemandedAttributes);
-		foreach(Person p in people)
-		{
-			foreach(Person.Attribute attr in p.Attributes)
-			{
-				foreach(Person.Attribute demandedAttr in demandsCopy)
-				{
-					if(attr == demandedAttr)
-					{
-						demandsCopy.Remove(demandedAttr);
-						break;
-					}
-				}
-			}
-		}
-
-		return(demandsCopy.Count == 0);
-	}
-	*/
-
-	public static SacrificeDemand New(SacrificeResult satisfiedResult, SacrificeResult ignoredResult)
+public class DemandGenerator {
+	
+	public static SacrificeDemand SimpleDemand(SacrificeResult satisfiedResult, SacrificeResult ignoredResult)
 	{
 		SacrificeDemand d = new SacrificeDemand(satisfiedResult, ignoredResult);
 
@@ -77,6 +20,18 @@ public class SimpleDemand {
 		}
 
 		return(d);
+	}
+
+	public static SacrificeDemand VictoryDemand()
+	{
+		// appropriately tuned demands to win the game
+		SacrificeDemand warriorDemand = new SacrificeDemand();
+		Criterion c = new Criterion();
+		c.mMinLevel = 20;
+		c.mAttributes.Add(Person.Attribute.WARRIOR);
+		c.mCount = 10;
+		warriorDemand.mCriteria.Add(c);
+		return(warriorDemand);
 	}
 
 	public static List<Person.Attribute> GenerateSatisfiableDemands(int preferredNum)

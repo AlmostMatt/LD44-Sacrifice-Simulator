@@ -21,24 +21,16 @@ public class God : MonoBehaviour {
 		int numDemands = 1; // Random.Range(1, 3);
 		for(int i = 0; i < numDemands; ++i)
 		{
-			mDemands.Add(SimpleDemand.New(new GoodCropBoon(), null));
+			mDemands.Add(DemandGenerator.SimpleDemand(new GoodCropBoon(), null));
 		}
 
-		mDemands.Add(SimpleDemand.New(new ImprovedLifespan(), null));
-		mDemands.Add(SimpleDemand.New(new FarmerXpBuff(), null));
-		mDemands.Add(SimpleDemand.New(new WarriorXpBuff(), null));
-		// mDemands.Add(new WarriorDemand());
+		mDemands.Add(DemandGenerator.SimpleDemand(new ImprovedLifespan(), null));
+		mDemands.Add(DemandGenerator.SimpleDemand(new FarmerXpBuff(), null));
+		mDemands.Add(DemandGenerator.SimpleDemand(new WarriorXpBuff(), null));
 
-
-		SacrificeDemand warriorDemand = new SacrificeDemand();
-		Criterion c = new Criterion();
-		c.mMinLevel = 20;
-		c.mAttributes.Add(Person.Attribute.WARRIOR);
-		c.mCount = 10;
-		warriorDemand.mCriteria.Add(c);
-		//warriorDemand.mShortDescOverride = "";
-		//warriorDemand.mLongDescOverride = "VICTORY\r\nDEMAND\r\n10 Level 20 Warriors";
-		mDemands.Add(warriorDemand);
+		SacrificeDemand victoryDemand = DemandGenerator.VictoryDemand();
+		victoryDemand.mSatisfiedResult = new VictoryResult();
+		mDemands.Add(victoryDemand);
 
 		DebugPrint();
 	}
@@ -58,7 +50,7 @@ public class God : MonoBehaviour {
 
 	public int AddDemand(SacrificeResult satisfiedResult, SacrificeResult ignoredResult, string msg)
 	{
-		SacrificeDemand demand = SimpleDemand.New(satisfiedResult, ignoredResult);
+		SacrificeDemand demand = DemandGenerator.SimpleDemand(satisfiedResult, ignoredResult);
 		mDemands.Add(demand);
 		if(msg != null) {
 			Utilities.LogEvent(msg + demand.GetShortDescription());
@@ -99,7 +91,10 @@ public class God : MonoBehaviour {
 				}
 
 				mDemands.Remove(demand);
-				mDemands.Add(SimpleDemand.New(new GoodCropBoon(), null));
+
+				// TODO: don't always replace with a new demand.
+				// pace these out with a timer or something (timer could depend on personality)
+				mDemands.Add(DemandGenerator.SimpleDemand(new GoodCropBoon(), null));
 			}
 			else
 			{
