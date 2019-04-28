@@ -92,6 +92,9 @@ public class UIManager : MonoBehaviour {
 
 		// Update the god and demands
 		if(mGod != null) {
+			string fleetingDemandsTabName = "Fleeting\r\nDemands";
+			if (mGod.FleetingDemands.Count > 0) {fleetingDemandsTabName += " (" + mGod.FleetingDemands.Count + ")"; }
+			transform.Find("Left/TabGroup/Tab1/Text").GetComponent<Text>().text = fleetingDemandsTabName;
 			transform.Find("Left/Demands/Name").GetComponent<Text>().text = mGod.Name;
 			// todo: separate short term and long term demands
 			List<SacrificeDemand> demands = GetSelectedTabIndex() == 0 ? mGod.FleetingDemands.ConvertAll(fD => fD.mDemand) : mGod.Demands;
