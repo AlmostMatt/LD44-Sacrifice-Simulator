@@ -10,6 +10,7 @@ public static class Utilities {
 		switch(attr){
 		case Person.Attribute.FARMER:
 		case Person.Attribute.WARRIOR:
+		case Person.Attribute.CIVILIAN:
 			return Person.AttributeType.PROFESSION;
 		case Person.Attribute.TALL:
 		case Person.Attribute.SHORT:
@@ -36,6 +37,8 @@ public static class Utilities {
 			return "Capable of feeding a number of people equal to level.";
 		case Person.Attribute.WARRIOR:
 			return "Capable of fighting off a number of invaders equal to level.";
+		case Person.Attribute.CIVILIAN:
+			return "Raises children, increasing the birth rate of your population.";
 		default:
 			return "<profession description>";
 		}

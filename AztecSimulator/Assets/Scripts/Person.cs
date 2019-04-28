@@ -15,6 +15,7 @@ public class Person : MonoBehaviour {
 	public enum Attribute {
 		FARMER = 0,
 		WARRIOR,
+		CIVILIAN,
 		TALL,
 		SHORT,
 		BLUE_EYES,
