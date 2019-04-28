@@ -20,6 +20,7 @@ public class InvaderAttack : RandomEventSystem.RandomEvent {
 
 		public override void DoEffect() {
 			mAttack.mIntervened = true;
+			GameState.InvaderSize = 0;
 		}
 	}
 

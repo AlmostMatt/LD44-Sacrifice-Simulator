@@ -67,6 +67,9 @@ public class UIManager : MonoBehaviour {
 			if (i >= mUiPeoplePool.Count) {
 				uiPerson = Instantiate(uiPersonObject);
 				mUiPeoplePool.Add(uiPerson);
+				if (GetSelectedTabIndex() == 2) {
+					uiPerson.GetComponentInChildren<Toggle>().group = mPeopleToggleGroup;
+				}
 			} else {
 				uiPerson = mUiPeoplePool[i];
 			}
