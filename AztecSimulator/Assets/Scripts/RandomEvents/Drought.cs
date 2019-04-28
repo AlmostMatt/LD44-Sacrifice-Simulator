@@ -12,7 +12,7 @@ public class Drought : RandomEventSystem.RandomEvent {
 
 		private Drought mDrought;
 
-		public GodIntervention(Drought drought) : base("Divine Intervention", "Rain") {
+		public GodIntervention(Drought drought) : base("Divine Intervention - Rain", "Stops the drought") {
 			mDrought = drought;
 		}
 
@@ -31,7 +31,12 @@ public class Drought : RandomEventSystem.RandomEvent {
 		mIntervened = false;
 
 		Utilities.LogEvent("A drought has befallen your farmland");
-		mDemandId = Utilities.GetGod().AddDemand(new GodIntervention(this), null, "God offers RAIN in exchange for ");
+		mDemandId = Utilities.GetGod().AddFleetingDemand(
+			new GodIntervention(this), 
+			null, 
+			mDuration, 
+			"God offers RAIN in exchange for "
+		);
 	}
 
 	public override bool Update () {
@@ -51,7 +56,7 @@ public class Drought : RandomEventSystem.RandomEvent {
 
 			Utilities.LogEvent("The drought has ended.");
 
-			if(mDemandId > 0) Utilities.GetGod().RemoveDemand(mDemandId);
+			if(mDemandId > 0) Utilities.GetGod().RemoveFleetingDemand(mDemandId);
 
 			GameState.Drought = false;
 			return(true);

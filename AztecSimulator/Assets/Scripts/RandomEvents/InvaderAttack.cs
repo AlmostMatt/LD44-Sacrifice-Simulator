@@ -12,7 +12,9 @@ public class InvaderAttack : RandomEventSystem.RandomEvent {
 	private class GodIntervention : SacrificeResult {
 		private InvaderAttack mAttack;
 
-		public GodIntervention(InvaderAttack attack) : base("Divine Intervention", "God will protect your people from the attackers") {
+		public GodIntervention(InvaderAttack attack) 
+			: base("Divine Intervention - Protection", "God will protect your people from the attackers") 
+		{
 			mAttack = attack;
 		}
 
@@ -35,7 +37,12 @@ public class InvaderAttack : RandomEventSystem.RandomEvent {
 		mRequiredWarriors = Random.Range(1, 6);
 
 		if(Random.value < 0.7) {
-			mDemandId = Utilities.GetGod().AddDemand(new InvaderAttack.GodIntervention(this), null, "God offers PROTECTION in exchange for "); // for now, will just let the god generate the random demand
+			mDemandId = Utilities.GetGod().AddFleetingDemand(
+				new InvaderAttack.GodIntervention(this),
+				null, 
+				mDuration, 
+				"God offers PROTECTION in exchange for "
+			); // for now, will just let the god generate the random demand
 		}
 	}
 
@@ -70,7 +77,7 @@ public class InvaderAttack : RandomEventSystem.RandomEvent {
 				Utilities.LogEvent(msg);
 			}
 
-			if(mDemandId > 0) Utilities.GetGod().RemoveDemand(mDemandId);
+			if(mDemandId > 0) Utilities.GetGod().RemoveFleetingDemand(mDemandId);
 
 			return(true);
 		}
