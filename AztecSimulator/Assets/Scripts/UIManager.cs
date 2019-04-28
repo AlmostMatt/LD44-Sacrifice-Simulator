@@ -42,7 +42,7 @@ public class UIManager : MonoBehaviour {
 		// Update people
 		// TODO: use people-changed-listener instead of update
 		List<Person> people = mPersonManager.People;
-		Transform peopleContainer = transform.Find("Right/People/PeopleList");
+		Transform peopleContainer = GetPeopleContainer();
 		for(int i = 0; i < Mathf.Max(people.Count, mUiPeoplePool.Count); i++)
 		{
 			GameObject uiPerson;
@@ -50,10 +50,10 @@ public class UIManager : MonoBehaviour {
 			if (i >= mUiPeoplePool.Count) {
 				uiPerson = Instantiate(uiPersonObject);
 				mUiPeoplePool.Add(uiPerson);
-				uiPerson.transform.SetParent(peopleContainer);
 			} else {
 				uiPerson = mUiPeoplePool[i];
 			}
+			uiPerson.transform.SetParent(peopleContainer);
 			// Update position
 			RectTransform rt = uiPerson.GetComponent<RectTransform>();
 			rt.anchoredPosition = new Vector2(0f,35f*(i-(people.Count-1)/2f));
@@ -71,9 +71,9 @@ public class UIManager : MonoBehaviour {
 
 		// Update the god and demands
 		if(mGod != null) {
-			transform.Find("Left/God/Name").GetComponent<Text>().text = mGod.Name;
+			transform.Find("Left/Demands/Name").GetComponent<Text>().text = mGod.Name;
 			List<SacrificeDemand> demands = mGod.Demands;
-			Transform demandContainer = transform.Find("Left/God/DemandList");
+			Transform demandContainer = transform.Find("Left/Demands/DemandList");
 			for(int i = 0; i < Mathf.Max(demands.Count, mUiDemandPool.Count); i++)
 			{
 				GameObject uiDemand;
@@ -206,5 +206,21 @@ public class UIManager : MonoBehaviour {
 
 		mNotificationMessages.Add(message);
 		mNotificationDurations.Add(duration);
+	}
+
+	private int GetSelectedTabIndex() {
+		// TODO: use the toggle group to find the tab more easily
+		if (transform.Find("Left/TabGroup/Tab1").GetComponent<Toggle>().isOn) { return 0; }
+		else if (transform.Find("Left/TabGroup/Tab2").GetComponent<Toggle>().isOn) { return 1; }
+		else if (transform.Find("Left/TabGroup/Tab3").GetComponent<Toggle>().isOn) { return 2; }
+		else if (transform.Find("Left/TabGroup/Tab4").GetComponent<Toggle>().isOn) { return 3; }
+		return -1;
+	}
+
+	private Transform GetPeopleContainer() {
+		int tabIndex = GetSelectedTabIndex();
+		var leftPeopleList = transform.Find("Left/People/PeopleList");
+		var rightPeopleList = transform.Find("Right/People/PeopleList");
+		return tabIndex == 2 ? leftPeopleList : rightPeopleList;
 	}
 }
