@@ -12,6 +12,11 @@ public class UIManager : MonoBehaviour {
 	public GameObject uiDemandObject;
 	public GameObject uiProfessionObject;
 
+	public Sprite warriorSprite;
+	public Sprite farmerSprite;
+	public Sprite civilianSprite;
+	private Dictionary<Person.Attribute, Sprite> mProfessionSprites;
+
 	private ToggleGroup mDemandToggleGroup;
 	private ToggleGroup mProfessionToggleGroup;
 	private ToggleGroup mPeopleToggleGroup;
@@ -49,6 +54,11 @@ public class UIManager : MonoBehaviour {
 			mProfessionToggles.Add(profession, toggle);
 		}
 		mProfessionToggles[Person.Attribute.FARMER].isOn = true;
+		mProfessionSprites = new Dictionary<Person.Attribute, Sprite> {
+			{Person.Attribute.WARRIOR, warriorSprite},
+			{Person.Attribute.FARMER, farmerSprite},
+			{Person.Attribute.CIVILIAN, civilianSprite}
+		};
 	}
 
 	void Update () {
@@ -81,8 +91,10 @@ public class UIManager : MonoBehaviour {
 				string[] descriptionStrings = people[i].GetUIDescription(selectedDemand);
 				uiPerson.transform.Find("Toggle/TextTL").GetComponent<Text>().text = descriptionStrings[0];
 				uiPerson.transform.Find("Toggle/TextTR").GetComponent<Text>().text = descriptionStrings[1];
-				uiPerson.transform.Find("Toggle/TextBL").GetComponent<Text>().text = descriptionStrings[2];
-				uiPerson.transform.Find("Toggle/TextBR").GetComponent<Text>().text = descriptionStrings[3];
+				uiPerson.transform.Find("Toggle/BLGroup/Text").GetComponent<Text>().text = descriptionStrings[2];
+				Person.Attribute profession = people[i].GetAttribute(Person.AttributeType.PROFESSION);
+				uiPerson.transform.Find("Toggle/BLGroup/Icon").GetComponent<Image>().sprite = mProfessionSprites[profession];
+				uiPerson.transform.Find("Toggle/BRGroup/Text").GetComponent<Text>().text = descriptionStrings[3];
 			}
 		}
 
