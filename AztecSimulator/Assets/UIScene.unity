@@ -225,9 +225,40 @@ Prefab:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 224473439166885108, guid: 1bcf8527d7f90294ebeeb5a5b3be6c32,
+        type: 2}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224473439166885108, guid: 1bcf8527d7f90294ebeeb5a5b3be6c32,
+        type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224473439166885108, guid: 1bcf8527d7f90294ebeeb5a5b3be6c32,
+        type: 2}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1bcf8527d7f90294ebeeb5a5b3be6c32, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1129958904 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1964679472227468, guid: e76847aa1c7bf254b9f00b2778de28f6,
+    type: 2}
+  m_PrefabInternal: {fileID: 1487701495}
+--- !u!114 &1129958910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1129958904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d49b989c12e6b84aa4c57f4628626cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1487701495
 Prefab:
   m_ObjectHideFlags: 0

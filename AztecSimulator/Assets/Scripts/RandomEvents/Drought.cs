@@ -47,7 +47,7 @@ public class Drought : RandomEventSystem.RandomEvent {
 			return(true);
 		}
 
-		mDuration -= Time.deltaTime;
+		mDuration -= GameState.GameDeltaTime;
 		if(mDuration <= 0)
 		{
 			//int cropsLost = Mathf.Min(GameState.FoodSupply, Random.Range(1, 6));

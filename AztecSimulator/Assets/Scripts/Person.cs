@@ -123,19 +123,19 @@ public class Person : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		mAge += 0.15f * Time.deltaTime;
+		mAge += 0.15f * GameState.GameDeltaTime;
 
 		float healthDecayRate = mBaseHealthDecayRate;
 		if(mIsHungry)
 		{
 			healthDecayRate *= 5;
 		}
-		mHealth -= healthDecayRate * Time.deltaTime;
+		mHealth -= healthDecayRate * GameState.GameDeltaTime;
 		Attribute profession = GetAttribute(AttributeType.PROFESSION);
 		if (profession != Attribute.NONE) {
 			int xpGain = 1; // 1 xp per second;
 			xpGain = GameState.GetBuffedXp(profession, xpGain);
-			mXp += xpGain * Time.deltaTime;
+			mXp += xpGain * GameState.GameDeltaTime;
 		}
 
 		if(mHealth <= 0)

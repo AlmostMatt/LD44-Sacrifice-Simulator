@@ -8,6 +8,20 @@ public class GameState {
 
 	private static GameState sGameState = new GameState();
 
+	private float mGameDeltaTime;
+	public static float GameDeltaTime
+	{
+		get { return(sGameState.mGameDeltaTime); }
+		set { sGameState.mGameDeltaTime = value; } // ONLY TimingManager is allowed to edit this
+	}
+
+	private float mGameSpeed = 1;
+	public static float GameSpeed
+	{
+		get { return(sGameState.mGameSpeed); }
+		set { sGameState.mGameSpeed = value; }
+	}
+
 	private int mFoodSupply = 10;
 	public static int FoodSupply // wow I didn't think this would actually work
 	{

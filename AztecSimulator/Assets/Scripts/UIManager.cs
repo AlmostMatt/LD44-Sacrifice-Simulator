@@ -150,7 +150,7 @@ public class UIManager : MonoBehaviour {
 			}
 		}
 		for (int i = mNotificationMessages.Count-1; i>= 0; i--) {
-			mNotificationDurations[i] -= Time.deltaTime;
+			mNotificationDurations[i] -= GameState.GameDeltaTime;
 			if (mNotificationDurations[i] <= 0f) {
 				mNotificationMessages.RemoveAt(i);
 				mNotificationDurations.RemoveAt(i);

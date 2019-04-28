@@ -39,7 +39,7 @@ public class PersonManager : MonoBehaviour {
 		// e.g. if it depends on other factors, if there's a hard cap, etc.
 		if(mRepopulateTimer > 0)
 		{
-			mRepopulateTimer -= Time.deltaTime;
+			mRepopulateTimer -= GameState.GameDeltaTime;
 		}
 		else
 		{

@@ -73,7 +73,7 @@ public class God : MonoBehaviour {
 
 		if(mFleetingDemands.Count < maxFleetingDemands)
 		{
-			mFleetingDemandTimer -= Time.deltaTime;
+			mFleetingDemandTimer -= GameState.GameDeltaTime;
 			if(mFleetingDemandTimer <= 0)
 			{
 				SacrificeDemand d = DemandGenerator.SimpleDemand();
@@ -96,7 +96,7 @@ public class God : MonoBehaviour {
 		for(int i = mFleetingDemands.Count - 1; i >= 0; --i)
 		{
 			FleetingDemand d = mFleetingDemands[i];
-			d.mTimeLeft -= Time.deltaTime;
+			d.mTimeLeft -= GameState.GameDeltaTime;
 			if(d.mTimeLeft <= 0)
 			{
 				if(d.mDemand.mIgnoredResult != null)

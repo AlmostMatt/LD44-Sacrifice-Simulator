@@ -43,7 +43,7 @@ public class RandomEventSystem : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		mEventTimer -= Time.deltaTime;
+		mEventTimer -= GameState.GameDeltaTime;
 
 		switch(mState) {
 		case EventSystemState.COOLDOWN:

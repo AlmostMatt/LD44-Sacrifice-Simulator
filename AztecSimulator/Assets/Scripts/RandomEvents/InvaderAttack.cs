@@ -54,7 +54,7 @@ public class InvaderAttack : RandomEventSystem.RandomEvent {
 			return(true);
 		}
 
-		mDuration -= Time.deltaTime;
+		mDuration -= GameState.GameDeltaTime;
 		if(mDuration <= 0) {
 			// maybe this should be in its own method, like Ended()?
 			Utilities.LogEvent("The forces have left.");
