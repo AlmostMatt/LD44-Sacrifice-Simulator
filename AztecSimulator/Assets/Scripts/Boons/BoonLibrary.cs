@@ -6,8 +6,8 @@ public class BoonLibrary {
 
 	private static SacrificeResult[] sTemporaryBoons = {
 		new GoodCropBoon(),
-		new FertilityBoon()
-		//new VitalityBoon(),
+		new FertilityBoon(),
+		new HealingBoon()
 		//new StudiousBoon()
 	};
 

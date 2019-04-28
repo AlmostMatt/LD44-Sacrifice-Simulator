@@ -77,7 +77,7 @@ public class InvaderAttack : RandomEventSystem.RandomEvent {
 				Utilities.LogEvent(msg);
 			}
 
-			if(mDemandId > 0) Utilities.GetGod().RemoveFleetingDemand(mDemandId);
+			if(mDemandId > 0) Utilities.GetGod().RemoveDemand(mDemandId);
 
 			return(true);
 		}
