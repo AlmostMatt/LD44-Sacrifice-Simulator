@@ -35,7 +35,7 @@ public class UIManager : MonoBehaviour {
 	private List<float> mNotificationDurations = new List<float>();
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		mGod = Utilities.GetGod();
 		mPersonManager = Utilities.GetPersonManager();
 		// create toggle groups for dynaically instantiate toggles.
@@ -43,22 +43,23 @@ public class UIManager : MonoBehaviour {
 		mProfessionToggleGroup = CreateToggleGroup("professionToggleGroup", false);
 		mPeopleToggleGroup = CreateToggleGroup("peopleToggleGroup", false);
 
-		Person.Attribute[] professions = Utilities.GetAttrValues(Person.AttributeType.PROFESSION);
-		foreach (Person.Attribute profession in professions) {
-			GameObject professionObject = Instantiate(uiProfessionObject);
-			professionObject.transform.parent = transform.Find("Right/Person/Professions/ProfessionList");
-			professionObject.transform.Find("Toggle/Text").GetComponent<Text>().text = profession.ToString(); 
-			professionObject.transform.Find("InfoText").GetComponent<Text>().text = profession.GetDescription(); 
-			Toggle toggle = professionObject.GetComponentInChildren<Toggle>();
-			toggle.group = mProfessionToggleGroup;
-			mProfessionToggles.Add(profession, toggle);
-		}
-		mProfessionToggles[Person.Attribute.FARMER].isOn = true;
 		mProfessionSprites = new Dictionary<Person.Attribute, Sprite> {
 			{Person.Attribute.WARRIOR, warriorSprite},
 			{Person.Attribute.FARMER, farmerSprite},
 			{Person.Attribute.CIVILIAN, civilianSprite}
 		};
+		Person.Attribute[] professions = Utilities.GetAttrValues(Person.AttributeType.PROFESSION);
+		foreach (Person.Attribute profession in professions) {
+			GameObject professionObject = Instantiate(uiProfessionObject);
+			professionObject.transform.parent = transform.Find("Right/Person/Professions/ProfessionList");
+			professionObject.transform.Find("Toggle/Icon").GetComponent<Image>().sprite = mProfessionSprites[profession]; 
+			professionObject.transform.Find("Toggle/Name").GetComponent<Text>().text = profession.ToString(); 
+			professionObject.transform.Find("Toggle/InfoText").GetComponent<Text>().text = profession.GetDescription(); 
+			Toggle toggle = professionObject.GetComponentInChildren<Toggle>();
+			toggle.group = mProfessionToggleGroup;
+			mProfessionToggles.Add(profession, toggle);
+		}
+		mProfessionToggles[Person.Attribute.FARMER].isOn = true;
 	}
 
 	void Update () {
