@@ -166,9 +166,15 @@ public class UIManager : MonoBehaviour {
 	private SacrificeDemand getSelectedDemand() {
 		int demandId = getSelectedDemandId();
 		if(mGod != null && demandId != 0) {
+			// todo: have a single method for all demands
 			foreach (SacrificeDemand demand in mGod.Demands) {
 				if (demand.mId == demandId) {
 					return demand;
+				}
+			}
+			foreach (God.FleetingDemand fDemand in mGod.FleetingDemands) {
+				if (fDemand.mDemand.mId == demandId) {
+					return fDemand.mDemand;
 				}
 			}
 		}
