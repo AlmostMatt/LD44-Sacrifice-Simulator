@@ -173,7 +173,7 @@ public class Person : MonoBehaviour {
 		}
 		if(mIsHungry) { attrString += "  HUNGRY!"; }
 		bool isLevelRelevant = selectedDemand != null && selectedDemand.IsRelevantLevel(mLevel);
-		string levelString = "Lv " + Utilities.ColorString(mLevel.ToString(), "green", isLevelRelevant) + " ";
+		string levelString = "Lvl " + Utilities.ColorString(mLevel.ToString(), "green", isLevelRelevant) + " ";
 		string lifeString = " " + Mathf.Ceil(mHealth);
 		return new [] {mName + " (Age " + Age + ")", attrString, levelString, lifeString};
 	}

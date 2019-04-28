@@ -12,7 +12,7 @@ public class SacrificeDemand
 	public SacrificeResult mIgnoredResult;
 
 	public string mShortDescOverride;
-	public string mLongDescOverride;
+	public string[] mLongDescOverride;
 
 	public SacrificeDemand(SacrificeResult satisfiedResult, SacrificeResult ignoredResult) {
 
@@ -74,19 +74,40 @@ public class SacrificeDemand
 		string costString = "";
 		foreach(Criterion c in mCriteria)
 		{
-			costString += c.GetString() + "\r\n";
+			string profString = c.GetProfession() == null ? "" : c.GetProfession().ToString();
+			costString += c.GetPrefixString() + profString + c.GetSuffixString() + "\r\n";
 		};
 		return(costString);
 	}
 
-	public string GetLongDescription() {
-		if(mLongDescOverride != null)
+	// Returns a list of strings. Two per row, one before the icon, and one after the icon.
+	public string[] GetUIDescriptionStrings() {
+		if(mLongDescOverride != null) {
 			return(mLongDescOverride);
-
+		}
+		string[] result = new string[4 + (2 * mCriteria.Count)];
 		string satisfiedString = mSatisfiedResult == null ? "Fail to satisfy: " + mIgnoredResult.mName : mSatisfiedResult.mName;
-		string costString = GetShortDescription();
+		result[0] = "";
+		result[1] = satisfiedString;
+		result[2] = "DEMAND";
+		result[3] = "";
+		for (int i=0; i< mCriteria.Count; i++) {
+			result[4+(2*i)] = mCriteria[i].GetPrefixString();
+			result[4+(2*i)+1] = mCriteria[i].GetSuffixString();
+		}
+		return result;
+	}
 
-		return (satisfiedString + "\r\nDEMAND\r\n" + costString).Trim();
+	// Returns a list of attributes. Corresponding icons will be used in the demand info rows.
+	// TODO: support images other than profession icons
+	public Person.Attribute[] GetUIDescriptionIcons() {
+		Person.Attribute[] attributes = new Person.Attribute[2 + mCriteria.Count];
+		attributes[0] = Person.Attribute.WARRIOR;
+		attributes[1] = Person.Attribute.NONE;
+		for (int i=0; i< mCriteria.Count; i++) {
+			attributes[2+i] = mCriteria[i].GetProfession();
+		}
+		return attributes;
 	}
 
 	public void DebugPrint()

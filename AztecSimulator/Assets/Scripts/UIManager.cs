@@ -46,7 +46,8 @@ public class UIManager : MonoBehaviour {
 		mProfessionSprites = new Dictionary<Person.Attribute, Sprite> {
 			{Person.Attribute.WARRIOR, warriorSprite},
 			{Person.Attribute.FARMER, farmerSprite},
-			{Person.Attribute.CIVILIAN, civilianSprite}
+			{Person.Attribute.CIVILIAN, civilianSprite},
+			{Person.Attribute.NONE, null}
 		};
 		Person.Attribute[] professions = Utilities.GetAttrValues(Person.AttributeType.PROFESSION);
 		foreach (Person.Attribute profession in professions) {
@@ -134,7 +135,26 @@ public class UIManager : MonoBehaviour {
 				// Update text and store id in name
 				if (i < demands.Count) {
 					uiDemand.name = demands[i].mId.ToString();
-					uiDemand.transform.Find("Text").GetComponent<Text>().text = demands[i].GetLongDescription(); 
+					string[] demandStrings = demands[i].GetUIDescriptionStrings();
+					Person.Attribute[] demandProfessions = demands[i].GetUIDescriptionIcons();
+					int numRows = Mathf.Min(demandStrings.Length / 2, demandProfessions.Length);
+					Transform uiDemandVGroup = uiDemand.transform.Find("VGroup");
+					for (int rowI = 0; rowI < Mathf.Max(numRows, uiDemandVGroup.childCount); rowI++) {
+						Transform row;
+						if (rowI >= uiDemandVGroup.childCount) {
+							row = Instantiate(uiDemandVGroup.GetChild(0));
+							row.SetParent(uiDemandVGroup, false);
+						} else {
+							row = uiDemandVGroup.GetChild(rowI);
+						}
+						row.gameObject.SetActive(rowI < numRows);
+						if (rowI < numRows) {
+							row.GetChild(0).GetComponent<Text>().text = demandStrings[2 * rowI];
+							row.GetChild(1).GetComponent<Image>().sprite = mProfessionSprites[demandProfessions[rowI]];
+							row.GetChild(1).gameObject.SetActive(demandProfessions[rowI] != Person.Attribute.NONE);
+							row.GetChild(2).GetComponent<Text>().text = demandStrings[2 * rowI + 1];
+						}
+					}
 				}
 			}
 		}
