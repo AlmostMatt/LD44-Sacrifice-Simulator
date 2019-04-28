@@ -66,6 +66,10 @@ public static class Utilities {
 		return(chosenIndices);
 	}
 
+	public static T Random<T>(T[] possibleValues) {
+		return(possibleValues[Random.Range(0, possibleValues.Length)]);
+	}
+
 	public static T[] RandomSubset<T>(T[] possibleValues, int numToChoose) {
 		int[] listOfIndexes = new int[possibleValues.Length];
 		for(int i= 0; i< possibleValues.Length; ++i) {

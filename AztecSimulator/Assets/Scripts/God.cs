@@ -72,7 +72,7 @@ public class God : MonoBehaviour {
 				float specialChance = 0.0f + GameState.Favour * 0.05f;
 				float roll = Random.value;
 				if(roll <= negativeChance)
-					d.mIgnoredResult = new PlagueCurse();
+					d.mIgnoredResult = BoonLibrary.RandomTemporaryCurse();
 				else
 				if(roll - negativeChance <= specialChance)
 					d.mSatisfiedResult = BoonLibrary.RandomTierOneBoon();

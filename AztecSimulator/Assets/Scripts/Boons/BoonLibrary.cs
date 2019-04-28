@@ -7,19 +7,32 @@ public class BoonLibrary {
 	private static SacrificeResult[] sTemporaryBoons = {
 		new GoodCropBoon(),
 		new FertilityBoon(),
-		new HealingBoon()
+		new HealingBoon(),
+		new Favour()
 		//new StudiousBoon()
+	};
+
+	private static SacrificeResult[] sTemporaryCurses = {
+		new PlagueCurse()
 	};
 
 	private static SacrificeResult[] sTierOneBoons = {
 		new FarmerXpBuff(),
 		new ImprovedLifespan(),
-		new WarriorXpBuff()
+		new WarriorXpBuff(),
+		new Favour()
 	};
 
-	public static SacrificeResult RandomTierOneBoon()
-	{
-		return(sTierOneBoons[Random.Range(0, sTierOneBoons.Length)]);
+	public static SacrificeResult RandomTemporaryBoon() {
+		return(Utilities.Random<SacrificeResult>(sTemporaryBoons));
+	}
+
+	public static SacrificeResult RandomTemporaryCurse() {
+		return(Utilities.Random<SacrificeResult>(sTemporaryCurses));
+	}
+
+	public static SacrificeResult RandomTierOneBoon() {
+		return(Utilities.Random<SacrificeResult>(sTierOneBoons));
 	}
 
 	public static SacrificeResult[] RandomTierOneBoons(int howMany)
@@ -27,10 +40,4 @@ public class BoonLibrary {
 		SacrificeResult[] boons = Utilities.RandomSubset<SacrificeResult>(sTierOneBoons, howMany);
 		return(boons);
 	}
-
-	public static SacrificeResult RandomTemporaryBoon()
-	{
-		return(sTemporaryBoons[Random.Range(0, sTemporaryBoons.Length)]);
-	}
-
 }
