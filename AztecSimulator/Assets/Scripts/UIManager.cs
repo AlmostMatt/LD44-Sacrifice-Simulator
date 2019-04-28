@@ -72,7 +72,8 @@ public class UIManager : MonoBehaviour {
 		// Update the god and demands
 		if(mGod != null) {
 			transform.Find("Left/Demands/Name").GetComponent<Text>().text = mGod.Name;
-			List<SacrificeDemand> demands = mGod.Demands;
+			// todo: separate short term and long term demands
+			List<SacrificeDemand> demands = GetSelectedTabIndex() == 0 ? mGod.Demands : mGod.Demands;
 			Transform demandContainer = transform.Find("Left/Demands/DemandList");
 			for(int i = 0; i < Mathf.Max(demands.Count, mUiDemandPool.Count); i++)
 			{
@@ -196,6 +197,7 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void LogEvent(string message, float duration=4f) {
+		message = message.Trim();
 		mEventMessages.Add(message);
 		string newLogText = "";
 		// Concatenate the last K messages
