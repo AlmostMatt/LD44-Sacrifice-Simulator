@@ -28,15 +28,9 @@ public class DemandGenerator {
 
 		Criterion c = new Criterion();
 
-		if(Random.value < 0.5)
-		{
-			c.mMinLevel = 5;
-		}
-		else
-		{
-			c.mMinAge = 15;
-		}
-
+		c.mMinLevel = Random.Range(0,11);
+		c.mMinAge = Random.Range(0, 21);
+		c.mCount = Random.Range(1, 6);
 		c.mAttributes = GenerateRandomDemands(1);
 
 		d.mCriteria.Add(c);

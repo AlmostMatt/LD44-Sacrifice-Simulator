@@ -120,7 +120,8 @@ public class Person : MonoBehaviour {
 
 		mIsHungry = false;
 		mHealth = startingHealth;
-		mBaseHealthDecayRate = Random.Range(0.45f, 0.55f);
+		//mBaseHealthDecayRate = Random.Range(0.45f, 0.55f);
+		mBaseHealthDecayRate = 0;
 		if(GameState.ImprovedLifespan1) mBaseHealthDecayRate *= 0.5f;
 	}
 	
@@ -132,7 +133,8 @@ public class Person : MonoBehaviour {
 		float healthDecayRate = mBaseHealthDecayRate;
 		if(mIsHungry)
 		{
-			healthDecayRate *= 5;
+			// healthDecayRate *= 5;
+			healthDecayRate = 1;
 		}
 		mHealth -= healthDecayRate * GameState.GameDeltaTime;
 		Attribute profession = GetAttribute(AttributeType.PROFESSION);
