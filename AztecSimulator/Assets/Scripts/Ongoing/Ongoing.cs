@@ -21,13 +21,21 @@ public class Ongoing
 	}
 
 	public void RenderTo(GameObject uiOngoing) {
-		// TODO: update text, icon, timer, background color, etc
-		//uiOngoing.transform.Find("Icon").GetComponent<Image>().sprite;
+		if (mIconName != "") {
+			uiOngoing.transform.Find("Icon").GetComponent<Image>().sprite = Utilities.GetSpriteManager().GetSprite(mIconName);
+			uiOngoing.transform.Find("Icon").gameObject.SetActive(true);
+		} else {
+			uiOngoing.transform.Find("Icon").gameObject.SetActive(false);
+		}
 		uiOngoing.transform.Find("VGroup/Text1").GetComponent<Text>().text = mTitle;
 		int minutes = (int)Mathf.Floor(mDuration/60);
 		int seconds = (int)Mathf.Floor(mDuration % 60);
 		uiOngoing.transform.Find("VGroup/Text2").GetComponent<Text>().text = string.Format("{0}:{1}", minutes, seconds);
 		uiOngoing.GetComponent<HoverInfo>().SetText(mDescription.ToString());
+		// trying lighter and lighter shades, because its a multiplied by a gray image
+		//uiOngoing.GetComponent<Image>().color = mIsGood ? new Color(77f/255f, 158f/255f, 115/255f) : new Color(158f/255f,53f/255f,64f/255f);
+		//uiOngoing.GetComponent<Image>().color = mIsGood ? new Color(99f/255f, 204f/255f, 146/255f) : new Color(193f/255f,65/255f,80f/255f);
+		uiOngoing.GetComponent<Image>().color = mIsGood ? new Color(118f/255f, 242f/255f, 172/255f) : new Color(226f/255f,77f/255f,97f/255f);
 	}
 }
 
