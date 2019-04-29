@@ -92,8 +92,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   logDemandsOnStart: 0
-  fleetingDemandTimer: 30
-  maxFleetingDemands: 2
+  fleetingDemandTimer: 60
+  maxFleetingDemands: 1
 --- !u!114 &114797501282310160
 MonoBehaviour:
   m_ObjectHideFlags: 1
