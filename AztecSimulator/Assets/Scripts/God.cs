@@ -70,6 +70,10 @@ public class God : MonoBehaviour {
 	public string Name { get { return mName;}}
 	public List<GodDemand> Demands
 	{
+		get { return(mDemands); }
+	}
+	public List<GodDemand> PermanentDemands
+	{
 		get { return(mDemands.FindAll(x => x.mTimeLeft == -1f)); }
 	}
 	public List<GodDemand> FleetingDemands

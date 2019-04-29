@@ -314,7 +314,7 @@ public class Person : MonoBehaviour {
 			AttributeType.PERSONALITY,
 			AttributeType.HEIGHT,
 			AttributeType.STRENGTH,
-			AttributeType.EYE_COLOR,
+			// AttributeType.EYE_COLOR,
 		};
 
 		AttributeType[] randomAttributes = Utilities.RandomSubset(attrTypes, howMany);
