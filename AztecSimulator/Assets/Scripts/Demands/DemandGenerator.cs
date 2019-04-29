@@ -232,10 +232,20 @@ public class DemandGenerator {
 		}
 
 		SacrificeDemand experienceDemand = new SacrificeDemand();
-		Criterion expC = new Criterion();
-		expC.mMinLevel = 6;
-		expC.mCount = 3;
-		experienceDemand.mCriteria.Add(expC);
+		Criterion farmC = new Criterion();
+		farmC.mMinLevel = 6;
+		farmC.mAttributes.Add(Person.Attribute.FARMER);
+		experienceDemand.mCriteria.Add(farmC);
+
+		Criterion warC = new Criterion();
+		warC.mMinLevel = 6;
+		warC.mAttributes.Add(Person.Attribute.WARRIOR);
+		experienceDemand.mCriteria.Add(warC);
+
+		Criterion civC = new Criterion();
+		civC.mMinLevel = 6;
+		civC.mAttributes.Add(Person.Attribute.CIVILIAN);
+		experienceDemand.mCriteria.Add(civC);
 		return(experienceDemand);
 	}
 
