@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour {
 	public GameObject uiPersonObject;
 	public GameObject uiDemandObject;
 	public GameObject uiProfessionObject;
+	public GameObject uiOngoingObject;
 
 	public Sprite warriorSprite;
 	public Sprite farmerSprite;
@@ -24,6 +25,7 @@ public class UIManager : MonoBehaviour {
 	private List<GameObject> mUiPeoplePool = new List<GameObject>();
 	private List<GameObject> mUiDemandPool = new List<GameObject>();
 	private List<GameObject> mUiNotificationPool = new List<GameObject>();
+	private List<GameObject> mUiOngoingPool = new List<GameObject>();
 
 	private Dictionary<Person.Attribute, Toggle> mProfessionToggles = new Dictionary<Person.Attribute, Toggle>();
 
@@ -67,6 +69,9 @@ public class UIManager : MonoBehaviour {
 		List<Person> selectedPeople = getSelectedPeople();
 		SacrificeDemand selectedDemand = getSelectedDemand();
 		transform.Find("Right/People/SacrificeButton").GetComponent<Button>().interactable = (selectedPeople.Count > 0);
+
+		// TODO: define a renderable interface, and generalize each of these loops to updateRenderable
+		// Ongoing is an example of a renderable
 
 		// Update people
 		// TODO: use people-changed-listener instead of update
@@ -162,7 +167,7 @@ public class UIManager : MonoBehaviour {
 
 		// Update notification objects
 		// UPDATE: this now only shows and updates the timer of the first (oldest) notification
-		Transform notificationContainer = transform.Find("Corner");
+		Transform notificationContainer = transform.Find("BRCorner");
 		for(int i = 0; i < Mathf.Max(mNotificationMessages.Count, mUiNotificationPool.Count); i++)
 		{
 			GameObject uiNotification;
@@ -192,6 +197,30 @@ public class UIManager : MonoBehaviour {
 			if (mNotificationDurations[0] <= 0f) {
 				mNotificationMessages.RemoveAt(0);
 				mNotificationDurations.RemoveAt(0);
+			}
+		}
+
+		// Update ongoing objects
+		Transform ongoingContainer = transform.Find("TRCorner/OngoingGroup");
+		// TODO: maintain a list of Ongoing structs
+		List<Ongoing> ongoings = new List<Ongoing>();
+		ongoings.Add(new Ongoing("WARRIOR", "Ongoing!", "4 Enemy Warriors are approaching!", 92.1f, true));
+		for(int i = 0; i < Mathf.Max(ongoings.Count, mUiOngoingPool.Count); i++)
+		{
+			GameObject uiOngoing;
+			// Spawn new UI ongoing
+			if (i >= mUiOngoingPool.Count) {
+				uiOngoing = Instantiate(uiOngoingObject);
+				mUiOngoingPool.Add(uiOngoing);
+				uiOngoing.transform.SetParent(ongoingContainer);
+			} else {
+				uiOngoing = mUiOngoingPool[i];
+			}
+			// Update visibility
+			uiOngoing.transform.gameObject.SetActive(i < ongoings.Count);
+			// Update text and alpha
+			if (i < ongoings.Count) {
+				ongoings[i].RenderTo(uiOngoing);
 			}
 		}
 
