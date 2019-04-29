@@ -71,6 +71,6 @@ public class Drought : RandomEventSystem.RandomEvent {
 	public override void Removed() {
 		GameState.Ongoings.Remove(mOngoing);
 		mOngoing = null;
-		Utilities.GetEventSystem().ScheduleEvent(new Drought(), Random.Range(10, 30));
+		Utilities.GetEventSystem().ScheduleEvent(new Drought(), Random.Range(45, 91));
 	}
 }
