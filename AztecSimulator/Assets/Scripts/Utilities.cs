@@ -95,7 +95,7 @@ public static class Utilities {
 
 		int[] chosenIndices = new int[numChoices];
 		for(int i = 0; i < numChoices; ++i) {
-			int pick = Random.Range(i, totalPossibilities);
+			int pick = Random.Range(0, totalPossibilities);
 			chosenIndices[i] = availableChoices[pick];
 			availableChoices[pick] = availableChoices[--totalPossibilities];
 		}
