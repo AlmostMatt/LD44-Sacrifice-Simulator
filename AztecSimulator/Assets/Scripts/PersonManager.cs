@@ -44,7 +44,8 @@ public class PersonManager : MonoBehaviour {
 		float birthRate = civilians.Count * civilianBirthRateIncrease;
 		if(GameState.HasBoon(BoonType.SURPLUS_FOOD_TO_BIRTHRATE))
 		{
-			birthRate += GameState.FoodSurplus * 0.05f;
+			float birthrateIncrease = GameState.GetBoonValue(BoonType.SURPLUS_FOOD_TO_BIRTHRATE) / 100f;
+			birthRate += birthrateIncrease * GameState.FoodSurplus;
 		}
 		if(mRepopulateTimer > 0)
 		{

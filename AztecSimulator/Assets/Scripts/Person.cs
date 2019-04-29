@@ -194,7 +194,8 @@ public class Person : MonoBehaviour {
 		}
 		else if(GameState.HasBoon(BoonType.SURPLUS_FOOD_TO_HEALING))
 		{
-			healthDecayRate -= 0.05f * GameState.FoodSurplus;
+			float healAmount = GameState.GetBoonValue(BoonType.SURPLUS_FOOD_TO_HEALING) / 100f;
+			healthDecayRate -=  healAmount * GameState.FoodSurplus;
 		}
 		mHealth -= healthDecayRate * GameState.GameDeltaTime;
 
