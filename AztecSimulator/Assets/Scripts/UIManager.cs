@@ -157,8 +157,8 @@ public class UIManager : MonoBehaviour {
 					uiDemand.name = demands[i].mId.ToString();
 					uiDemand.GetComponent<HoverInfo>().SetText(demands[i].GetResultDescription());
 					string[] demandStrings = demands[i].GetUIDescriptionStrings();
-					Person.Attribute[] demandProfessions = demands[i].GetUIDescriptionIcons();
-					int numRows = Mathf.Min(demandStrings.Length / 2, demandProfessions.Length);
+					string[] demandIconNames = demands[i].GetUIDescriptionIconNames();
+					int numRows = Mathf.Min(demandStrings.Length / 2, demandIconNames.Length);
 					Transform uiDemandVGroup = uiDemand.transform.Find("VGroup");
 					for (int rowI = 0; rowI < Mathf.Max(numRows, uiDemandVGroup.childCount); rowI++) {
 						Transform row;
@@ -171,8 +171,8 @@ public class UIManager : MonoBehaviour {
 						row.gameObject.SetActive(rowI < numRows);
 						if (rowI < numRows) {
 							row.GetChild(0).GetComponent<Text>().text = demandStrings[2 * rowI];
-							row.GetChild(1).GetComponent<Image>().sprite = mSpriteManager.GetSprite(demandProfessions[rowI]);
-							row.GetChild(1).gameObject.SetActive(demandProfessions[rowI] != Person.Attribute.NONE);
+							row.GetChild(1).GetComponent<Image>().sprite = mSpriteManager.GetSprite(demandIconNames[rowI]);
+							row.GetChild(1).gameObject.SetActive(demandIconNames[rowI] != "" && demandIconNames[rowI] != "NONE");
 							row.GetChild(2).GetComponent<Text>().text = demandStrings[2 * rowI + 1];
 						}
 					}

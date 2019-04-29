@@ -70,19 +70,19 @@ public class God : MonoBehaviour {
 			return result;
 		}
 
-		public Person.Attribute[] GetUIDescriptionIcons() {
+		public string[] GetUIDescriptionIconNames() {
 			Person.Attribute[] demandAttributes = mDemand.GetUIDescriptionIcons(); 
 
 			int numLinesPreCriteria = mTimeLeft >= 0 ? 3 : 2;
-			Person.Attribute[] attributes = new Person.Attribute[numLinesPreCriteria + demandAttributes.Length];
+			string[] attributes = new string[numLinesPreCriteria + demandAttributes.Length];
 
 			for(int i = 0; i < numLinesPreCriteria; ++i) { // TODO
-				attributes[i] = Person.Attribute.NONE;
+				attributes[i] = "";
 			}
 		
 			for(int i = 0; i < demandAttributes.Length; ++i)
 			{
-				attributes[i + numLinesPreCriteria] = demandAttributes[i];
+				attributes[i + numLinesPreCriteria] = demandAttributes[i].ToString();
 			}
 
 			return(attributes);

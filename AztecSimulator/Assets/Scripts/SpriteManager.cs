@@ -28,6 +28,9 @@ public class SpriteManager : MonoBehaviour {
 	}
 
 	public Sprite GetSprite(string iconName) {
+		if (iconName == "" || iconName == "NONE") {
+			return null;
+		}
 		// Call Setup here in case awake hasnt yet happened
 		if (stringToSpriteMap.Count == 0) {
 			Setup();
