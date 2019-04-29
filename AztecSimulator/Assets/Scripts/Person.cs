@@ -6,13 +6,13 @@ public class Person : MonoBehaviour {
 	private static Dictionary<Person.Attribute, float> EFFICIENCY_BASE = new Dictionary<Person.Attribute, float> {
 		{Person.Attribute.FARMER, 1f},
 		{Person.Attribute.WARRIOR, 1f},
-		{Person.Attribute.CIVILIAN, 1.5f},
+		{Person.Attribute.CIVILIAN, 0.5f},
 		{Person.Attribute.NONE, 0f}
 	};
 	private static Dictionary<Person.Attribute, float> EFFICIENCY_PER_LEVEL = new Dictionary<Person.Attribute, float> {
 		{Person.Attribute.FARMER, 0.5f},
 		{Person.Attribute.WARRIOR, 0.5f},
-		{Person.Attribute.CIVILIAN, 0.5f},
+		{Person.Attribute.CIVILIAN, 0.2f},
 		{Person.Attribute.NONE, 0f}
 	};
 
@@ -197,13 +197,13 @@ public class Person : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		mAge += 0.15f * GameState.GameDeltaTime;
+		mAge += 0.2f * GameState.GameDeltaTime;
 
 		Attribute profession = GetAttribute(AttributeType.PROFESSION);
 		if(mLevel < GameState.GetLevelCap(profession))
 		{
 			if (profession != Attribute.NONE) {
-				int xpGain = 1; // 1 xp per second;
+				int xpGain = 1;
 				xpGain = GameState.GetBuffedXp(profession, xpGain);
 
 				if(GameState.HasBoon(BoonType.SAME_PROFESSION_XP_BONUS))
@@ -227,7 +227,7 @@ public class Person : MonoBehaviour {
 					xpGain += GameState.GetBoonValue(BoonType.UNHEALTHY_BONUS_XP);
 				}
 
-				mXp += xpGain * GameState.GameDeltaTime;
+				mXp += xpGain * 0.25f * GameState.GameDeltaTime;
 			}
 
 			mLevel = GetLevelForXp(mXp);
