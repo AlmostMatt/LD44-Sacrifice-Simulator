@@ -15,7 +15,7 @@ public class Drought : RandomEventSystem.RandomEvent {
 
 		private Drought mDrought;
 
-		public GodIntervention(Drought drought) : base("Divine Intervention - Rain", "Stops the drought") {
+		public GodIntervention(Drought drought) : base("Rain", "Stops the drought") {
 			mDrought = drought;
 		}
 
