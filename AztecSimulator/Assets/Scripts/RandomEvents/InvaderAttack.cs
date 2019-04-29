@@ -13,7 +13,7 @@ public class InvaderAttack : RandomEventSystem.RandomEvent {
 		private InvaderAttack mAttack;
 
 		public GodIntervention(InvaderAttack attack) 
-			: base("Divine Intervention - Protection", "God will protect your people from the attackers") 
+			: base("Protection", "God will protect your people from the attackers") 
 		{
 			mAttack = attack;
 		}
