@@ -200,7 +200,7 @@ public class UIManager : MonoBehaviour {
 			? "Army: " + GameState.ArmySize
 			: Utilities.ColorString("Army: " + GameState.ArmySize + "/" + GameState.InvaderSize, "red", GameState.InvaderSize > GameState.ArmySize);
 		transform.Find("Top/Left/Item2/Text").GetComponent<Text>().text = armyString;
-		transform.Find("Top/Left/Item3/Text").GetComponent<Text>().text = "Birth every\r\n" + (int)GameState.TimeBetweenBirths + " seconds";
+		transform.Find("Top/Left/Item3/Text").GetComponent<Text>().text = string.Format("Birth every\r\n{0:0.0} seconds", GameState.TimeBetweenBirths);
 		// Population
 		transform.Find("Top/Right/Item1/Text").GetComponent<Text>().text = "Population: " + people.Count + "/" + PersonManager.MAX_POPULATION;
 	}
