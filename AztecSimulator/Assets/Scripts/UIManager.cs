@@ -356,7 +356,7 @@ public class UIManager : MonoBehaviour {
 		transform.Find("Left/Log/Scroll View/Viewport/LogText").GetComponent<Text>().text = newLogText.Trim();
 
 		mNotificationIsGod.Add(isGod);
-		mNotificationMessages.Add(message);
+		mNotificationMessages.Add(isGod ? "<b>" + message + "</b>" : message);
 		mNotificationDurations.Add(duration);
 	}
 
