@@ -237,7 +237,7 @@ public class God : MonoBehaviour {
 	public int AddFleetingDemand(int tier, SacrificeResult satisfiedResult, SacrificeResult ignoredResult, float time, string msg)
 	{
 		GodDemand demand = new GodDemand(
-			DemandGenerator.ScaledDemand(tier),
+			DemandGenerator.ScaledDemand(tier, true),
             satisfiedResult,
             ignoredResult
         );

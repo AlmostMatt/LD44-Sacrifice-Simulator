@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DemandGenerator {
 
-	public static SacrificeDemand ScaledDemand(int tier)
+	public static SacrificeDemand ScaledDemand(int tier, bool mustBeSatisfiable = false)
 	{
 		tier = Mathf.Max(0, tier + (Random.Range(0, 100) / 70));
 		if(tier == 0)
@@ -16,15 +16,21 @@ public class DemandGenerator {
 		if(tier == 1)
 		{
 			// 1 attribute that you may not have
-			if(Random.value < 0.5)
+			if(!mustBeSatisfiable && Random.value < 0.5)
 				return(BuildDemand(0,1,1));
 
 			// 2 on the same person
-			return(BuildDemand(1,1,2));
+			if(!mustBeSatisfiable && Random.value < 0.7)
+				return(BuildDemand(1,1,2));
+
+			return(BuildDemand(1,0,1));
 		}
 	
 		if(tier == 2)
 		{
+			if(mustBeSatisfiable)
+				return(BuildDemand(1, 0, 1));
+
 			if(Random.value < 0.5)
 			{
 				// 2 on the same person
@@ -38,6 +44,12 @@ public class DemandGenerator {
 		}
 
 		// tier >= 3
+		if(mustBeSatisfiable)
+		{
+			// demand a specific person
+			return(PersonDemand(tier));
+		}
+
 		SacrificeDemand demand;
 		if(Random.value < 0.5)
 		{
@@ -57,6 +69,7 @@ public class DemandGenerator {
 
 		if(tier >= 4)
 		{
+			int personCount = Mathf.Min((tier / 2) + 1, 4);
 			foreach(Criterion c in demand.mCriteria)
 			{
 				if(Random.value < 0.3)
@@ -67,10 +80,11 @@ public class DemandGenerator {
 				{
 					c.mMinLevel = tier + 2;
 				}
-
-				if(Random.value < 0.1 + (tier / 10))
+					
+				if(personCount > 0 && Random.value < 0.1 + (tier / 10))
 				{
-					c.mCount = (tier / 2) + 1;
+					c.mCount = Random.Range(1, personCount+1);
+					personCount -= c.mCount;
 				}
 			}
 		}
@@ -143,6 +157,25 @@ public class DemandGenerator {
 		{
 			Criterion c = new Criterion();
 			c.mAttributes.Add(attr);
+			d.mCriteria.Add(c);
+		}
+
+		return(d);
+	}
+
+	public static SacrificeDemand PersonDemand(int tier)
+	{
+		int numPeople = tier >= 6 ? 2 : 1;
+
+		Person[] people = Utilities.RandomSubset<Person>(Utilities.GetPersonManager().People.ToArray(), numPeople);
+
+		SacrificeDemand d = new SacrificeDemand();
+		foreach(Person p in people)
+		{
+			Criterion c = new Criterion();
+			c.mMinLevel = p.Level;
+			c.mAttributes.Add(p.GetAttribute(Person.AttributeType.PROFESSION));
+			c.mAttributes.Add(p.Attributes[Random.Range(0, p.Attributes.Length - 2)]);
 			d.mCriteria.Add(c);
 		}
 

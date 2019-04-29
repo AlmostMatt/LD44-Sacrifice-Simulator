@@ -26,8 +26,8 @@ public class Drought : RandomEventSystem.RandomEvent {
 
 	public override float Start () {
 		GameState.Drought = true;
-		int diffIncrease = Mathf.FloorToInt(GameState.GameTimeElapsed / 60);
-		mDuration = (Random.Range(1, 4) + diffIncrease) * 10;
+		int diffIncrease = Mathf.FloorToInt(GameState.GameTimeElapsed / 120);
+		mDuration = (Random.Range(2, 5) + Mathf.FloorToInt(Mathf.Sqrt(diffIncrease))) * 5;
 		mIntervened = false;
 
 		Image background = Utilities.GetBackground();
