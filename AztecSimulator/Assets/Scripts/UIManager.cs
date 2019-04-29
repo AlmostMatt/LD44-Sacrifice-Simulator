@@ -110,7 +110,7 @@ public class UIManager : MonoBehaviour {
 			transform.Find("Left/TabGroup/Tab1/Text").GetComponent<Text>().text = fleetingDemandsTabName;
 			transform.Find("Left/Demands/Name").GetComponent<Text>().text = mGod.Name;
 			// todo: separate short term and long term demands
-			List<God.GodDemand> demands = GetSelectedTabIndex() == 0 ? mGod.FleetingDemands : mGod.Demands;
+			List<God.GodDemand> demands = GetSelectedTabIndex() == 0 ? mGod.FleetingDemands : mGod.PermanentDemands;
 			Transform demandContainer = transform.Find("Left/Demands/DemandList");
 			for(int i = 0; i < Mathf.Max(demands.Count, mUiDemandPool.Count); i++)
 			{
