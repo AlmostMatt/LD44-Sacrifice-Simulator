@@ -20,7 +20,8 @@ public class BoonLibrary {
 		new FarmerXpBuff(),
 		new ImprovedLifespan(),
 		new WarriorXpBuff(),
-		new Favour()
+		new Favour(),
+		new SurplusFoodUse()
 	};
 
 	private static SacrificeResult[] sTierTwoBoons = {

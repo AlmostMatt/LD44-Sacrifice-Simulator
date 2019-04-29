@@ -26,6 +26,7 @@ public class FoodSystem : MonoBehaviour {
 			totalFarmingLevel /= 2;
 		}
 
+		GameState.FoodSurplus = Mathf.Max(0, totalFarmingLevel - mPersonMgr.People.Count);
 		GameState.FoodSupply = totalFarmingLevel;
 	}
 }

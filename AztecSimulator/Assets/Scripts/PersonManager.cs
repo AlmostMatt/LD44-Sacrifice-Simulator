@@ -41,6 +41,11 @@ public class PersonManager : MonoBehaviour {
 		// e.g. if it depends on other factors, if there's a hard cap, etc.
 		List<Person> civilians = FindPeople(Person.AttributeType.PROFESSION, Person.Attribute.CIVILIAN);
 		float birthRate = civilians.Count * civilianBirthRateIncrease;
+		if(GameState.HasBoon(BoonType.SURPLUS_FOOD_TO_BIRTHRATE))
+		{
+			birthRate += GameState.FoodSurplus * 0.05f;
+		}
+
 		if(mRepopulateTimer > 0)
 		{
 			mRepopulateTimer -= GameState.GameDeltaTime * birthRate;
