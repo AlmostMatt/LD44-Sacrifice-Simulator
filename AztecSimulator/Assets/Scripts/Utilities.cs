@@ -107,6 +107,7 @@ public static class Utilities {
 	}
 
 	public static T[] RandomSubset<T>(T[] possibleValues, int numToChoose) {
+		numToChoose = Mathf.Min(possibleValues.Length, numToChoose);
 		int[] listOfIndexes = new int[possibleValues.Length];
 		for(int i= 0; i< possibleValues.Length; ++i) {
 			listOfIndexes[i] = i;
