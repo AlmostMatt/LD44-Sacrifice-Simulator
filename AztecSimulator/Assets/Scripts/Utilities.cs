@@ -79,10 +79,10 @@ public static class Utilities {
 		return GameObject.FindGameObjectWithTag("Background").GetComponent<Image>();
 	}
 
-	public static void LogEvent(string message, float duration=2f)
+	public static void LogEvent(string message, float duration=2f, bool isGod=false)
 	{
 		GameObject uiManager = GameObject.FindGameObjectWithTag("UIManager");
-		if (uiManager != null) { uiManager.GetComponent<UIManager>().LogEvent(message, duration); }
+		if (uiManager != null) { uiManager.GetComponent<UIManager>().LogEvent(message, duration, isGod); }
 		else { Debug.Log("Logged event: " + message); }
 	}
 

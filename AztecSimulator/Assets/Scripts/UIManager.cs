@@ -29,6 +29,7 @@ public class UIManager : MonoBehaviour {
 	private SpriteManager mSpriteManager;
 
 	private List<string> mEventMessages = new List<string>();
+	private List<bool> mNotificationIsGod = new List<bool>();
 	private List<string> mNotificationMessages = new List<string>();
 	private List<float> mNotificationDurations = new List<float>();
 
@@ -211,6 +212,7 @@ public class UIManager : MonoBehaviour {
 		if (mNotificationMessages.Count > 0) {
 			mNotificationDurations[0] -= Time.deltaTime;
 			if (mNotificationDurations[0] <= 0f) {
+				mNotificationIsGod.RemoveAt(0);
 				mNotificationMessages.RemoveAt(0);
 				mNotificationDurations.RemoveAt(0);
 			}
@@ -343,7 +345,7 @@ public class UIManager : MonoBehaviour {
 		}
 	}
 
-	public void LogEvent(string message, float duration=2f) {
+	public void LogEvent(string message, float duration=2f, bool isGod=false) {
 		message = message.Trim();
 		mEventMessages.Add(message);
 		string newLogText = "";
@@ -353,6 +355,7 @@ public class UIManager : MonoBehaviour {
 		}
 		transform.Find("Left/Log/Scroll View/Viewport/LogText").GetComponent<Text>().text = newLogText.Trim();
 
+		mNotificationIsGod.Add(isGod);
 		mNotificationMessages.Add(message);
 		mNotificationDurations.Add(duration);
 	}
