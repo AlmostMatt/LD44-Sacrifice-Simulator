@@ -27,9 +27,12 @@ public class Drought : RandomEventSystem.RandomEvent {
 
 	public override void Start () {
 		GameState.Drought = true;
-		mDuration = 60;
+		int diffIncrease = Mathf.FloorToInt(GameState.GameTimeElapsed / 60);
+		mDuration = (Random.Range(1, 4) + diffIncrease) * 10;
 		mIntervened = false;
 
+		mOngoing = new Ongoing("DROUGHT", "Drought!", "A drought is reducing your crop yield.", mDuration, false);
+		GameState.Ongoings.Add(mOngoing);
 		Utilities.LogEvent("A drought has befallen your farmland", 1f);
 		mDemandId = Utilities.GetGod().AddFleetingDemand(
 			new GodIntervention(this), 
@@ -66,6 +69,8 @@ public class Drought : RandomEventSystem.RandomEvent {
 	}
 
 	public override void Removed() {
+		GameState.Ongoings.Remove(mOngoing);
+		mOngoing = null;
 		Utilities.GetEventSystem().ScheduleEvent(new Drought(), Random.Range(10, 30));
 	}
 }
