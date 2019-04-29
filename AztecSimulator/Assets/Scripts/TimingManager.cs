@@ -21,5 +21,6 @@ public class TimingManager : MonoBehaviour {
 		}
 
 		GameState.GameDeltaTime = Time.deltaTime * GameState.GameSpeed;
+		GameState.GameTimeElapsed += GameState.GameDeltaTime;
 	}
 }

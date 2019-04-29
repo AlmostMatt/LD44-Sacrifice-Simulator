@@ -20,6 +20,13 @@ public class GameState {
 		set { sGameState.mGameDeltaTime = value; } // ONLY TimingManager is allowed to edit this
 	}
 
+	private float mGameTimeElapsed;
+	public static float GameTimeElapsed
+	{
+		get { return(sGameState.mGameTimeElapsed); }
+		set { sGameState.mGameTimeElapsed = value; } // ONLY TimingManager is allowed to edit this
+	}
+
 	private float mGameSpeed = 1;
 	public static float GameSpeed
 	{
