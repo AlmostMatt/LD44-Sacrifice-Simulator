@@ -33,7 +33,8 @@ public class BoonLibrary {
 		new WarriorXpBuff(),
 		new Favour(),
 		new WarriorChildProtect(),
-		new ChangeProfessionRetainXp()
+		new ChangeProfessionRetainXp(),
+		new HealthXpBonus()
 	};
 
 	public static SacrificeResult RandomTemporaryBoon() {

@@ -215,6 +215,18 @@ public class Person : MonoBehaviour {
 					}
 				}
 
+				int bonusXpHealthThreshold = GameState.GetBoonValue(BoonType.HEALTHY_BONUS_XP_THRESHOLD);
+				if(bonusXpHealthThreshold > 0 && mHealth >= bonusXpHealthThreshold)
+				{
+					xpGain += GameState.GetBoonValue(BoonType.HEALTHY_BONUS_XP);
+				}
+
+				int bonusXpUnhealthyThreshold = GameState.GetBoonValue(BoonType.UNHEALTHY_BONUS_XP_THRESHOLD);
+				if(bonusXpUnhealthyThreshold > 0 && mHealth <= bonusXpUnhealthyThreshold)
+				{
+					xpGain += GameState.GetBoonValue(BoonType.UNHEALTHY_BONUS_XP);
+				}
+
 				mXp += xpGain * GameState.GameDeltaTime;
 			}
 
