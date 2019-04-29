@@ -181,7 +181,7 @@ public class Person : MonoBehaviour {
 		mLevel = 1;
 		mAge = 0;
 
-		int numRandomAttributes = Random.Range(1,4);
+		int numRandomAttributes = Random.Range(2,3);
 		mAttributes = RandomAttributes(numRandomAttributes);
 
 		// for now: always start as farmer
