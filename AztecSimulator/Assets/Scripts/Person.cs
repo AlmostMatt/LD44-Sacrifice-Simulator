@@ -6,7 +6,7 @@ public class Person : MonoBehaviour {
 	private static Dictionary<Person.Attribute, float> EFFICIENCY_BASE = new Dictionary<Person.Attribute, float> {
 		{Person.Attribute.FARMER, 1f},
 		{Person.Attribute.WARRIOR, 1f},
-		{Person.Attribute.CIVILIAN, 0.5f},
+		{Person.Attribute.CIVILIAN, 0.6f},
 		{Person.Attribute.NONE, 0f}
 	};
 	private static Dictionary<Person.Attribute, float> EFFICIENCY_PER_LEVEL = new Dictionary<Person.Attribute, float> {
