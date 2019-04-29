@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class WarriorChildProtect : SacrificeResult {
 
-	public WarriorChildProtect() : base("Youngling Protection", "Warriors get +1 for each child in the population (age < 10)") {
+	private int mAge;
+
+	public WarriorChildProtect() : base("Youngling Protection", "") {
+		mAge = Random.Range(5, 11);
+		mDescription = "Warriors get +1 army for each person of age " + mAge + " or lower";
 	}
 
 	public override void DoEffect()
 	{
 		Utilities.LogEvent("Your warriors are devoted to protecting the youth.");
-		GameState.SetBoon(BoonType.WARRIOR_CHILD_PROTECT, true);
+		GameState.SetBoon(BoonType.WARRIOR_CHILD_PROTECT, mAge);
 	}
 }

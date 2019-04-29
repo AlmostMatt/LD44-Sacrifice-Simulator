@@ -44,7 +44,8 @@ public class PersonManager : MonoBehaviour {
 		float birthRate = civilians.Count * civilianBirthRateIncrease;
 		if(GameState.HasBoon(BoonType.SURPLUS_FOOD_TO_BIRTHRATE))
 		{
-			birthRate += GameState.FoodSurplus * 0.05f;
+			float birthrateIncrease = GameState.GetBoonValue(BoonType.SURPLUS_FOOD_TO_BIRTHRATE) / 100f;
+			birthRate += birthrateIncrease * GameState.FoodSurplus;
 		}
 		if(mRepopulateTimer > 0)
 		{
@@ -70,7 +71,8 @@ public class PersonManager : MonoBehaviour {
 
 		if(GameState.HasBoon(BoonType.WARRIOR_CHILD_PROTECT))
 		{
-			List<Person> children = mPeople.FindAll(x => x.Age <= 10);
+			int childAge = GameState.GetBoonValue(BoonType.WARRIOR_CHILD_PROTECT);
+			List<Person> children = mPeople.FindAll(x => x.Age <= childAge);
 			if(children != null)
 			{
 				armySize += children.Count;
