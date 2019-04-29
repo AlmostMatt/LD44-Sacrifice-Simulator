@@ -58,7 +58,7 @@ public class PersonManager : MonoBehaviour {
 			if (mPeople.Count < MAX_POPULATION) {
 				Person p = SpawnPerson();
 				Debug.Log(p.Name + " was born!");
-				Utilities.LogEvent(p.Name + " was born!");
+				Utilities.LogEvent(p.Name + " was born!", 1f);
 			}
 			mRepopulateTimer = birthInterval;
 		}

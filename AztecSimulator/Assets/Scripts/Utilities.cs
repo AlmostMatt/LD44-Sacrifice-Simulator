@@ -63,10 +63,10 @@ public static class Utilities {
 		return GameObject.FindGameObjectWithTag("SystemsAndManagers").GetComponent<God>();
 	}
 
-	public static void LogEvent(string message)
+	public static void LogEvent(string message, float duration=2f)
 	{
 		GameObject uiManager = GameObject.FindGameObjectWithTag("UIManager");
-		if (uiManager != null) { uiManager.GetComponent<UIManager>().LogEvent(message); }
+		if (uiManager != null) { uiManager.GetComponent<UIManager>().LogEvent(message, duration); }
 		else { Debug.Log("Logged event: " + message); }
 	}
 

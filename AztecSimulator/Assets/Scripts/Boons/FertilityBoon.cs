@@ -9,7 +9,7 @@ public class FertilityBoon : SacrificeResult {
 
 	public override void DoEffect()
 	{
-		Utilities.LogEvent("Love is in the air");
+		Utilities.LogEvent("Love is in the air!", 1f);
 		GameState.FertilityBonus = 30;
 	}
 }

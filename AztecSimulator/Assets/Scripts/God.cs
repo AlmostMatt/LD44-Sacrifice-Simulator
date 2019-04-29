@@ -64,7 +64,6 @@ public class God : MonoBehaviour {
 
 		if(logDemandsOnStart)
 		{
-			Utilities.LogEvent("YOUR GOD HAS MULTIPLE DEMANDS");
 			foreach(SacrificeDemand sd in mDemands)
 			{
 				Utilities.LogEvent("YOUR GOD DEMANDS " + sd.GetShortDescription());
@@ -170,7 +169,7 @@ public class God : MonoBehaviour {
 
 			if(demand.CheckSatisfaction(people))
 			{
-				Utilities.LogEvent("YES, THIS SACRIFICE PLEASES ME");
+				Utilities.LogEvent("YES, THIS SACRIFICE PLEASES ME", 1f);
 				SacrificeResult sr = demand.mSatisfiedResult;
 				if(sr != null)
 				{
@@ -181,11 +180,11 @@ public class God : MonoBehaviour {
 			}
 			else
 			{
-				Utilities.LogEvent("NO WHAT ARE YOU DOING");
+				Utilities.LogEvent("NO WHAT ARE YOU DOING", 1f);
 			}
 		}
 		else {
-			Utilities.LogEvent("THIS POINTLESS SACRIFICE PLEASES ME");
+			Utilities.LogEvent("THIS POINTLESS SACRIFICE PLEASES ME", 1f);
 		}
 
 		foreach(Person p in people)

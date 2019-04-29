@@ -252,7 +252,7 @@ public class Person : MonoBehaviour {
 		{
 			string deathMsg = mName + " has died at the age of " + Age + ". Their lifeforce returns to the earth.";
 			Debug.Log(deathMsg);
-			Utilities.LogEvent(deathMsg);
+			Utilities.LogEvent(deathMsg, 1f);
 			Utilities.GetPersonManager().RemovePerson(this);
 		}
 	}

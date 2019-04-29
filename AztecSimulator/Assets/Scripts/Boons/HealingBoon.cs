@@ -8,7 +8,7 @@ public class HealingBoon : SacrificeResult {
 	}
 
 	public override void DoEffect() {
-		Utilities.LogEvent("God soothes the pains of your people and renews their vigor.");
+		Utilities.LogEvent("God soothes the pains of your people and renews their vigor.", 1f);
 		foreach(Person p in Utilities.GetPersonManager().People)
 		{
 			p.Health += 20;
