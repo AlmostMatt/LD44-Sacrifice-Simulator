@@ -290,13 +290,31 @@ public class Person : MonoBehaviour {
 	// Returns a single multiline string
 	public string GetLongUIDescription()
 	{
-		string result = "Name: " + mName + "\r\n";
-		result += "Level: " + GetLevelString() + string.Format(" ({0:0} xp to next level", GetXpToNextLevel()) + "\r\n";
+		string result = "<size=20>Name: " + mName + "</size>\r\n";
+		if (mLevel == GameState.GetLevelCap(GetAttribute(AttributeType.PROFESSION))) {
+			result += "Level: " + GetLevelString() + "\r\n";
+		} else {
+			result += "Level: " + GetLevelString() + "(" + GetLevelUpProgressPercent() + "% to next level)\r\n";
+		}
 		result += "Profession: " + GetAttribute(AttributeType.PROFESSION).ToString() + "\r\n";
 		result += "Age: " + Age + "\r\n";
-		result += "Lifeforce: " + Mathf.Ceil(mHealth);
-		// todo: attributes
+		result += "Lifeforce: " + Mathf.Ceil(mHealth) + "\r\n";
+		string attrString = "";
+		for(int i = 0; i < mAttributes.Length; ++i) {
+			if (mAttributes[i].GetAttrType() != AttributeType.PROFESSION) {
+				string attr = System.Enum.GetName(typeof(Attribute), (int)mAttributes[i]);
+				attrString += attr + ", ";
+			}
+		}
+		result += "Attributes: " + attrString;
 		return result;
+	}
+
+	private int GetLevelUpProgressPercent()
+	{
+		float requiredXpForCurrentLevel = GetTotalXpForLevel(mLevel);
+		float requiredXpForNextLevel = GetTotalXpForLevel(mLevel+1);
+		return (int)Mathf.Floor(100f * (mXp - requiredXpForCurrentLevel)  / (requiredXpForNextLevel - requiredXpForCurrentLevel));
 	}
 
 	private float GetXpToNextLevel()
@@ -313,7 +331,11 @@ public class Person : MonoBehaviour {
 
 	private string GetLevelString()
 	{
-		return mLevel.ToString() + "/" + GameState.GetLevelCap(GetAttribute(AttributeType.PROFESSION)).ToString() + " ";
+		//if (mLevel == GameState.GetLevelCap(GetAttribute(AttributeType.PROFESSION))) {
+		//	return mLevel + " (MAX)";
+		//} else {
+		return mLevel + "/" + GameState.GetLevelCap(GetAttribute(AttributeType.PROFESSION)).ToString() + " ";
+		//}
 	}
 
 	public void DebugPrint() {
