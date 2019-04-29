@@ -286,7 +286,7 @@ public class UIManager : MonoBehaviour {
 
 		if(mGod != null) {
 			string sacrificedNames = Utilities.ConcatStrings(selectedPeople.ConvertAll(person => person.Name));
-			//LogEvent("You sacrifice " + sacrificedNames + " to " + mGod.Name);
+			LogEvent("You sacrifice " + sacrificedNames + " to " + mGod.Name, 1f);
 			mGod.MakeSacrifice(getSelectedDemandId(), selectedPeople);
 			mDemandToggleGroup.SetAllTogglesOff();
 		}
