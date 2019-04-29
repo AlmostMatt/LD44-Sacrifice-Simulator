@@ -132,10 +132,10 @@ public class God : MonoBehaviour {
 			mDemands.Add(renewableDemand);
 		}
 
-		//mDemands.Add(new GodDemand(DemandGenerator.SimpleDemand(), BoonLibrary.RandomBoon(2, 1), null));
+		// mDemands.Add(new GodDemand(DemandGenerator.SimpleDemand(), BoonLibrary.RandomBoon(2, 1), null));
 
-		int numTierOneDemands = 2;
-		SacrificeResult[] tierOneBoons = BoonLibrary.RandomTierOneBoons(numTierOneDemands);
+		int numTierOneDemands = 3;
+		SacrificeResult[] tierOneBoons = BoonLibrary.RandomBoons(numTierOneDemands, 1, GameState.Favour);
 		for(int i = 0; i < tierOneBoons.Length; ++i)
 		{
 			GodDemand demand = new GodDemand(
@@ -193,7 +193,7 @@ public class God : MonoBehaviour {
 					ignored = BoonLibrary.RandomTemporaryCurse();
 				else
 				if(roll - negativeChance <= specialChance)
-					satisfied = BoonLibrary.RandomTierOneBoon();
+					satisfied = BoonLibrary.RandomBoon(tier, GameState.Favour);
 				else
 					satisfied = BoonLibrary.RandomTemporaryBoon(tier, GameState.Favour);
 
