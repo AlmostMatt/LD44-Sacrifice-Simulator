@@ -111,7 +111,7 @@ public class UIManager : MonoBehaviour {
 			transform.Find("Left/Demands/Name").GetComponent<Text>().text = mGod.Name;
 			// todo: separate short term and long term demands
 			List<God.GodDemand> demands = GetSelectedTabIndex() == 0 ? mGod.FleetingDemands : mGod.PermanentDemands;
-			Transform demandContainer = transform.Find("Left/Demands/DemandList");
+			Transform demandContainer = transform.Find("Left/Demands/DemandList/Viewport/Content");
 			int renewCount = 0;
 			int nonRenewCount = 0;
 			for(int i = 0; i < Mathf.Max(demands.Count, mUiDemandPool.Count); i++)
@@ -135,7 +135,8 @@ public class UIManager : MonoBehaviour {
 					RectTransform rt = uiDemand.GetComponent<RectTransform>();
 					if(demands[i].mTimeLeft >= 0)
 					{
-						rt.anchoredPosition = new Vector2(0f, 90f * (i - (demands.Count - 1) / 2f));	
+						// Relying on GridLayout for now
+						//rt.anchoredPosition = new Vector2(0f, 90f * (i - (demands.Count - 1) / 2f));	
 					}
 					else
 					{
@@ -150,8 +151,8 @@ public class UIManager : MonoBehaviour {
 							y = 90f * nonRenewCount++;
 							x = right;
 						}
-
-						rt.anchoredPosition = new Vector2(x, y - 150f);
+						// Relying on GridLayout for now
+						//rt.anchoredPosition = new Vector2(x, y - 150f);
 					}
 
 					uiDemand.name = demands[i].mId.ToString();
