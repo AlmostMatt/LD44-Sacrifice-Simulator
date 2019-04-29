@@ -53,6 +53,11 @@ public static class Utilities {
 		return possibleValues[Random.Range(0, possibleValues.Length)];
 	}
 
+	public static SpriteManager GetSpriteManager()
+	{
+		return GameObject.FindGameObjectWithTag("SystemsAndManagers").GetComponent<SpriteManager>();
+	}
+
 	public static PersonManager GetPersonManager()
 	{
 		return GameObject.FindGameObjectWithTag("SystemsAndManagers").GetComponent<PersonManager>();
