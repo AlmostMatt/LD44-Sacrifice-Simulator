@@ -14,7 +14,7 @@ public class HealingBoon : SacrificeResult {
 		Utilities.LogEvent("God soothes the pains of your people.", 1f);
 		foreach(Person p in Utilities.GetPersonManager().People)
 		{
-			p.Heal(20);
+			p.Heal(mAmount);
 		}
 	}
 }
