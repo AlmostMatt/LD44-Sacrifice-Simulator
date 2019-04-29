@@ -24,7 +24,9 @@ public class Ongoing
 		// TODO: update text, icon, timer, background color, etc
 		//uiOngoing.transform.Find("Icon").GetComponent<Image>().sprite;
 		uiOngoing.transform.Find("VGroup/Text1").GetComponent<Text>().text = mTitle;
-		uiOngoing.transform.Find("VGroup/Text2").GetComponent<Text>().text = mDuration.ToString();
+		int minutes = (int)Mathf.Floor(mDuration/60);
+		int seconds = (int)Mathf.Floor(mDuration % 60);
+		uiOngoing.transform.Find("VGroup/Text2").GetComponent<Text>().text = string.Format("{0}:{1}", minutes, seconds);
 		uiOngoing.transform.Find("IgnoreLayout/InfoPanel/Text").GetComponent<Text>().text = mDescription.ToString();
 	}
 }
