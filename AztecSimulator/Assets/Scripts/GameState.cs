@@ -98,12 +98,12 @@ public class GameState {
 
 		sGameState.mLevelCapIncreases[profession]++;
 	}
-	public static int GetLevelCapIncrease(Person.Attribute profession)
+	public static int GetLevelCap(Person.Attribute profession)
 	{
 		if(!sGameState.mLevelCapIncreases.ContainsKey(profession))
-			return(0);
+			return(2);
 
-		return(sGameState.mLevelCapIncreases[profession]);
+		return(sGameState.mLevelCapIncreases[profession] + 2);
 	}
 		
 	private int mFavour = 0;
