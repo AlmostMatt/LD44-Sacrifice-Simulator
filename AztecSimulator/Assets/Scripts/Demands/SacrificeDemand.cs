@@ -74,11 +74,9 @@ public class SacrificeDemand
 	// Returns a list of attributes. Corresponding icons will be used in the demand info rows.
 	// TODO: support images other than profession icons
 	public Person.Attribute[] GetUIDescriptionIcons() {
-		Person.Attribute[] attributes = new Person.Attribute[2 + mCriteria.Count];
-		attributes[0] = Person.Attribute.WARRIOR;
-		attributes[1] = Person.Attribute.NONE;
+		Person.Attribute[] attributes = new Person.Attribute[mCriteria.Count];
 		for (int i=0; i< mCriteria.Count; i++) {
-			attributes[2+i] = mCriteria[i].GetProfession();
+			attributes[i] = mCriteria[i].GetProfession();
 		}
 		return attributes;
 	}
