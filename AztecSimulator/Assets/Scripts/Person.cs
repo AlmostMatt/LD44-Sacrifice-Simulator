@@ -85,6 +85,19 @@ public class Person : MonoBehaviour {
 		mLevel = 1;
 		mXp = 0f;
 	}
+	// This should be called after the person has already been created and Awake completed.
+	public void OverrideRandomValues(Attribute profession = Attribute.NONE, int level = -1) {
+		if (profession != Attribute.NONE) {
+			for (int i=0; i< mAttributes.Length; i++) {
+				if (mAttributes[i].GetAttrType() == AttributeType.PROFESSION) {
+					mAttributes[i] = profession;
+				}
+			}
+		}
+		if (level != -1) {
+			mLevel = level;
+		}
+	}
 	public int Age
 	{
 		get { return((int)Mathf.Floor(mAge)); }

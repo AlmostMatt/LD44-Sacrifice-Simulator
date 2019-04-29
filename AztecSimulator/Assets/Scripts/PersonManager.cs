@@ -26,7 +26,8 @@ public class PersonManager : MonoBehaviour {
 		mPeople = new List<Person>();
 		for(int i = 0; i < numStartingPeople; ++i)
 		{
-			SpawnPerson();
+			// person 0 is level 3. person n-1 is a civilian. Others use the auto values.
+			SpawnPerson(i==numStartingPeople-1 ? Person.Attribute.CIVILIAN : Person.Attribute.NONE, i == 0 ? 2 : -1);
 		}
 
 		mPeopleChangedListeners = new List<GameObject>();
@@ -79,11 +80,11 @@ public class PersonManager : MonoBehaviour {
 		GameState.ArmySize = armySize;
 	}
 
-	private Person SpawnPerson()
+	private Person SpawnPerson(Person.Attribute profession = Person.Attribute.NONE, int level = -1)
 	{
 		GameObject go = new GameObject("Person");
-		go.AddComponent<Person>();
-		Person p = go.GetComponent<Person>();
+		Person p = go.AddComponent<Person>();
+		p.OverrideRandomValues(profession, level);
 		mPeople.Add(p);
 		return(p);
 	}
