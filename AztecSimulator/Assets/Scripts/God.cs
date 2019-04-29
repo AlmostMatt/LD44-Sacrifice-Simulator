@@ -116,7 +116,7 @@ public class God : MonoBehaviour {
 	}
 
 	void Start () {
-		mName = "MACUILCUETZPALIN, GOD OF AWESOME";
+		mName = GenerateName();
 		mDemands = new List<GodDemand>();
 		mFleetingDemandTimer = fleetingDemandTimer;
 		mNumFleetingDemands = 0;
@@ -359,5 +359,65 @@ public class God : MonoBehaviour {
 		}
 
 		return(results);
+	}
+
+	private static string[] sNameParts = {
+		"macuil",
+		"coz",
+		"cacu",
+		"auhtli",
+		"xochitl",
+		"cuetz",
+		"ahuia",
+		"teteo",
+		"centzon",
+		"mimix",
+		"coa",
+		"huitz",
+		"nahua",
+		"ilop",
+		"ochtli",
+		"texcat",
+		"zonatl",
+		"izta",
+		"cuhca",
+		"cinteotl",
+		"cihua",
+		"coatl",
+		"xiuhi",
+		"hue",
+		"temaz",
+		"calteci",
+		"coyotl",
+		"ztacuh",
+		"qui",
+		"micteca",
+		"cihuatl",
+		"neso",
+		"xochi",
+		"vpiltzin",
+		"tecuhtli",
+		"ixquite",
+		"catl",
+		"itzpa",
+		"palotl",
+		"totec",
+		"chico",
+		"malina",
+		"cuthli"
+	};
+		
+	private string GenerateName()
+	{
+		string[] parts = Utilities.RandomSubset(sNameParts, 3);
+		string name = "";
+		foreach(string s in parts)
+		{
+			name += s;
+		}
+
+		name += ", GOD OF AWESOME";
+
+		return name.ToUpper();
 	}
 }
