@@ -18,7 +18,7 @@ public class BoonLibrary {
 
 	private static SacrificeResult[] sTierOneBoons = {
 		new FarmerXpBuff(),
-		new ImprovedLifespan(),
+		// new ImprovedLifespan(),
 		new WarriorXpBuff(),
 		new Favour(),
 		new SurplusFoodUse(),
@@ -29,7 +29,7 @@ public class BoonLibrary {
 
 	private static SacrificeResult[] sTierTwoBoons = {
 		new FarmerXpBuff(),
-		new ImprovedLifespan(),
+//		new ImprovedLifespan(),
 		new WarriorXpBuff(),
 		new Favour(),
 		new WarriorChildProtect(),

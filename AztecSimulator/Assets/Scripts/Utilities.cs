@@ -63,6 +63,11 @@ public static class Utilities {
 		return GameObject.FindGameObjectWithTag("SystemsAndManagers").GetComponent<God>();
 	}
 
+	public static RandomEventSystem GetEventSystem()
+	{
+		return GameObject.FindGameObjectWithTag("SystemsAndManagers").GetComponent<RandomEventSystem>();
+	}
+
 	public static void LogEvent(string message, float duration=2f)
 	{
 		GameObject uiManager = GameObject.FindGameObjectWithTag("UIManager");
