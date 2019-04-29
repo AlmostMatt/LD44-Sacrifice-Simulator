@@ -120,11 +120,17 @@ public class GameState {
 		set { sGameState.mFertilityBonus = value; }
 	}
 
-	private bool[] mBoons = new bool[(int)BoonType.MAX_VALUE];
+	private int[] mBoons = new int[(int)BoonType.MAX_VALUE];
 	public static bool HasBoon(BoonType boon) {
-		return(sGameState.mBoons[(int)boon]);
+		return(sGameState.mBoons[(int)boon] > 0);
 	}
 	public static void SetBoon(BoonType boon, bool has) {
-		sGameState.mBoons[(int)boon] = has;
+		sGameState.mBoons[(int)boon] = has ? 1 : 0;
+	}
+	public static void SetBoon(BoonType boon, int value) {
+		sGameState.mBoons[(int)boon] = value;
+	}
+	public static int GetBoonValue(BoonType boon) {
+		return(sGameState.mBoons[(int)boon]);
 	}
 }

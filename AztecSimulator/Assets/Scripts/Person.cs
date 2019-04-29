@@ -153,6 +153,16 @@ public class Person : MonoBehaviour {
 			if (profession != Attribute.NONE) {
 				int xpGain = 1; // 1 xp per second;
 				xpGain = GameState.GetBuffedXp(profession, xpGain);
+
+				if(GameState.HasBoon(BoonType.SAME_PROFESSION_XP_BONUS))
+				{
+					List<Person> sameProfession = Utilities.GetPersonManager().FindPeople(AttributeType.PROFESSION, profession);
+					if(sameProfession.Count >= GameState.GetBoonValue(BoonType.SAME_PROFESSION_XP_REQ))
+					{
+						xpGain += GameState.GetBoonValue(BoonType.SAME_PROFESSION_XP_BONUS);
+					}
+				}
+
 				mXp += xpGain * GameState.GameDeltaTime;
 			}
 
