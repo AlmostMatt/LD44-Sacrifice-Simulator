@@ -237,7 +237,7 @@ public class Person : MonoBehaviour {
 		if(mIsHungry)
 		{
 			// healthDecayRate *= 5;
-			healthDecayRate = 1.2;
+			healthDecayRate = 1.2f;
 		}
 		else if(GameState.HasBoon(BoonType.SURPLUS_FOOD_TO_HEALING))
 		{
