@@ -95,7 +95,8 @@ public class UIManager : MonoBehaviour {
 				uiPerson.transform.Find("Toggle/TextTR").GetComponent<Text>().text = descriptionStrings[1];
 				uiPerson.transform.Find("Toggle/BLGroup/Text").GetComponent<Text>().text = descriptionStrings[2];
 				Person.Attribute profession = people[i].GetAttribute(Person.AttributeType.PROFESSION);
-				uiPerson.transform.Find("Toggle/BLGroup/Icon").GetComponent<Image>().sprite = mProfessionSprites[profession];
+				uiPerson.transform.Find("Toggle/BLGroup/Icons/Icon1").gameObject.SetActive(selectedDemand != null && selectedDemand.IsRelevantAttribute(profession));
+				uiPerson.transform.Find("Toggle/BLGroup/Icons/Icon2").GetComponent<Image>().sprite = mProfessionSprites[profession];
 				uiPerson.transform.Find("Toggle/BRGroup/Text").GetComponent<Text>().text = descriptionStrings[3];
 			}
 		}
@@ -199,7 +200,7 @@ public class UIManager : MonoBehaviour {
 			? "Army: " + GameState.ArmySize
 			: Utilities.ColorString("Army: " + GameState.ArmySize + "/" + GameState.InvaderSize, "red", GameState.InvaderSize > GameState.ArmySize);
 		transform.Find("Top/Left/Item2/Text").GetComponent<Text>().text = armyString;
-		transform.Find("Top/Left/Item3/Text").GetComponent<Text>().text = "<placeholder>";
+		transform.Find("Top/Left/Item3/Text").GetComponent<Text>().text = "Birth rate: ?";
 		// Population
 		transform.Find("Top/Right/Item1/Text").GetComponent<Text>().text = "Population: " + people.Count + "/" + PersonManager.MAX_POPULATION;
 	}
