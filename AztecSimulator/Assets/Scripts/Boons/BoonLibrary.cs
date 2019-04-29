@@ -28,8 +28,8 @@ public class BoonLibrary {
 		//new SacrificeBonus.Factory(),
 		//new SameProfessionXpBuff.Factory(),
 		//new CombatVictoryReward.Factory(),
-		new WarriorChildProtect.Factory(),
-		//new ChangeProfessionRetainXp.Factory(),
+		//new WarriorChildProtect.Factory(),
+		new ChangeProfessionRetainXp.Factory(),
 		//new HealthXpBonus.Factory()
 	};
 
@@ -39,7 +39,7 @@ public class BoonLibrary {
 		//new WarriorXpBuff(),
 //		new Favour(),
 		//new WarriorChildProtect(),
-		new ChangeProfessionRetainXp(),
+		// new ChangeProfessionRetainXp(),
 		new HealthXpBonus()
 	};
 
