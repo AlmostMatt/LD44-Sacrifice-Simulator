@@ -64,4 +64,8 @@ public class Drought : RandomEventSystem.RandomEvent {
 
 		return(false);
 	}
+
+	public override void Removed() {
+		Utilities.GetEventSystem().ScheduleEvent(new Drought(), Random.Range(10, 30));
+	}
 }

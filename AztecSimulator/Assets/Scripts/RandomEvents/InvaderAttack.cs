@@ -111,4 +111,10 @@ public class InvaderAttack : RandomEventSystem.RandomEvent {
 
 		return(false);
 	}
+
+	public override void Removed()
+	{
+		// hack for now to get it to recur
+		Utilities.GetEventSystem().ScheduleEvent(new InvaderAttack(), 120);
+	}
 }
