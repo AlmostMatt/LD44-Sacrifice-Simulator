@@ -157,7 +157,7 @@ public class UIManager : MonoBehaviour {
 
 					uiDemand.name = demands[i].mId.ToString();
 					uiDemand.GetComponent<HoverInfo>().SetText(demands[i].GetResultDescription());
-					string[] demandStrings = demands[i].GetUIDescriptionStrings();
+					string[] demandStrings = demands[i].GetUIDescriptionStrings(selectedPeople);
 					string[] demandIconNames = demands[i].GetUIDescriptionIconNames();
 					int numRows = Mathf.Min(demandStrings.Length / 2, demandIconNames.Length);
 					Transform uiDemandVGroup = uiDemand.transform.Find("VGroup");

@@ -139,7 +139,7 @@ public class Person : MonoBehaviour {
 		}
 		if (level != -1) {
 			mLevel = level;
-			mXp = level * (level - 1) * 5; // this is the current formula for total xp, based on required xp to level L = L * 10
+			mXp = GetTotalXpForLevel(level);
 		}
 	}
 	public int Age
@@ -281,9 +281,9 @@ public class Person : MonoBehaviour {
 				attrString += Utilities.ColorString(attr, "green", isRelevant) + ", ";
 			}
 		}
-		if(mIsHungry) { attrString += "  HUNGRY!"; }
+		if(mIsHungry) { attrString += "  STARVING!"; }
 		bool isLevelRelevant = selectedDemand != null && selectedDemand.IsRelevantLevel(mLevel);
-		string levelString = "Lvl " + Utilities.ColorString(mLevel.ToString(), "green", isLevelRelevant) + " ";
+		string levelString = "Lvl " + Utilities.ColorString(GetLevelString(), "green", isLevelRelevant);
 		string lifeString = " " + Mathf.Ceil(mHealth);
 		return new [] {mName + " (Age " + Age + ")", attrString, levelString, lifeString};
 	}
@@ -292,12 +292,29 @@ public class Person : MonoBehaviour {
 	public string GetLongUIDescription()
 	{
 		string result = "Name: " + mName + "\r\n";
-		result += "Level: " + mLevel + "\r\n";
+		result += "Level: " + GetLevelString() + string.Format(" ({0:0} xp to next level", GetXpToNextLevel()) + "\r\n";
 		result += "Profession: " + GetAttribute(AttributeType.PROFESSION).ToString() + "\r\n";
 		result += "Age: " + Age + "\r\n";
 		result += "Lifeforce: " + Mathf.Ceil(mHealth);
 		// todo: attributes
 		return result;
+	}
+
+	private float GetXpToNextLevel()
+	{
+		int nextLevel = Mathf.Min(mLevel + 1, GameState.GetLevelCap(GetAttribute(AttributeType.PROFESSION)));
+		float requiredXpForLevel = GetTotalXpForLevel(nextLevel);
+		return(requiredXpForLevel - mXp);
+	}
+
+	private float GetTotalXpForLevel(int level)
+	{
+		return level * (level - 1) * 5; // based on required xp to level L = L * 10
+	}
+
+	private string GetLevelString()
+	{
+		return mLevel.ToString() + "/" + GameState.GetLevelCap(GetAttribute(AttributeType.PROFESSION)).ToString() + " ";
 	}
 
 	public void DebugPrint() {
