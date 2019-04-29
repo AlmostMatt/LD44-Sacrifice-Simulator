@@ -167,7 +167,7 @@ public class God : MonoBehaviour {
 		{
 			foreach(GodDemand gd in mDemands)
 			{
-				Utilities.LogEvent("YOUR GOD DEMANDS " + gd.GetShortDescription());
+				Utilities.LogEvent("YOUR GOD DEMANDS " + gd.GetShortDescription(), 2f, true);
 			}
 		}
 	}
@@ -247,7 +247,7 @@ public class God : MonoBehaviour {
 		mDemands.Add(demand);
 
 		if(msg != null) {
-			Utilities.LogEvent(msg + demand.GetShortDescription());
+			Utilities.LogEvent(msg + demand.GetShortDescription(), 2f, false);
 		}
 
 		return(demand.mId);
@@ -278,7 +278,7 @@ public class God : MonoBehaviour {
 
 			if(demand.mDemand.CheckSatisfaction(people))
 			{
-				Utilities.LogEvent("YES, THIS SACRIFICE PLEASES ME", 1f);
+				Utilities.LogEvent("YES, THIS SACRIFICE PLEASES ME", 1f, true);
 				SacrificeResult sr = demand.mSatisfiedResult;
 				if(sr != null)
 				{
@@ -308,11 +308,11 @@ public class God : MonoBehaviour {
 			}
 			else
 			{
-				Utilities.LogEvent("NO WHAT ARE YOU DOING", 1f);
+				Utilities.LogEvent("NO WHAT ARE YOU DOING", 1f, true);
 			}
 		}
 		else {
-			Utilities.LogEvent("THIS POINTLESS SACRIFICE PLEASES ME", 1f);
+			Utilities.LogEvent("THIS POINTLESS SACRIFICE PLEASES ME", 1f, true);
 		}
 
 		foreach(Person p in people)

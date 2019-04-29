@@ -9,7 +9,8 @@ public class VictoryResult : SacrificeResult {
 
 	public override void DoEffect()
 	{
-		Utilities.LogEvent("GOD HAS BEEN APPEASED. HE LEAVES YOUR PEOPLE IN PEACE", 3f);
+		// Set isGod to true to get the same special treatment for this message, whatever it is
+		Utilities.LogEvent("GOD HAS BEEN APPEASED. HE LEAVES YOUR PEOPLE IN PEACE", 3f, true);
 		// GameState.Victory = true;
 	}
 }
