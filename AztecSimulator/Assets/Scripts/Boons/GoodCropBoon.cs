@@ -11,7 +11,7 @@ public class GoodCropBoon : SacrificeResult {
 
 	public override void DoEffect()
 	{
-		Utilities.LogEvent("This season's quinoa harvest was blessed. +1 Food Supply");
+		Utilities.LogEvent("This season's quinoa harvest was blessed. +1 Food Supply", 1f);
 		GameState.FoodSupply += 1;
 	}
 }

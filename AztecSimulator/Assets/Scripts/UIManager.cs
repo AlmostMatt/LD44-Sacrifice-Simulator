@@ -182,7 +182,8 @@ public class UIManager : MonoBehaviour {
 			// Update text and alpha
 			if (i < mNotificationMessages.Count) {
 				uiNotification.transform.Find("Text").GetComponent<Text>().text = mNotificationMessages[i]; 
-				uiNotification.GetComponent<CanvasGroup>().alpha = Mathf.Min(1f, mNotificationDurations[i] / 1f);
+				// Fade out over the last 0.25s
+				uiNotification.GetComponent<CanvasGroup>().alpha = Mathf.Min(1f, mNotificationDurations[i] * 4f);
 			}
 		}
 		for (int i = mNotificationMessages.Count-1; i>= 0; i--) {
@@ -284,7 +285,7 @@ public class UIManager : MonoBehaviour {
 
 		if(mGod != null) {
 			string sacrificedNames = Utilities.ConcatStrings(selectedPeople.ConvertAll(person => person.Name));
-			LogEvent("You sacrifice " + sacrificedNames + " to " + mGod.Name);
+			//LogEvent("You sacrifice " + sacrificedNames + " to " + mGod.Name);
 			mGod.MakeSacrifice(getSelectedDemandId(), selectedPeople);
 			mDemandToggleGroup.SetAllTogglesOff();
 		}
@@ -301,7 +302,7 @@ public class UIManager : MonoBehaviour {
 		}
 	}
 
-	public void LogEvent(string message, float duration=4f) {
+	public void LogEvent(string message, float duration=2f) {
 		message = message.Trim();
 		mEventMessages.Add(message);
 		string newLogText = "";
