@@ -281,10 +281,9 @@ public class Person : MonoBehaviour {
 				attrString += Utilities.ColorString(attr, "green", isRelevant) + ", ";
 			}
 		}
-		if(mIsHungry) { attrString += "  STARVING!"; }
 		bool isLevelRelevant = selectedDemand != null && selectedDemand.IsRelevantLevel(mLevel);
 		string levelString = "Lvl " + Utilities.ColorString(GetLevelString(), "green", isLevelRelevant);
-		string lifeString = " " + Mathf.Ceil(mHealth);
+		string lifeString = (mIsHungry ? "STARVING! " : "") + " " + Mathf.Ceil(mHealth);
 		return new [] {mName + " (Age " + Age + ")", attrString, levelString, lifeString};
 	}
 
