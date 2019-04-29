@@ -31,7 +31,8 @@ public class BoonLibrary {
 		new ImprovedLifespan(),
 		new WarriorXpBuff(),
 		new Favour(),
-		new WarriorChildProtect()
+		new WarriorChildProtect(),
+		new ChangeProfessionRetainXp()
 	};
 
 	public static SacrificeResult RandomTemporaryBoon() {
