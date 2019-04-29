@@ -8,8 +8,8 @@ public class BoonLibrary {
 		new GoodCropBoon(),
 		new FertilityBoon(),
 		new HealingBoon(),
-		new Favour()
-		//new StudiousBoon()
+		new Favour(),
+		new XpBurst()
 	};
 
 	private static SacrificeResult[] sTemporaryCurses = {
@@ -41,6 +41,9 @@ public class BoonLibrary {
 		new WarriorChildProtect(),
 		new ChangeProfessionRetainXp(),
 		new HealthXpBonus()
+	};
+
+	private static SacrificeResult[] sSuperSpecialBoons = {
 	};
 
 	public static SacrificeResult RandomTemporaryBoon() {

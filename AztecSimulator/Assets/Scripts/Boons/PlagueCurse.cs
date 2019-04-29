@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class PlagueCurse : SacrificeResult {
 
-	public PlagueCurse() : base("Plague", "SICKNESS")
-	{
+	private int mAmount;
 
+	public PlagueCurse() : base("Plague", "Illness will drain the lifeforce of your people")
+	{
+		mAmount = -20;
 	}
 
 	public override void DoEffect()
@@ -16,7 +18,7 @@ public class PlagueCurse : SacrificeResult {
 		{
 			if(Random.value < 0.3)
 			{
-				p.Health -= Mathf.Min(p.Health, 20);
+				p.Heal(mAmount);
 			}
 		}
 	}
