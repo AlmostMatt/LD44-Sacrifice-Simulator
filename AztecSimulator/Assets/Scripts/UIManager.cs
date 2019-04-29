@@ -161,6 +161,7 @@ public class UIManager : MonoBehaviour {
 		}
 
 		// Update notification objects
+		// UPDATE: this now only shows and updates the timer of the first (oldest) notification
 		Transform notificationContainer = transform.Find("Corner");
 		for(int i = 0; i < Mathf.Max(mNotificationMessages.Count, mUiNotificationPool.Count); i++)
 		{
@@ -178,7 +179,7 @@ public class UIManager : MonoBehaviour {
 			// TODO: slide down if others have faded
 			rt.anchoredPosition = new Vector2(0f,100f*i);
 			// Update visibility
-			uiNotification.transform.gameObject.SetActive(i < mNotificationMessages.Count);
+			uiNotification.transform.gameObject.SetActive(i ==0 && i < mNotificationMessages.Count);
 			// Update text and alpha
 			if (i < mNotificationMessages.Count) {
 				uiNotification.transform.Find("Text").GetComponent<Text>().text = mNotificationMessages[i]; 
@@ -186,11 +187,11 @@ public class UIManager : MonoBehaviour {
 				uiNotification.GetComponent<CanvasGroup>().alpha = Mathf.Min(1f, mNotificationDurations[i] * 4f);
 			}
 		}
-		for (int i = mNotificationMessages.Count-1; i>= 0; i--) {
-			mNotificationDurations[i] -= Time.deltaTime;
-			if (mNotificationDurations[i] <= 0f) {
-				mNotificationMessages.RemoveAt(i);
-				mNotificationDurations.RemoveAt(i);
+		if (mNotificationMessages.Count > 0) {
+			mNotificationDurations[0] -= Time.deltaTime;
+			if (mNotificationDurations[0] <= 0f) {
+				mNotificationMessages.RemoveAt(0);
+				mNotificationDurations.RemoveAt(0);
 			}
 		}
 
@@ -307,9 +308,10 @@ public class UIManager : MonoBehaviour {
 		mEventMessages.Add(message);
 		string newLogText = "";
 		for (int i = 0; i < mEventMessages.Count; i++) {
-			newLogText += mEventMessages[i] + "\n";
+			// Bullet point
+			newLogText += "\u2022 " + mEventMessages[i] + "\r\n";
 		}
-		transform.Find("Left/Log/Scroll View/Viewport/LogText").GetComponent<Text>().text = newLogText;
+		transform.Find("Left/Log/Scroll View/Viewport/LogText").GetComponent<Text>().text = newLogText.Trim();
 
 		mNotificationMessages.Add(message);
 		mNotificationDurations.Add(duration);
