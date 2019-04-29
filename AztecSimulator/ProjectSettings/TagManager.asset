@@ -6,6 +6,7 @@ TagManager:
   tags:
   - UIManager
   - SystemsAndManagers
+  - Background
   layers:
   - Default
   - TransparentFX
