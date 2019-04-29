@@ -23,7 +23,8 @@ public class BoonLibrary {
 		new Favour(),
 		new SurplusFoodUse(),
 		new SacrificeBonus(),
-		new SameProfessionXpBuff()
+		new SameProfessionXpBuff(),
+		new CombatVictoryReward()
 	};
 
 	private static SacrificeResult[] sTierTwoBoons = {
