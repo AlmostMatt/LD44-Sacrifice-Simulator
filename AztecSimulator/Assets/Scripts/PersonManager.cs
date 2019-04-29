@@ -5,10 +5,9 @@ using UnityEngine;
 public class PersonManager : MonoBehaviour {
 
 	public static int MAX_POPULATION = 10;
-	public int numStartingPeople = 8;
 
-	public float civilianBirthRateIncrease = 2;
-	public float birthInterval = 20;
+	public int numStartingPeople = 8;
+	public static float birthInterval = 20;
 
 	private List<Person> mPeople;
 
@@ -27,7 +26,7 @@ public class PersonManager : MonoBehaviour {
 		for(int i = 0; i < numStartingPeople; ++i)
 		{
 			// person 0 is level 3. person n-1 is a civilian. Others use the auto values.
-			SpawnPerson(i==numStartingPeople-1 ? Person.Attribute.CIVILIAN : Person.Attribute.NONE, i == 0 ? 2 : -1);
+			SpawnPerson(i==numStartingPeople-1 ? Person.Attribute.CIVILIAN : Person.Attribute.NONE, i == 0 ? 3 : -1);
 		}
 
 		mPeopleChangedListeners = new List<GameObject>();
@@ -41,7 +40,10 @@ public class PersonManager : MonoBehaviour {
 		// repopulate. todo: figure out what actual logic we want for this,
 		// e.g. if it depends on other factors, if there's a hard cap, etc.
 		List<Person> civilians = FindPeople(Person.AttributeType.PROFESSION, Person.Attribute.CIVILIAN);
-		float birthRate = civilians.Count * civilianBirthRateIncrease;
+		float birthRate = 0f;
+		foreach (Person person in civilians) {
+			birthRate += person.Efficiency;
+		}
 		if(GameState.HasBoon(BoonType.SURPLUS_FOOD_TO_BIRTHRATE))
 		{
 			float birthrateIncrease = GameState.GetBoonValue(BoonType.SURPLUS_FOOD_TO_BIRTHRATE) / 100f;
@@ -63,10 +65,10 @@ public class PersonManager : MonoBehaviour {
 		GameState.TimeBetweenBirths = (birthInterval / birthRate);
 
 		// Update ArmySize
-		int armySize = 0;
+		float armyStrength = 0;
 		List<Person> warriors = FindPeople(Person.AttributeType.PROFESSION, Person.Attribute.WARRIOR);
 		foreach(Person p in warriors) {
-			armySize += p.Level;
+			armyStrength += p.Efficiency;
 		}
 
 		if(GameState.HasBoon(BoonType.WARRIOR_CHILD_PROTECT))
@@ -75,11 +77,11 @@ public class PersonManager : MonoBehaviour {
 			List<Person> children = mPeople.FindAll(x => x.Age <= childAge);
 			if(children != null)
 			{
-				armySize += children.Count;
+				armyStrength += children.Count;
 			}
 		}
 
-		GameState.ArmySize = armySize;
+		GameState.ArmyStrength = (int)Mathf.Floor(armyStrength);
 	}
 
 	private Person SpawnPerson(Person.Attribute profession = Person.Attribute.NONE, int level = -1)

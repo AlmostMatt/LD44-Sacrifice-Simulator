@@ -74,7 +74,7 @@ public class SacrificeDemand
 		string costString = "";
 		foreach(Criterion c in mCriteria)
 		{
-			string profString = c.GetProfession() == null ? "" : c.GetProfession().ToString();
+			string profString = c.GetProfession() == Person.Attribute.NONE ? "" : c.GetProfession().ToString();
 			costString += c.GetPrefixString() + profString + c.GetSuffixString() + "\r\n";
 		};
 		return(costString);

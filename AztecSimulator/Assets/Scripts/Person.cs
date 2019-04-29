@@ -3,6 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Person : MonoBehaviour {
+	private static Dictionary<Person.Attribute, float> EFFICIENCY_BASE = new Dictionary<Person.Attribute, float> {
+		{Person.Attribute.FARMER, 1f},
+		{Person.Attribute.WARRIOR, 1f},
+		{Person.Attribute.CIVILIAN, 1.5f},
+		{Person.Attribute.NONE, 0f}
+	};
+	private static Dictionary<Person.Attribute, float> EFFICIENCY_PER_LEVEL = new Dictionary<Person.Attribute, float> {
+		{Person.Attribute.FARMER, 0.5f},
+		{Person.Attribute.WARRIOR, 0.5f},
+		{Person.Attribute.CIVILIAN, 0.5f},
+		{Person.Attribute.NONE, 0f}
+	};
+
 	// Utility functions to go from attr > type are in Utilities
 	public enum AttributeType {
 		PROFESSION = 0,
@@ -89,6 +102,12 @@ public class Person : MonoBehaviour {
 	public void ResetLevel() {
 		mLevel = 1;
 		mXp = 0f;
+	}
+	public float Efficiency {
+		get { return(
+			EFFICIENCY_BASE[GetAttribute(AttributeType.PROFESSION)]
+			+ (EFFICIENCY_PER_LEVEL[GetAttribute(AttributeType.PROFESSION)]) * (mLevel - 1));
+		}
 	}
 
 	public void ChangeProfession(Attribute newProfession)
