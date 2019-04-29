@@ -206,7 +206,7 @@ public class God : MonoBehaviour {
 			List<Person> underleveled = personMgr.People.FindAll(x => x.Level < GameState.GetLevelCap(x.GetAttribute(Person.AttributeType.PROFESSION)));
 			if(underleveled != null && underleveled.Count > 0)
 			{
-				int xpBonus = 10;
+				int xpBonus = GameState.GetBoonValue(BoonType.SACRIFICE_BONUS_XP);
 				Person p = Utilities.RandomSelection<Person>(underleveled.ToArray());
 				Utilities.LogEvent(p.Name + " got " + xpBonus + " bonus xp from the sacrifice");
 				p.AddXp(xpBonus);
@@ -218,7 +218,7 @@ public class God : MonoBehaviour {
 			List<Person> needHealing = personMgr.People.FindAll(x => x.Health < x.MaxHealth);
 			if(needHealing != null && needHealing.Count > 0)
 			{
-				float heal = 10;
+				float heal = GameState.GetBoonValue(BoonType.SACRIFICE_BONUS_HEALING);
 				Person p = Utilities.RandomSelection<Person>(needHealing.ToArray());
 				Utilities.LogEvent("The sacrifice restored " + heal + " lifeforce to " + p.Name);
 				p.Heal(heal);
