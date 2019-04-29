@@ -186,13 +186,14 @@ public class DemandGenerator {
 	public static SacrificeDemand VictoryDemand()
 	{
 		// appropriately tuned demands to win the game
-		SacrificeDemand warriorDemand = new SacrificeDemand();
+		SacrificeDemand professionDemand = new SacrificeDemand();
 		Criterion c = new Criterion();
 		c.mMinLevel = 7;
-		c.mAttributes.Add(Person.Attribute.WARRIOR);
+		Person.Attribute[] attr = Person.RandomAttributes(1);
+		c.mAttributes.Add(attr[attr.Length-1]);
 		c.mCount = 5;
-		warriorDemand.mCriteria.Add(c);
-		return(warriorDemand);
+		professionDemand.mCriteria.Add(c);
+		return(professionDemand);
 	}
 
 	public static List<Person.Attribute> GenerateSatisfiableDemands(int preferredNum)
