@@ -197,8 +197,8 @@ public class UIManager : MonoBehaviour {
 		string foodString = Utilities.ColorString("Food: " + GameState.FoodSupply + "/" + people.Count, "red", people.Count > GameState.FoodSupply);
 		transform.Find("Top/Left/Item1/Text").GetComponent<Text>().text = foodString;
 		string armyString = GameState.InvaderSize == 0
-			? "Army: " + GameState.ArmySize
-			: Utilities.ColorString("Army: " + GameState.ArmySize + "/" + GameState.InvaderSize, "red", GameState.InvaderSize > GameState.ArmySize);
+			? "Army: " + GameState.ArmyStrength
+			: Utilities.ColorString("Army: " + GameState.ArmyStrength + "/" + GameState.InvaderSize, "red", GameState.InvaderSize > GameState.ArmyStrength);
 		transform.Find("Top/Left/Item2/Text").GetComponent<Text>().text = armyString;
 		transform.Find("Top/Left/Item3/Text").GetComponent<Text>().text = string.Format("Birth every\r\n{0:0.0} seconds", GameState.TimeBetweenBirths);
 		// Population

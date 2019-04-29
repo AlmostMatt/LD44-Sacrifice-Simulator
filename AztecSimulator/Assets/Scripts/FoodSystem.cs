@@ -14,19 +14,18 @@ public class FoodSystem : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		int totalFarmingLevel = 0;
+		float totalFoodProduction = 0;
 		List<Person> farmers = mPersonMgr.FindPeople(Person.AttributeType.PROFESSION, Person.Attribute.FARMER);
-		foreach(Person p in farmers)
-		{
-			totalFarmingLevel += p.Level;
+		foreach (Person person in farmers) {
+			totalFoodProduction += person.Efficiency;
 		}
 
 		if(GameState.Drought)
 		{
-			totalFarmingLevel /= 2;
+			totalFoodProduction /= 2;
 		}
 
-		GameState.FoodSurplus = Mathf.Max(0, totalFarmingLevel - mPersonMgr.People.Count);
-		GameState.FoodSupply = totalFarmingLevel;
+		GameState.FoodSurplus = Mathf.Max(0, totalFoodProduction - mPersonMgr.People.Count);
+		GameState.FoodSupply = (int)Mathf.Floor(totalFoodProduction);
 	}
 }

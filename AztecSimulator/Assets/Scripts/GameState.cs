@@ -34,18 +34,18 @@ public class GameState {
 		set { sGameState.mFoodSupply = value; }
 	}
 
-	private int mFoodSurplus = 0;
-	public static int FoodSurplus
+	private float mFoodSurplus = 0;
+	public static float FoodSurplus
 	{
 		get {return(sGameState.mFoodSurplus); }
 		set { sGameState.mFoodSurplus = value; }
 	}
 
-	private int mArmySize = 0;
-	public static int ArmySize
+	private int mArmyStrength = 0;
+	public static int ArmyStrength
 	{
-		get { return(sGameState.mArmySize); }
-		set { sGameState.mArmySize = value; }
+		get { return(sGameState.mArmyStrength); }
+		set { sGameState.mArmyStrength = value; }
 	}
 
 	private int mInvaderSize = 0;
@@ -108,10 +108,10 @@ public class GameState {
 	}
 	public static int GetLevelCap(Person.Attribute profession)
 	{
+		int initialLevelCap = 3;
 		if(!sGameState.mLevelCapIncreases.ContainsKey(profession))
-			return(2);
-
-		return(sGameState.mLevelCapIncreases[profession] + 2);
+			return(initialLevelCap);
+		return(sGameState.mLevelCapIncreases[profession] + initialLevelCap);
 	}
 		
 	private int mFavour = 0;

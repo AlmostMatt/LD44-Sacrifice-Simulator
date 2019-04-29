@@ -34,11 +34,11 @@ public static class Utilities {
 	public static string GetDescription(this Person.Attribute attr) {
 		switch(attr){
 		case Person.Attribute.FARMER:
-			return "Capable of feeding a number of people equal to level.";
+			return "Provides enough food to feed 1 person, and 0.5 more per level.";
 		case Person.Attribute.WARRIOR:
-			return "Capable of fighting off a number of invaders equal to level.";
+			return "Increased army strength by 1, and 0.5 more per level.";
 		case Person.Attribute.CIVILIAN:
-			return "Raises children, increasing the birth rate of your population.";
+			return "Raises children, increasing the birth rate of your population, and 1/3 more per level.";
 		default:
 			return "<profession description>";
 		}
