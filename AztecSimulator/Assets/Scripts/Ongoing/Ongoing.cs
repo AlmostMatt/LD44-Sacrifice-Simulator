@@ -35,7 +35,9 @@ public class Ongoing
 		// trying lighter and lighter shades, because its a multiplied by a gray image
 		//uiOngoing.GetComponent<Image>().color = mIsGood ? new Color(77f/255f, 158f/255f, 115/255f) : new Color(158f/255f,53f/255f,64f/255f);
 		//uiOngoing.GetComponent<Image>().color = mIsGood ? new Color(99f/255f, 204f/255f, 146/255f) : new Color(193f/255f,65/255f,80f/255f);
-		uiOngoing.GetComponent<Image>().color = mIsGood ? new Color(118f/255f, 242f/255f, 172/255f) : new Color(226f/255f,77f/255f,97f/255f);
+		//uiOngoing.GetComponent<Image>().color = mIsGood ? new Color(118f/255f, 242f/255f, 172/255f) : new Color(226f/255f,77f/255f,97f/255f);
+		//uiOngoing.GetComponent<Image>().color = mIsGood ? new Color(118f/255f, 242f/255f, 172/255f) : new Color(244f/255f,83f/255f,104f/255f);
+		uiOngoing.GetComponent<Image>().color = mIsGood ? new Color(118f/255f, 242f/255f, 172/255f) : new Color(255f/255f,89f/255f,111f/255f);
 	}
 }
 
