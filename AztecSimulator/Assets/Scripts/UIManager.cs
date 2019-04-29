@@ -95,7 +95,8 @@ public class UIManager : MonoBehaviour {
 				uiPerson.transform.Find("Toggle/TextTR").GetComponent<Text>().text = descriptionStrings[1];
 				uiPerson.transform.Find("Toggle/BLGroup/Text").GetComponent<Text>().text = descriptionStrings[2];
 				Person.Attribute profession = people[i].GetAttribute(Person.AttributeType.PROFESSION);
-				uiPerson.transform.Find("Toggle/BLGroup/Icon").GetComponent<Image>().sprite = mProfessionSprites[profession];
+				uiPerson.transform.Find("Toggle/BLGroup/Icons/Icon1").gameObject.SetActive(selectedDemand != null && selectedDemand.IsRelevantAttribute(profession));
+				uiPerson.transform.Find("Toggle/BLGroup/Icons/Icon2").GetComponent<Image>().sprite = mProfessionSprites[profession];
 				uiPerson.transform.Find("Toggle/BRGroup/Text").GetComponent<Text>().text = descriptionStrings[3];
 			}
 		}
