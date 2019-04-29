@@ -1117,6 +1117,16 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114797501282310160, guid: e76847aa1c7bf254b9f00b2778de28f6,
+        type: 2}
+      propertyPath: sprites.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 114797501282310160, guid: e76847aa1c7bf254b9f00b2778de28f6,
+        type: 2}
+      propertyPath: spriteNames.Array.size
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4391487969033850, guid: e76847aa1c7bf254b9f00b2778de28f6, type: 2}
       propertyPath: m_LocalPosition.x
       value: 307.68506
@@ -1154,6 +1164,28 @@ Prefab:
       propertyPath: initialEventDelay
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 114797501282310160, guid: e76847aa1c7bf254b9f00b2778de28f6,
+        type: 2}
+      propertyPath: spriteNames.Array.data[4]
+      value: DROUGHT
+      objectReference: {fileID: 0}
+    - target: {fileID: 114797501282310160, guid: e76847aa1c7bf254b9f00b2778de28f6,
+        type: 2}
+      propertyPath: sprites.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: 85f3d33b35b8cf047a8e3f0c58ec2fac,
+        type: 3}
+    - target: {fileID: 114797501282310160, guid: e76847aa1c7bf254b9f00b2778de28f6,
+        type: 2}
+      propertyPath: spriteNames.Array.data[5]
+      value: ATTACK
+      objectReference: {fileID: 0}
+    - target: {fileID: 114797501282310160, guid: e76847aa1c7bf254b9f00b2778de28f6,
+        type: 2}
+      propertyPath: sprites.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: 8557d86868293c347a760152ebc63f9a,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e76847aa1c7bf254b9f00b2778de28f6, type: 2}
   m_IsPrefabParent: 0
