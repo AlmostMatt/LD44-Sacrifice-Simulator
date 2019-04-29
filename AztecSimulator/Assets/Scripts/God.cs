@@ -276,7 +276,7 @@ public class God : MonoBehaviour {
 
 			if(demand.mDemand.CheckSatisfaction(people))
 			{
-				Utilities.LogEvent("YES, THIS SACRIFICE PLEASES ME", 1f, true);
+				Utilities.LogEvent("YES, THIS SACRIFICE PLEASES ME", 2f, true);
 				SacrificeResult sr = demand.mSatisfiedResult;
 				if(sr != null)
 				{
@@ -306,11 +306,11 @@ public class God : MonoBehaviour {
 			}
 			else
 			{
-				Utilities.LogEvent("NO WHAT ARE YOU DOING", 1f, true);
+				Utilities.LogEvent("NO WHAT ARE YOU DOING", 2f, true);
 			}
 		}
 		else {
-			Utilities.LogEvent("THIS POINTLESS SACRIFICE PLEASES ME", 1f, true);
+			Utilities.LogEvent("THIS POINTLESS SACRIFICE PLEASES ME", 2f, true);
 		}
 
 		foreach(Person p in people)

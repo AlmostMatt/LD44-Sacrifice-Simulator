@@ -185,6 +185,7 @@ public class UIManager : MonoBehaviour {
 		// Update notification objects
 		// UPDATE: this now only shows and updates the timer of the first (oldest) notification
 		Transform notificationContainer = transform.Find("BRCorner");
+		Transform godContainer = transform.Find("BLCorner");
 		for(int i = 0; i < Mathf.Max(mNotificationMessages.Count, mUiNotificationPool.Count); i++)
 		{
 			GameObject uiNotification;
@@ -196,6 +197,21 @@ public class UIManager : MonoBehaviour {
 			} else {
 				uiNotification = mUiNotificationPool[i];
 			}
+
+			if(i < mNotificationMessages.Count)
+			{
+				if(mNotificationIsGod[i])
+				{
+					uiNotification.transform.SetParent(godContainer);
+					uiNotification.GetComponent<Image>().color = Color.gray;
+				}
+				else
+				{
+					uiNotification.transform.SetParent(notificationContainer);
+					uiNotification.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.392f);
+				}
+			}
+
 			// Update position
 			RectTransform rt = uiNotification.GetComponent<RectTransform>();
 			// TODO: slide down if others have faded
