@@ -23,9 +23,9 @@ public class BoonLibrary {
 	};
 
 	private static SacrificeResultFactory[] sRandomizedBoons = {
-		new Favour.Factory(),
-		new SurplusFoodUse.Factory(),
-		//new SacrificeBonus.Factory(),
+		//new Favour.Factory(),
+		//new SurplusFoodUse.Factory(),
+		new SacrificeBonus.Factory(),
 		//new SameProfessionXpBuff.Factory(),
 		//new CombatVictoryReward.Factory(),
 		//new WarriorChildProtect().Factory(),
@@ -38,7 +38,7 @@ public class BoonLibrary {
 		// new ImprovedLifespan(),
 //		new WarriorXpBuff(),
 		//new Favour(),
-		new SacrificeBonus(),
+		//new SacrificeBonus(),
 		new SameProfessionXpBuff(),
 		new CombatVictoryReward()
 	};
