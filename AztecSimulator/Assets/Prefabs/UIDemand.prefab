@@ -105,6 +105,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224794087411954544}
   - component: {fileID: 114710058446242942}
+  - component: {fileID: 114335531545651284}
   m_Layer: 5
   m_Name: UIDemand
   m_TagString: Untagged
@@ -469,6 +470,20 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114335531545651284
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1310113316287112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a3000c5027913d449bababccb5eb372, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiInfoPrefab: {fileID: 1240788408535290, guid: 257d578164704a34aa0e3a0c67b3521f,
+    type: 2}
+  detailedMessage: this can be set programmatically
 --- !u!114 &114583773848127098
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -882,8 +897,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 30}
-  m_SizeDelta: {x: 200, y: 54}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224858103298785524
 RectTransform:

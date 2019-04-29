@@ -28,6 +28,11 @@ public class God : MonoBehaviour {
 			mIgnoredResult = ignoredResult;
 		}
 
+		public string GetResultDescription() {
+			// todo: consider listing both effect and cost
+			return (mSatisfiedResult == null ? mIgnoredResult : mSatisfiedResult).mDescription;
+		}
+
 		public string GetShortDescription()
 		{
 			return(mDemand.GetShortDescription());

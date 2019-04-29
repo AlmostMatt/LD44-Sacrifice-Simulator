@@ -27,7 +27,7 @@ public class Ongoing
 		int minutes = (int)Mathf.Floor(mDuration/60);
 		int seconds = (int)Mathf.Floor(mDuration % 60);
 		uiOngoing.transform.Find("VGroup/Text2").GetComponent<Text>().text = string.Format("{0}:{1}", minutes, seconds);
-		uiOngoing.transform.Find("IgnoreLayout/InfoPanel/Text").GetComponent<Text>().text = mDescription.ToString();
+		uiOngoing.GetComponent<HoverInfo>().SetText(mDescription.ToString());
 	}
 }
 

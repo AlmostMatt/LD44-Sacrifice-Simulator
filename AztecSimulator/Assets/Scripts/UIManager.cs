@@ -132,6 +132,7 @@ public class UIManager : MonoBehaviour {
 				// Update text and store id in name
 				if (i < demands.Count) {
 					uiDemand.name = demands[i].mId.ToString();
+					uiDemand.GetComponent<HoverInfo>().SetText(demands[i].GetResultDescription());
 					string[] demandStrings = demands[i].GetUIDescriptionStrings();
 					Person.Attribute[] demandProfessions = demands[i].GetUIDescriptionIcons();
 					int numRows = Mathf.Min(demandStrings.Length / 2, demandProfessions.Length);
