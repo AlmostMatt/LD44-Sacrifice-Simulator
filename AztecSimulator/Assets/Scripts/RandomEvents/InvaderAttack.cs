@@ -25,7 +25,7 @@ public class InvaderAttack : RandomEventSystem.RandomEvent {
 	}
 
 	public override float Start () {
-		mDuration = 30;
+		mDuration = 60f;
 		int difficultyBoost = Mathf.FloorToInt(GameState.GameTimeElapsed / 90);
 		mRequiredWarriors = Random.Range(1, 4) + difficultyBoost;
 		GameState.InvaderSize = mRequiredWarriors;
