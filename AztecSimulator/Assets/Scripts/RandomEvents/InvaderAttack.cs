@@ -24,7 +24,6 @@ public class InvaderAttack : RandomEventSystem.RandomEvent {
 		}
 	}
 
-
 	public override float Warn() {
 		mRequiredWarriors = Random.Range(3, 10);
 		GameState.InvaderSize = mRequiredWarriors;
@@ -56,35 +55,58 @@ public class InvaderAttack : RandomEventSystem.RandomEvent {
 			return(true);
 		}
 
-		mDuration -= GameState.GameDeltaTime;
-		if(mDuration <= 0) {
-			// maybe this should be in its own method, like Ended()?
-			Utilities.LogEvent("The forces have left.");
+		if(mDuration > 0)
+		{
+			mDuration -= GameState.GameDeltaTime;
+			if(mDuration <= 0) {
+				// maybe this should be in its own method, like Ended()?
+				PersonManager personMgr = Utilities.GetPersonManager();
 
-			PersonManager personMgr = Utilities.GetPersonManager();
+				int warriorStrength = GameState.ArmyStrength;
+				int warriorDiff = mRequiredWarriors - warriorStrength;
+				if(warriorDiff <= 0) {
+					Utilities.LogEvent("Your warriors fended off the invaders and your people took no casualties.");
 
-			int warriorStrength = GameState.ArmyStrength;
-			int warriorDiff = mRequiredWarriors - warriorStrength;
-			if(warriorDiff <= 0) {
-				Utilities.LogEvent("Your warriors fended off the invaders and your people took no casualties.");
-			}
-			else if(warriorDiff > 0) {
-				List<Person> people = personMgr.People;
-				Utilities.LogEvent("Your warriors weren't able to stop all of the invaders.");
-				string msg = "";
-				int[] hurtPeople = Utilities.RandomList(people.Count, warriorDiff);
-				foreach(int i in hurtPeople) {
-					people[i].Health -= Random.Range(40,90); // maybe we want to inflict "wounded" instead of directly damaging?
-					msg += people[i].Name + " was wounded in the attack.\r\n";
+					int bonusHealing = GameState.GetBoonValue(BoonType.COMBAT_VICTORY_BONUS_HEALING);
+					if(bonusHealing > 0) {
+						List<Person> peopleToHeal = personMgr.People.FindAll(x => x.Health < x.MaxHealth);
+						if(peopleToHeal.Count > 0)
+						{
+							Person p = Utilities.RandomSelection<Person>(peopleToHeal.ToArray());
+							p.Heal(bonusHealing);
+							Utilities.LogEvent(p.Name + " feels revitalized by the victory. +" + bonusHealing + " lifeforce");
+						}
+					}
+
+					int bonusXp = GameState.GetBoonValue(BoonType.COMBAT_VICTORY_BONUS_XP);
+					if(bonusXp > 0) {
+						List<Person> peopleToGetXp = personMgr.People.FindAll(x => x.Level < GameState.GetLevelCap(x.GetAttribute(Person.AttributeType.PROFESSION)));
+						if(peopleToGetXp.Count > 0)
+						{
+							Person p = Utilities.RandomSelection<Person>(peopleToGetXp.ToArray());
+							p.AddXp(bonusXp);
+							Utilities.LogEvent(p.Name + " has learned from the victory! +" + bonusXp + "xp");
+						}
+					}
 				}
-				Utilities.LogEvent(msg);
+				else if(warriorDiff > 0) {
+					List<Person> people = personMgr.People;
+					Utilities.LogEvent("Your warriors weren't able to stop all of the invaders.");
+					string msg = "";
+					int[] hurtPeople = Utilities.RandomList(people.Count, warriorDiff);
+					foreach(int i in hurtPeople) {
+						people[i].Health -= Random.Range(40,90); // maybe we want to inflict "wounded" instead of directly damaging?
+						msg += people[i].Name + " was wounded in the attack.\r\n";
+					}
+					Utilities.LogEvent(msg);
+				}
+
+				// cleanup things related to the invasion
+				if(mDemandId > 0) Utilities.GetGod().RemoveDemand(mDemandId);
+				GameState.InvaderSize = 0;
+
+				return(true);
 			}
-
-			// cleanup things related to the invasion
-			if(mDemandId > 0) Utilities.GetGod().RemoveDemand(mDemandId);
-			GameState.InvaderSize = 0;
-
-			return(true);
 		}
 
 		return(false);
