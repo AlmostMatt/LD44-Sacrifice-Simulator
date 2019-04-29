@@ -88,7 +88,7 @@ public class RandomEventSystem : MonoBehaviour {
 
 		// hack in events for now
 		ScheduleEvent(new InvaderAttack(), initialEventDelay);
-		ScheduleEvent(new Drought(), initialEventDelay);
+		ScheduleEvent(new Drought(), initialEventDelay + Random.Range(30, 60));
 	}
 	
 	// Update is called once per frame
