@@ -91,6 +91,7 @@ GameObject:
   - component: {fileID: 114655340235838222}
   - component: {fileID: 222083767680684630}
   - component: {fileID: 114992586293739670}
+  - component: {fileID: 114912673456445756}
   m_Layer: 5
   m_Name: UIOngoing
   m_TagString: Untagged
@@ -384,6 +385,18 @@ MonoBehaviour:
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
   m_ChildControlHeight: 1
+--- !u!114 &114912673456445756
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1699931037971490}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a3000c5027913d449bababccb5eb372, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  infoObject: {fileID: 1597882911046466}
 --- !u!114 &114992586293739670
 MonoBehaviour:
   m_ObjectHideFlags: 1

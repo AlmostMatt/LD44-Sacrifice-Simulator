@@ -25,6 +25,7 @@ public class Ongoing
 		//uiOngoing.transform.Find("Icon").GetComponent<Image>().sprite;
 		uiOngoing.transform.Find("VGroup/Text1").GetComponent<Text>().text = mTitle;
 		uiOngoing.transform.Find("VGroup/Text2").GetComponent<Text>().text = mDuration.ToString();
+		uiOngoing.transform.Find("IgnoreLayout/InfoPanel/Text").GetComponent<Text>().text = mDescription.ToString();
 	}
 }
 
