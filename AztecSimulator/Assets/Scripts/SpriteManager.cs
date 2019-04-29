@@ -9,6 +9,12 @@ public class SpriteManager : MonoBehaviour {
 	private Dictionary<string, Sprite> stringToSpriteMap = new Dictionary<string, Sprite>();
 
 	void Awake() {
+		if (stringToSpriteMap.Count == 0) {
+			Setup();
+		}
+	}
+
+	private void Setup() {
 		for (int i=0; i<Mathf.Min(spriteNames.Length, sprites.Length); i++) {
 			stringToSpriteMap.Add(spriteNames[i], sprites[i]);
 		}
@@ -20,7 +26,12 @@ public class SpriteManager : MonoBehaviour {
 		}
 		return GetSprite(profession.ToString());
 	}
+
 	public Sprite GetSprite(string iconName) {
+		// Call Setup here in case awake hasnt yet happened
+		if (stringToSpriteMap.Count == 0) {
+			Setup();
+		}
 		if (stringToSpriteMap.ContainsKey(iconName)) {
 			return stringToSpriteMap[iconName];
 		}
