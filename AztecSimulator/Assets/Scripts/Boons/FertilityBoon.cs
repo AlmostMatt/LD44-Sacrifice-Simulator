@@ -8,6 +8,12 @@ public class FertilityBoon : SacrificeResult {
 	private static string sDesc = "God blesses our people with newborns.";
 	private static string sAltDesc = "It's a baby shower";
 
+	public class Factory : SacrificeResultFactory {
+		public SacrificeResult Make(int tier, int luck) { 
+			return new FertilityBoon(tier, luck);
+		}
+	}
+
 	private class FertilityEvent : RandomEventSystem.RandomEvent
 	{
 		private int mBoost;
@@ -33,12 +39,16 @@ public class FertilityBoon : SacrificeResult {
 		}
 	}
 
-	public FertilityBoon() : base(sName, "Temporary birth rate increase") {
+	private int mBoost;
+	private int mDuration;
+	private FertilityBoon(int tier, int luck) : base(sName, "Temporary birth rate increase") {
+		mBoost = 100 + tier * 10 + luck * 10;
+		mDuration = 10;
 	}
 
 	public override void DoEffect()
 	{
 		Utilities.LogEvent(sDesc, 1f);
-		Utilities.GetEventSystem().ScheduleEvent(new FertilityEvent(100, 10), 0);
+		Utilities.GetEventSystem().ScheduleEvent(new FertilityEvent(mBoost, mDuration), 0);
 	}
 }

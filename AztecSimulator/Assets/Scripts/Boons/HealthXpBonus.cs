@@ -13,15 +13,15 @@ public class HealthXpBonus : SacrificeResult {
 		mBonus = 1;
 		if(mHealthy)
 		{
-			mThreshold = 100;
+			mThreshold = Random.Range(9, 11) * 10;
 			mName = "Healthy Body, Healthy Mind";
-			mDescription = "People above " + mThreshold + " lifeforce get +" + mBonus + "xp";
+			mDescription = "People with " + mThreshold + " lifeforce or more get +" + mBonus + "xp per second";
 		}
 		else
 		{
 			mThreshold = 20;
 			mName = "Desperate Learning";
-			mDescription = "People below " + mThreshold + " lifeforce get " + mBonus + "xp";
+			mDescription = "People with " + mThreshold + " lifeforce or less get +" + mBonus + "xp per second";
 		}
 	}
 

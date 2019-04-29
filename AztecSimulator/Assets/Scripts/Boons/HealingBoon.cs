@@ -4,10 +4,17 @@ using UnityEngine;
 
 public class HealingBoon : SacrificeResult {
 
+	public class Factory : SacrificeResultFactory {
+		public SacrificeResult Make(int tier, int luck) {
+			return new HealingBoon(tier, luck);
+		}
+	}
+
 	private int mAmount;
 
-	public HealingBoon() : base("Healing Blessing", "Restores some lifeforce to your people") {
-		mAmount = 20;
+	private HealingBoon(int tier, int luck) : base("Healing Blessing", "") {
+		mAmount = 10 * (1 + tier + luck);
+		mDescription = "Restores " + mAmount + " lifeforce to your people";
 	}
 
 	public override void DoEffect() {

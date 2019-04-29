@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class BoonLibrary {
 
-	private static SacrificeResult[] sTemporaryBoons = {
-		new GoodCropBoon(),
-		new FertilityBoon(),
-		new HealingBoon(),
-		new Favour(),
-		new XpBurst()
+	private static SacrificeResultFactory[] sTemporaryBoons = {
+		new GoodCropBoon.Factory(),
+		new FertilityBoon.Factory(),
+		new HealingBoon.Factory(),
+		new Favour.Factory(),
+		new XpBurst.Factory()
 	};
 
 	private static SacrificeResult[] sTemporaryCurses = {
@@ -22,11 +22,15 @@ public class BoonLibrary {
 		new CivilianXpBuff()
 	};
 
+	private static SacrificeResultFactory[] sRandomizedBoons = {
+		new GoodCropBoon.Factory()
+	};
+
 	private static SacrificeResult[] sTierOneBoons = {
 		//new FarmerXpBuff(),
 		// new ImprovedLifespan(),
 //		new WarriorXpBuff(),
-		new Favour(),
+		//new Favour(),
 		new SurplusFoodUse(),
 		new SacrificeBonus(),
 		new SameProfessionXpBuff(),
@@ -37,7 +41,7 @@ public class BoonLibrary {
 		//new FarmerXpBuff(),
 //		new ImprovedLifespan(),
 		//new WarriorXpBuff(),
-		new Favour(),
+//		new Favour(),
 		new WarriorChildProtect(),
 		new ChangeProfessionRetainXp(),
 		new HealthXpBonus()
@@ -46,12 +50,16 @@ public class BoonLibrary {
 	private static SacrificeResult[] sSuperSpecialBoons = {
 	};
 
-	public static SacrificeResult RandomTemporaryBoon() {
-		return(Utilities.RandomSelection<SacrificeResult>(sTemporaryBoons));
+	public static SacrificeResult RandomTemporaryBoon(int tier, int luck) {
+		return(Utilities.RandomSelection<SacrificeResultFactory>(sTemporaryBoons).Make(tier, luck));
 	}
 
 	public static SacrificeResult RandomTemporaryCurse() {
 		return(Utilities.RandomSelection<SacrificeResult>(sTemporaryCurses));
+	}
+
+	public static SacrificeResult RandomBoon(int tier, int luck) {
+		return(Utilities.RandomSelection<SacrificeResultFactory>(sRandomizedBoons).Make(tier, luck));
 	}
 
 	public static SacrificeResult RandomTierOneBoon() {
