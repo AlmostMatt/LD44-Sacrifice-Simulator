@@ -23,24 +23,14 @@ public class BoonLibrary {
 	};
 
 	private static SacrificeResultFactory[] sRandomizedBoons = {
-		//new Favour.Factory(),
-		//new SurplusFoodUse.Factory(),
-		//new SacrificeBonus.Factory(),
-		//new SameProfessionXpBuff.Factory(),
-		//new CombatVictoryReward.Factory(),
-		//new WarriorChildProtect.Factory(),
+		new Favour.Factory(),
+		new SurplusFoodUse.Factory(),
+		new SacrificeBonus.Factory(),
+		new SameProfessionXpBuff.Factory(),
+		new CombatVictoryReward.Factory(),
+		new WarriorChildProtect.Factory(),
 		new ChangeProfessionRetainXp.Factory(),
-		//new HealthXpBonus.Factory()
-	};
-
-	private static SacrificeResult[] sTierTwoBoons = {
-		//new FarmerXpBuff(),
-//		new ImprovedLifespan(),
-		//new WarriorXpBuff(),
-//		new Favour(),
-		//new WarriorChildProtect(),
-		// new ChangeProfessionRetainXp(),
-		new HealthXpBonus()
+		new HealthXpBonus.Factory()
 	};
 
 	private static SacrificeResult[] sSuperSpecialBoons = {
@@ -58,6 +48,10 @@ public class BoonLibrary {
 		return(Utilities.RandomSelection<SacrificeResultFactory>(sRandomizedBoons).Make(tier, luck));
 	}
 
+	public static SacrificeResultFactory[] RandomBoonFactories(int howMany) {
+		return Utilities.RandomSubset<SacrificeResultFactory>(sRandomizedBoons, howMany);
+	}
+
 	public static SacrificeResult[] RandomBoons(int howMany, int tier, int luck)
 	{
 		SacrificeResultFactory[] factories = Utilities.RandomSubset<SacrificeResultFactory>(sRandomizedBoons, howMany);
@@ -69,8 +63,4 @@ public class BoonLibrary {
 		return results;
 	}
 
-	public static SacrificeResult[] RandomTierTwoBoons(int howMany)
-	{
-		return(Utilities.RandomSubset<SacrificeResult>(sTierTwoBoons, howMany));
-	}
 }
