@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class DemandGenerator {
 	
-	public static SacrificeDemand SimpleDemand(SacrificeResult satisfiedResult = null, SacrificeResult ignoredResult = null)
+	public static SacrificeDemand SimpleDemand()
 	{
-		SacrificeDemand d = new SacrificeDemand(satisfiedResult, ignoredResult);
+		SacrificeDemand d = new SacrificeDemand();
 
 		int numAttributes = Random.Range(1,3);
 		List<Person.Attribute> attributes = GenerateSatisfiableDemands(numAttributes);
@@ -61,7 +61,7 @@ public class DemandGenerator {
 		// appropriately tuned demands to win the game
 		SacrificeDemand warriorDemand = new SacrificeDemand();
 		Criterion c = new Criterion();
-		c.mMinLevel = 20;
+		c.mMinLevel = 7;
 		c.mAttributes.Add(Person.Attribute.WARRIOR);
 		c.mCount = 5;
 		warriorDemand.mCriteria.Add(c);

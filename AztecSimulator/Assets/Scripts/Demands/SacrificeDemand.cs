@@ -3,27 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SacrificeDemand
-{
-	private static int sId = 0;
-
-	public int mId;
+{	
 	public List<Criterion> mCriteria;
-	public SacrificeResult mSatisfiedResult;
-	public SacrificeResult mIgnoredResult;
 
 	public string mShortDescOverride;
-	public string[] mLongDescOverride;
 
-	public SacrificeDemand(SacrificeResult satisfiedResult, SacrificeResult ignoredResult) {
-
-		mId = ++sId;
-
-		mCriteria = new List<Criterion>();
-		mSatisfiedResult = satisfiedResult;
-		mIgnoredResult = ignoredResult;
+	public int NumCriteria
+	{
+		get { return(mCriteria.Count); }
 	}
 
-	public SacrificeDemand() : this(null, null) {
+	public SacrificeDemand() {
+		mCriteria = new List<Criterion>();
 	}
 
 	public bool CheckSatisfaction(List<Person> people)
@@ -78,24 +69,6 @@ public class SacrificeDemand
 			costString += c.GetPrefixString() + profString + c.GetSuffixString() + "\r\n";
 		};
 		return(costString);
-	}
-
-	// Returns a list of strings. Two per row, one before the icon, and one after the icon.
-	public string[] GetUIDescriptionStrings() {
-		if(mLongDescOverride != null) {
-			return(mLongDescOverride);
-		}
-		string[] result = new string[4 + (2 * mCriteria.Count)];
-		string satisfiedString = mSatisfiedResult == null ? "Fail to satisfy: " + mIgnoredResult.mName : mSatisfiedResult.mName;
-		result[0] = "";
-		result[1] = satisfiedString;
-		result[2] = "GOD DEMANDS";
-		result[3] = "";
-		for (int i=0; i< mCriteria.Count; i++) {
-			result[4+(2*i)] = mCriteria[i].GetPrefixString();
-			result[4+(2*i)+1] = mCriteria[i].GetSuffixString();
-		}
-		return result;
 	}
 
 	// Returns a list of attributes. Corresponding icons will be used in the demand info rows.
