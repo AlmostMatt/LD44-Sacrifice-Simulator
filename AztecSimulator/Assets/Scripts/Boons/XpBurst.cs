@@ -4,10 +4,17 @@ using UnityEngine;
 
 public class XpBurst : SacrificeResult {
 
+	public class Factory : SacrificeResultFactory {
+		public SacrificeResult Make(int tier, int luck) { 
+			return new XpBurst(tier, luck);
+		}
+	}
+
 	private int mAmount;
 
-	public XpBurst() : base("Divine Inspiration", "Gives your people a boost of xp") {
-		mAmount = 5;
+	private XpBurst(int tier, int luck) : base("Divine Inspiration", "") {
+		mAmount = 5 * (1 + tier + luck);
+		mDescription = "Instantly gives your people +" + mAmount + "xp";
 	}
 
 	public override void DoEffect() {

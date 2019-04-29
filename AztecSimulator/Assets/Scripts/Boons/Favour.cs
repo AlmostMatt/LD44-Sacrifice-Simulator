@@ -8,7 +8,14 @@ public class Favour : SacrificeResult {
 	// increased time between demands
 	// event aid is cheaper / more effective
 	// random generation skews towards player-positive things
-	public Favour() : base("Favour", "God takes favour on your people") {}
+
+	public class Factory : SacrificeResultFactory {
+		public SacrificeResult Make(int tier, int luck) { 
+			return new Favour();
+		}
+	}
+
+	private Favour() : base("Favour", "God takes favour on your people") {}
 
 	public override void DoEffect() {
 		Utilities.LogEvent("Your people find favour with god", 1f);

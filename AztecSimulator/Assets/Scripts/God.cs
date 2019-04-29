@@ -180,6 +180,7 @@ public class God : MonoBehaviour {
 			mFleetingDemandTimer -= GameState.GameDeltaTime;
 			if(mFleetingDemandTimer <= 0)
 			{
+				int tier = Mathf.FloorToInt(GameState.GameTimeElapsed / 120);
 				SacrificeDemand demand = DemandGenerator.SimpleDemand();
 				SacrificeResult satisfied = null;
 				SacrificeResult ignored = null;
@@ -192,7 +193,7 @@ public class God : MonoBehaviour {
 				if(roll - negativeChance <= specialChance)
 					satisfied = BoonLibrary.RandomTierOneBoon();
 				else
-					satisfied = BoonLibrary.RandomTemporaryBoon();
+					satisfied = BoonLibrary.RandomTemporaryBoon(tier, GameState.Favour);
 
 				GodDemand d = new GodDemand(demand, satisfied, ignored);
 				d.mTimeLeft = 30;
