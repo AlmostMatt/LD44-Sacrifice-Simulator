@@ -91,7 +91,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugAttackIdx: -1
-  initialEventDelay: 0
+  initialEventDelay: 2
   minEventInterval: 45
   maxEventInterval: 75
 --- !u!114 &114526150567914390
@@ -131,5 +131,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   numStartingPeople: 3
-  civilianBirthRateIncrease: 2
-  birthInterval: 20
