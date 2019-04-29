@@ -39,7 +39,7 @@ public class God : MonoBehaviour {
 		}
 
 		// Returns a list of strings. Two per row, one before the icon, and one after the icon.
-		public string[] GetUIDescriptionStrings() {
+		public string[] GetUIDescriptionStrings(List<Person> selectedPeople) {
 			if(mLongDescOverride != null) {
 				return(mLongDescOverride);
 			}
@@ -63,8 +63,10 @@ public class God : MonoBehaviour {
 
 			for(int i = 0; i < mDemand.NumCriteria; i++)
 			{
-				result[numLinesPreCriteria + (2 * i)] = mDemand.mCriteria[i].GetPrefixString();
-				result[numLinesPreCriteria + (2 * i) + 1] = mDemand.mCriteria[i].GetSuffixString();
+				Criterion c = mDemand.mCriteria[i];
+				bool satisfied = c.CheckSatisfaction(selectedPeople);
+				result[numLinesPreCriteria + (2 * i)] = Utilities.ColorString(c.GetPrefixString(), "green", satisfied);
+				result[numLinesPreCriteria + (2 * i) + 1] = Utilities.ColorString(c.GetSuffixString(), "green", satisfied);
 			}
 
 			return result;
