@@ -4,19 +4,6 @@ using UnityEngine;
 
 public class God : MonoBehaviour {
 
-	/*
-	public class FleetingDemand {
-		public SacrificeDemand mDemand;
-		public float mTimeLeft;
-
-		public FleetingDemand(SacrificeDemand demand, float time)
-		{
-			mDemand = demand;
-			mTimeLeft = time;
-		}
-	}
-	*/
-
 	public class GodDemand
 	{
 		private static int sId = 0;
@@ -76,9 +63,6 @@ public class God : MonoBehaviour {
 
 
 	private List<GodDemand> mDemands;
-	//private List<FleetingDemand> mFleetingDemands;
-	//private List<SacrificeDemand> mDemands;
-	//private List<SacrificeDemand> mRenewableDemands;
 	private string mName;
 	private float mFleetingDemandTimer;
 	private int mNumFleetingDemands;
@@ -95,11 +79,20 @@ public class God : MonoBehaviour {
 
 	void Start () {
 		mName = "MACUILCUETZPALIN, GOD OF AWESOME";
-		//mDemands = new List<SacrificeDemand>();
-		//mFleetingDemands = new List<FleetingDemand>();
 		mDemands = new List<GodDemand>();
 		mFleetingDemandTimer = fleetingDemandTimer;
 		mNumFleetingDemands = 0;
+
+		foreach(SacrificeResult sr in BoonLibrary.sGuaranteedRenewableBoons)
+		{
+			GodDemand renewableDemand = new GodDemand(
+				                            DemandGenerator.SimpleDemand(),
+				                            sr,
+				                            null
+			                            );
+			renewableDemand.mIsRenewable = true;
+			mDemands.Add(renewableDemand);
+		}
 
 		int numTierOneDemands = 2;
 		SacrificeResult[] tierOneBoons = BoonLibrary.RandomTierOneBoons(numTierOneDemands);
@@ -253,7 +246,23 @@ public class God : MonoBehaviour {
 					results.Add(sr);
 				}
 
-				if(!demand.mIsRenewable) // TODO: reroll required sacrifice
+				if(demand.mIsRenewable)
+				{
+					demand.mNumBuys++;
+					if(demand.mNumBuys <= 2)
+					{
+						demand.mDemand = DemandGenerator.SimpleDemand();
+					}
+					else if(demand.mNumBuys <= 4)
+					{
+						demand.mDemand = DemandGenerator.TierOneDemand();
+					}
+					else
+					{
+						demand.mDemand = DemandGenerator.TierTwoDemand();	
+					}
+				}
+				else
 				{
 					RemoveDemand(demandId);
 				}

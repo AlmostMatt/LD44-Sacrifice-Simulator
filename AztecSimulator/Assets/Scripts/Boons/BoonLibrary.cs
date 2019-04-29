@@ -16,16 +16,16 @@ public class BoonLibrary {
 		new PlagueCurse()
 	};
 
-	private static SacrificeResult[] sGuaranteedRenewableBoons = {
+	public static SacrificeResult[] sGuaranteedRenewableBoons = {
 		new FarmerXpBuff(),
 		new WarriorXpBuff(),
 		new CivilianXpBuff()
 	};
 
 	private static SacrificeResult[] sTierOneBoons = {
-		new FarmerXpBuff(),
+		//new FarmerXpBuff(),
 		// new ImprovedLifespan(),
-		new WarriorXpBuff(),
+//		new WarriorXpBuff(),
 		new Favour(),
 		new SurplusFoodUse(),
 		new SacrificeBonus(),
@@ -34,9 +34,9 @@ public class BoonLibrary {
 	};
 
 	private static SacrificeResult[] sTierTwoBoons = {
-		new FarmerXpBuff(),
+		//new FarmerXpBuff(),
 //		new ImprovedLifespan(),
-		new WarriorXpBuff(),
+		//new WarriorXpBuff(),
 		new Favour(),
 		new WarriorChildProtect(),
 		new ChangeProfessionRetainXp(),
