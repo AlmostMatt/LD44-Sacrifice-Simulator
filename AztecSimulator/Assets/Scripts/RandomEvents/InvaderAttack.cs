@@ -25,23 +25,19 @@ public class InvaderAttack : RandomEventSystem.RandomEvent {
 	}
 
 	public override float Warn() {
-		float warnTime = 30;
-		mRequiredWarriors = Random.Range(3, 10);
-		GameState.InvaderSize = mRequiredWarriors;
-		Utilities.LogEvent("An enemy army approaches! They look to be about " + mRequiredWarriors + " strong");
-		mOngoing = new Ongoing("ATTACK", "Invaders Approaching!", mRequiredWarriors + " enemy warriors approach!", warnTime, false);
-		GameState.Ongoings.Add(mOngoing);
-		return(warnTime);
+		return(0);
 	}
 
 	public override void Start () {
-		Utilities.LogEvent("Your people are under attack by invaders!");
-		mDemandId = 0;
-		mIntervened = false;
 		mDuration = 30;
+		mRequiredWarriors = Random.Range(3, 10);
+		GameState.InvaderSize = mRequiredWarriors;
 
-		mOngoing = new Ongoing("ATTACK", "Invaders Attacking!", mRequiredWarriors + " enemy warriors are attacking!", mDuration, false);
+		Utilities.LogEvent("An enemy army approaches! They look to be about " + mRequiredWarriors + " strong");
+		mOngoing = new Ongoing("ATTACK", "Invaders!", mRequiredWarriors + " enemy warriors approach!", mDuration, false);
 		GameState.Ongoings.Add(mOngoing);
+
+		mIntervened = false;
 		mDemandId = Utilities.GetGod().AddFleetingDemand(
 			new InvaderAttack.GodIntervention(this),
 			null, 
@@ -54,7 +50,7 @@ public class InvaderAttack : RandomEventSystem.RandomEvent {
 		
 		if(mIntervened)
 		{
-			Utilities.LogEvent("God intervened and stopped the attack. No one died!");
+			Utilities.LogEvent("God intervened and killed the enemies before they attacked.");
 			return(true);
 		}
 
