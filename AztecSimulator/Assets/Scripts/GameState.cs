@@ -90,6 +90,22 @@ public class GameState {
 		return(baseValue);
 	}
 
+	private Dictionary<Person.Attribute, int> mLevelCapIncreases = new Dictionary<Person.Attribute, int>();
+	public static void IncreaseLevelCap(Person.Attribute profession)
+	{
+		if(!sGameState.mLevelCapIncreases.ContainsKey(profession))
+			sGameState.mLevelCapIncreases.Add(profession, 0);
+
+		sGameState.mLevelCapIncreases[profession]++;
+	}
+	public static int GetLevelCapIncrease(Person.Attribute profession)
+	{
+		if(!sGameState.mLevelCapIncreases.ContainsKey(profession))
+			return(0);
+
+		return(sGameState.mLevelCapIncreases[profession]);
+	}
+		
 	private int mFavour = 0;
 	public static int Favour
 	{

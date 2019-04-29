@@ -14,6 +14,7 @@ public class XpBuff : SacrificeResult {
 	public override void DoEffect()
 	{
 		GameState.AddXpBuff(mProfession, 2);
+		GameState.IncreaseLevelCap(mProfession);
 	}
 
 }
