@@ -21,11 +21,7 @@ public class Drought : RandomEventSystem.RandomEvent {
 		}
 	}
 
-	public override float Warn() {
-		return(0);
-	}
-
-	public override void Start () {
+	public override float Start () {
 		GameState.Drought = true;
 		int diffIncrease = Mathf.FloorToInt(GameState.GameTimeElapsed / 60);
 		mDuration = (Random.Range(1, 4) + diffIncrease) * 10;
@@ -40,35 +36,25 @@ public class Drought : RandomEventSystem.RandomEvent {
 			mDuration, 
 			"God offers RAIN in exchange for "
 		);
+
+		return(mDuration);
 	}
 
 	public override bool Update () {
-		if(mIntervened)
-		{
-			Utilities.LogEvent("God blessed the rains down in your city. The drought has ended and food production can return to normal.", 1.5f);
-			GameState.Drought = false;
-			return(true);
-		}
-
-		mDuration -= GameState.GameDeltaTime;
-		if(mDuration <= 0)
-		{
-			//int cropsLost = Mathf.Min(GameState.FoodSupply, Random.Range(1, 6));
-			//Utilities.LogEvent("Your people lost crops to the drought. -" + cropsLost + " food supply");
-			//GameState.FoodSupply -= cropsLost;
-
-			Utilities.LogEvent("The drought has ended.", 1f);
-
-			if(mDemandId > 0) Utilities.GetGod().RemoveDemand(mDemandId);
-
-			GameState.Drought = false;
-			return(true);
-		}
-
-		return(false);
+		return(mIntervened);
 	}
 
 	public override void Removed() {
+
+		if(mIntervened)
+			Utilities.LogEvent("God blessed the rains down in your city. The drought has ended and food production can return to normal.", 1.5f);
+		else
+			Utilities.LogEvent("The drought has ended.", 1f);
+
+		if(mDemandId > 0) Utilities.GetGod().RemoveDemand(mDemandId);
+
+		GameState.Drought = false;
+
 		GameState.Ongoings.Remove(mOngoing);
 		mOngoing = null;
 		Utilities.GetEventSystem().ScheduleEvent(new Drought(), Random.Range(45, 91));

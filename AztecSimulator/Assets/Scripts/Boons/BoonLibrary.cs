@@ -5,7 +5,7 @@ using UnityEngine;
 public class BoonLibrary {
 
 	private static SacrificeResult[] sTemporaryBoons = {
-		// new GoodCropBoon(),
+		new GoodCropBoon(),
 		new FertilityBoon(),
 		new HealingBoon(),
 		new Favour()
