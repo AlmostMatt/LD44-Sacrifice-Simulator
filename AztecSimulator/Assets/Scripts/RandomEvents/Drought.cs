@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Drought : RandomEventSystem.RandomEvent {
 
@@ -29,7 +30,7 @@ public class Drought : RandomEventSystem.RandomEvent {
 		mDuration = (Random.Range(1, 4) + diffIncrease) * 10;
 		mIntervened = false;
 
-		SpriteRenderer background = Utilities.GetBackground();
+		Image background = Utilities.GetBackground();
 		mPrevBackgroundSprite = background.sprite;
 		background.sprite = Utilities.GetSpriteManager().GetSprite("DroughtBackground");
 

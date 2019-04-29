@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public static class Utilities {
 
@@ -73,9 +74,9 @@ public static class Utilities {
 		return GameObject.FindGameObjectWithTag("SystemsAndManagers").GetComponent<RandomEventSystem>();
 	}
 
-	public static SpriteRenderer GetBackground()
+	public static Image GetBackground()
 	{
-		return GameObject.FindGameObjectWithTag("Background").GetComponent<SpriteRenderer>();
+		return GameObject.FindGameObjectWithTag("Background").GetComponent<Image>();
 	}
 
 	public static void LogEvent(string message, float duration=2f)
