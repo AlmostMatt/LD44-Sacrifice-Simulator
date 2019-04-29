@@ -89,7 +89,7 @@ public class SacrificeDemand
 		string satisfiedString = mSatisfiedResult == null ? "Fail to satisfy: " + mIgnoredResult.mName : mSatisfiedResult.mName;
 		result[0] = "";
 		result[1] = satisfiedString;
-		result[2] = "DEMAND";
+		result[2] = "GOD DEMANDS";
 		result[3] = "";
 		for (int i=0; i< mCriteria.Count; i++) {
 			result[4+(2*i)] = mCriteria[i].GetPrefixString();

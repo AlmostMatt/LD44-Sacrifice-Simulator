@@ -59,9 +59,9 @@ public class Criterion {
 	public string GetPrefixString()
 	{
 		string s = "";
-		if(mCount > 1) {
+		//if(mCount > 1) {
 			s = mCount + "x ";
-		}
+		//}
 		if(mMinLevel >= 0) {
 			s += "Lvl " + mMinLevel + " ";
 		}

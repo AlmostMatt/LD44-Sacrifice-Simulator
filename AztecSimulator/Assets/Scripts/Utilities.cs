@@ -38,7 +38,7 @@ public static class Utilities {
 		case Person.Attribute.WARRIOR:
 			return "Increased army strength by 1, and 0.5 more per level.";
 		case Person.Attribute.CIVILIAN:
-			return "Raises children, increasing the birth rate of your population, and 1/3 more per level.";
+			return "Raises children, increasing the birth rate, and 1/3 more per level.";
 		default:
 			return "<profession description>";
 		}
