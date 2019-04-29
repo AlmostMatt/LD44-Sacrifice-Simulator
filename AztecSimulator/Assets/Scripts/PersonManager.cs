@@ -37,8 +37,6 @@ public class PersonManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		// repopulate. todo: figure out what actual logic we want for this,
-		// e.g. if it depends on other factors, if there's a hard cap, etc.
 		List<Person> civilians = FindPeople(Person.AttributeType.PROFESSION, Person.Attribute.CIVILIAN);
 		float birthRate = 0f;
 		foreach (Person person in civilians) {
@@ -49,6 +47,8 @@ public class PersonManager : MonoBehaviour {
 			float birthrateIncrease = GameState.GetBoonValue(BoonType.SURPLUS_FOOD_TO_BIRTHRATE) / 100f;
 			birthRate += birthrateIncrease * GameState.FoodSurplus;
 		}
+		birthRate += (GameState.GetBoonValue(BoonType.BONUS_FERTILITY) / 100f);
+
 		if(mRepopulateTimer > 0)
 		{
 			mRepopulateTimer -= GameState.GameDeltaTime * birthRate;
