@@ -27,8 +27,8 @@ public class BoonLibrary {
 		//new SurplusFoodUse.Factory(),
 		//new SacrificeBonus.Factory(),
 		//new SameProfessionXpBuff.Factory(),
-		new CombatVictoryReward.Factory(),
-		//new WarriorChildProtect().Factory(),
+		//new CombatVictoryReward.Factory(),
+		new WarriorChildProtect.Factory(),
 		//new ChangeProfessionRetainXp.Factory(),
 		//new HealthXpBonus.Factory()
 	};
@@ -38,7 +38,7 @@ public class BoonLibrary {
 //		new ImprovedLifespan(),
 		//new WarriorXpBuff(),
 //		new Favour(),
-		new WarriorChildProtect(),
+		//new WarriorChildProtect(),
 		new ChangeProfessionRetainXp(),
 		new HealthXpBonus()
 	};

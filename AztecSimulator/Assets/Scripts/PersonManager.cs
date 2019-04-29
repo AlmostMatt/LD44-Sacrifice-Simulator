@@ -73,11 +73,12 @@ public class PersonManager : MonoBehaviour {
 
 		if(GameState.HasBoon(BoonType.WARRIOR_CHILD_PROTECT))
 		{
-			int childAge = GameState.GetBoonValue(BoonType.WARRIOR_CHILD_PROTECT);
+			int childAge = GameState.GetBoonValue(BoonType.WARRIOR_CHILD_PROTECT_AGE); 
+			float effectiveness = GameState.GetBoonValue(BoonType.WARRIOR_CHILD_PROTECT) / 100f;
 			List<Person> children = mPeople.FindAll(x => x.Age <= childAge);
 			if(children != null)
 			{
-				armyStrength += children.Count;
+				armyStrength += children.Count * effectiveness;
 			}
 		}
 
