@@ -34,6 +34,13 @@ public class GameState {
 		set { sGameState.mFoodSupply = value; }
 	}
 
+	private int mFoodSurplus = 0;
+	public static int FoodSurplus
+	{
+		get {return(sGameState.mFoodSurplus); }
+		set { sGameState.mFoodSurplus = value; }
+	}
+
 	private int mArmySize = 0;
 	public static int ArmySize // wow I didn't think this would actually work
 	{

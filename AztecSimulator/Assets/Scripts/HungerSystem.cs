@@ -29,7 +29,7 @@ public class HungerSystem : MonoBehaviour {
 				Utilities.LogEvent(fedPeople[i].Name + " is starving!");
 			}
 		}
-		else if(fedPeople.Count < GameState.FoodSupply && hungryPeople.Count > 0)
+		else if(fedPeople.Count < foodSupply && hungryPeople.Count > 0)
 		{
 			// randomly select people to be fed
 			int[] choices = Utilities.RandomList(hungryPeople.Count, Mathf.Min(hungryPeople.Count, foodSupply - fedPeople.Count));

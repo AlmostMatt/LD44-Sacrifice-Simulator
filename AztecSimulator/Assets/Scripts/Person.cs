@@ -131,19 +131,24 @@ public class Person : MonoBehaviour {
 
 		mAge += 0.15f * GameState.GameDeltaTime;
 
-		float healthDecayRate = mBaseHealthDecayRate;
-		if(mIsHungry)
-		{
-			// healthDecayRate *= 5;
-			healthDecayRate = 1;
-		}
-		mHealth -= healthDecayRate * GameState.GameDeltaTime;
 		Attribute profession = GetAttribute(AttributeType.PROFESSION);
 		if (profession != Attribute.NONE) {
 			int xpGain = 1; // 1 xp per second;
 			xpGain = GameState.GetBuffedXp(profession, xpGain);
 			mXp += xpGain * GameState.GameDeltaTime;
 		}
+
+		float healthDecayRate = mBaseHealthDecayRate;
+		if(mIsHungry)
+		{
+			// healthDecayRate *= 5;
+			healthDecayRate = 1;
+		}
+		else if(GameState.HasBoon(BoonType.SURPLUS_FOOD_TO_HEALING))
+		{
+			healthDecayRate -= 0.05f * GameState.FoodSurplus;
+		}
+		mHealth -= healthDecayRate * GameState.GameDeltaTime;
 
 		if(mHealth <= 0)
 		{
