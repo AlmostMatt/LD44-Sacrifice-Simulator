@@ -29,7 +29,7 @@ public class BoonLibrary {
 
 	private static SacrificeResult[] sTierTwoBoons = {
 		new FarmerXpBuff(),
-		new ImprovedLifespan(),
+//		new ImprovedLifespan(),
 		new WarriorXpBuff(),
 		new Favour(),
 		new WarriorChildProtect(),
