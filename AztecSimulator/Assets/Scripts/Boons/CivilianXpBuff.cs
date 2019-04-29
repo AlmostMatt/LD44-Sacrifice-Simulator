@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CivilianXpBuff : XpBuff {
 
-	public CivilianXpBuff() : base(Person.Attribute.CIVILIAN, "Better Civilians", "Civilians gain xp faster. Level cap +1") {
+	public CivilianXpBuff() : base(Person.Attribute.CIVILIAN, "Better Civilians", "Civilians gain xp faster. +1 max level.") {
 	}
 
 }

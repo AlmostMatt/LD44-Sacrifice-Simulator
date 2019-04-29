@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FarmerXpBuff : XpBuff {
 
-	public FarmerXpBuff() : base(Person.Attribute.FARMER, "Better Farmers", "Farmers gain xp faster. Level cap +1") {
+	public FarmerXpBuff() : base(Person.Attribute.FARMER, "Better Farmers", "Farmers gain xp faster. +1 max level.") {
 	}
 
 }
