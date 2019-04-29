@@ -112,6 +112,8 @@ public class UIManager : MonoBehaviour {
 			// todo: separate short term and long term demands
 			List<God.GodDemand> demands = GetSelectedTabIndex() == 0 ? mGod.FleetingDemands : mGod.PermanentDemands;
 			Transform demandContainer = transform.Find("Left/Demands/DemandList");
+			int renewCount = 0;
+			int nonRenewCount = 0;
 			for(int i = 0; i < Mathf.Max(demands.Count, mUiDemandPool.Count); i++)
 			{
 				GameObject uiDemand;
@@ -124,13 +126,34 @@ public class UIManager : MonoBehaviour {
 				} else {
 					uiDemand = mUiDemandPool[i];
 				}
-				// Update position
-				RectTransform rt = uiDemand.GetComponent<RectTransform>();
-				rt.anchoredPosition = new Vector2(0f,60f*(i-(demands.Count-1)/2f));
 				// Update visibility
 				uiDemand.transform.gameObject.SetActive(i < demands.Count);
 				// Update text and store id in name
 				if (i < demands.Count) {
+					
+					// Update position
+					RectTransform rt = uiDemand.GetComponent<RectTransform>();
+					if(demands[i].mTimeLeft >= 0)
+					{
+						rt.anchoredPosition = new Vector2(0f, 90f * (i - (demands.Count - 1) / 2f));	
+					}
+					else
+					{
+						float left = -120f;
+						float right = 120f;
+						float x;
+						float y;
+						if(demands[i].mIsRenewable) {
+							y = 90f * renewCount++;
+							x = left;
+						} else {
+							y = 90f * nonRenewCount++;
+							x = right;
+						}
+
+						rt.anchoredPosition = new Vector2(x, y - 150f);
+					}
+
 					uiDemand.name = demands[i].mId.ToString();
 					uiDemand.GetComponent<HoverInfo>().SetText(demands[i].GetResultDescription());
 					string[] demandStrings = demands[i].GetUIDescriptionStrings();
