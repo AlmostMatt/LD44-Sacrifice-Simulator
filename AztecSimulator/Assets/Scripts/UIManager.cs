@@ -203,8 +203,9 @@ public class UIManager : MonoBehaviour {
 		// Update ongoing objects
 		Transform ongoingContainer = transform.Find("TRCorner/OngoingGroup");
 		// TODO: maintain a list of Ongoing structs
-		List<Ongoing> ongoings = new List<Ongoing>();
-		ongoings.Add(new Ongoing("WARRIOR", "Ongoing!", "4 Enemy Warriors are approaching!", 92.1f, true));
+		//List<Ongoing> ongoings = new List<Ongoing>();
+		//ongoings.Add(new Ongoing("WARRIOR", "Ongoing!", "4 Enemy Warriors are approaching!", 92.1f, true));
+		List<Ongoing> ongoings = GameState.Ongoings;
 		for(int i = 0; i < Mathf.Max(ongoings.Count, mUiOngoingPool.Count); i++)
 		{
 			GameObject uiOngoing;

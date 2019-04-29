@@ -25,10 +25,13 @@ public class InvaderAttack : RandomEventSystem.RandomEvent {
 	}
 
 	public override float Warn() {
+		float warnTime = 30;
 		mRequiredWarriors = Random.Range(3, 10);
 		GameState.InvaderSize = mRequiredWarriors;
 		Utilities.LogEvent("An enemy army approaches! They look to be about " + mRequiredWarriors + " strong");
-		return(30);
+		mOngoing = new Ongoing("ATTACK", "Invaders Approaching!", mRequiredWarriors + " enemy warriors approach!", warnTime, false);
+		GameState.Ongoings.Add(mOngoing);
+		return(warnTime);
 	}
 
 	public override void Start () {
@@ -37,14 +40,14 @@ public class InvaderAttack : RandomEventSystem.RandomEvent {
 		mIntervened = false;
 		mDuration = 30;
 
-	//	if(Random.value < 0.7) {
-			mDemandId = Utilities.GetGod().AddFleetingDemand(
-				new InvaderAttack.GodIntervention(this),
-				null, 
-				mDuration, 
-				"God offers PROTECTION in exchange for "
-			); // for now, will just let the god generate the random demand
-	//	}
+		mOngoing = new Ongoing("ATTACK", "Invaders Attacking!", mRequiredWarriors + " enemy warriors are attacking!", mDuration, false);
+		GameState.Ongoings.Add(mOngoing);
+		mDemandId = Utilities.GetGod().AddFleetingDemand(
+			new InvaderAttack.GodIntervention(this),
+			null, 
+			mDuration, 
+			"God offers PROTECTION in exchange for "
+		); // for now, will just let the god generate the random demand
 	}
 
 	public override bool Update () {
@@ -114,6 +117,8 @@ public class InvaderAttack : RandomEventSystem.RandomEvent {
 
 	public override void Removed()
 	{
+		GameState.Ongoings.Remove(mOngoing);
+		mOngoing = null;
 		// hack for now to get it to recur
 		Utilities.GetEventSystem().ScheduleEvent(new InvaderAttack(), 120);
 	}

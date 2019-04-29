@@ -6,6 +6,8 @@ public class RandomEventSystem : MonoBehaviour {
 
 	public abstract class RandomEvent
 	{
+		public Ongoing mOngoing; // UI notification
+
 		public abstract float Warn(); // return 0 if no warning
 		public abstract void Start();
 		public abstract bool Update();
@@ -104,6 +106,16 @@ public class RandomEventSystem : MonoBehaviour {
 				// do we need a hook for when the event ends?
 				mEvents[i].mEvent.Removed();
 				mEvents.RemoveAt(i);
+			}
+		}
+
+		List<Ongoing> ongoings = GameState.Ongoings;
+		for(int i = ongoings.Count - 1; i >= 0; --i)
+		{
+			ongoings[i].mDuration -= GameState.GameDeltaTime;
+			if(ongoings[i].mDuration <= 0)
+			{
+				ongoings.RemoveAt(i);
 			}
 		}
 	}

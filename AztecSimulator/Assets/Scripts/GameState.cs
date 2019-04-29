@@ -148,4 +148,10 @@ public class GameState {
 	public static int GetBoonValue(BoonType boon) {
 		return(sGameState.mBoons[(int)boon]);
 	}
+
+	private List<Ongoing> mOngoings = new List<Ongoing>();
+	public static List<Ongoing> Ongoings
+	{
+		get { return(sGameState.mOngoings); }
+	}
 }
