@@ -4,14 +4,56 @@ using UnityEngine;
 
 public class God : MonoBehaviour {
 
-	public class FleetingDemand {
-		public SacrificeDemand mDemand;
-		public float mTimeLeft;
+	public class GodDemand
+	{
+		private static int sId = 0;
 
-		public FleetingDemand(SacrificeDemand demand, float time)
+		public int mId;
+		public SacrificeDemand mDemand;
+		public SacrificeResult mSatisfiedResult;
+		public SacrificeResult mIgnoredResult;
+
+		public float mTimeLeft = -1f;
+		public bool mIsRenewable = false;
+		public int mNumBuys = 0;
+
+		public string[] mLongDescOverride;
+
+		public GodDemand(SacrificeDemand demand, SacrificeResult satisfiedResult, SacrificeResult ignoredResult)
 		{
+			mId = ++sId;
+
 			mDemand = demand;
-			mTimeLeft = time;
+			mSatisfiedResult = satisfiedResult;
+			mIgnoredResult = ignoredResult;
+		}
+
+		public string GetShortDescription()
+		{
+			return(mDemand.GetShortDescription());
+		}
+
+		// Returns a list of strings. Two per row, one before the icon, and one after the icon.
+		public string[] GetUIDescriptionStrings() {
+			if(mLongDescOverride != null) {
+				return(mLongDescOverride);
+			}
+				
+			string[] result = new string[4 + (2 * mDemand.NumCriteria)];
+			string satisfiedString = mSatisfiedResult == null ? "Fail to satisfy: " + mIgnoredResult.mName : mSatisfiedResult.mName;
+			result[0] = "";
+			result[1] = satisfiedString;
+			result[2] = "GOD DEMANDS";
+			result[3] = "";
+			for (int i=0; i< mDemand.NumCriteria; i++) {
+				result[4+(2*i)] = mDemand.mCriteria[i].GetPrefixString();
+				result[4+(2*i)+1] = mDemand.mCriteria[i].GetSuffixString();
+			}
+			return result;
+		}
+
+		public Person.Attribute[] GetUIDescriptionIcons() {
+			return(mDemand.GetUIDescriptionIcons());
 		}
 	}
 
@@ -19,33 +61,48 @@ public class God : MonoBehaviour {
 	public float fleetingDemandTimer = 30;
 	public int maxFleetingDemands = 2;
 
-	private List<FleetingDemand> mFleetingDemands;
-	private List<SacrificeDemand> mDemands;
+
+	private List<GodDemand> mDemands;
 	private string mName;
 	private float mFleetingDemandTimer;
+	private int mNumFleetingDemands;
 
 	public string Name { get { return mName;}}
-	public List<SacrificeDemand> Demands
+	public List<GodDemand> Demands
 	{
-		get { return(mDemands); }
+		get { return(mDemands.FindAll(x => x.mTimeLeft == -1f)); }
 	}
-	public List<FleetingDemand> FleetingDemands
+	public List<GodDemand> FleetingDemands
 	{
-		get { return(mFleetingDemands); }
+		get { return(mDemands.FindAll(x => x.mTimeLeft > 0)); }
 	}
 
 	void Start () {
 		mName = "MACUILCUETZPALIN, GOD OF AWESOME";
-		mDemands = new List<SacrificeDemand>();
-		mFleetingDemands = new List<FleetingDemand>();
+		mDemands = new List<GodDemand>();
 		mFleetingDemandTimer = fleetingDemandTimer;
+		mNumFleetingDemands = 0;
+
+		foreach(SacrificeResult sr in BoonLibrary.sGuaranteedRenewableBoons)
+		{
+			GodDemand renewableDemand = new GodDemand(
+				                            DemandGenerator.SimpleDemand(),
+				                            sr,
+				                            null
+			                            );
+			renewableDemand.mIsRenewable = true;
+			mDemands.Add(renewableDemand);
+		}
 
 		int numTierOneDemands = 2;
 		SacrificeResult[] tierOneBoons = BoonLibrary.RandomTierOneBoons(numTierOneDemands);
 		for(int i = 0; i < numTierOneDemands; ++i)
 		{
-			SacrificeDemand demand = DemandGenerator.TierOneDemand();
-			demand.mSatisfiedResult = tierOneBoons[i];
+			GodDemand demand = new GodDemand(
+									DemandGenerator.TierOneDemand(),
+									tierOneBoons[i],
+									null
+								);
 			mDemands.Add(demand);
 		}
 
@@ -53,20 +110,26 @@ public class God : MonoBehaviour {
 		SacrificeResult[] tierTwoBoons = BoonLibrary.RandomTierTwoBoons(numTierTwoDemands);
 		for(int i = 0; i < numTierTwoDemands; ++i)
 		{
-			SacrificeDemand demand = DemandGenerator.TierTwoDemand();
-			demand.mSatisfiedResult = tierTwoBoons[i];
+			GodDemand demand = new GodDemand(
+				                   DemandGenerator.TierTwoDemand(),
+				                   tierTwoBoons[i],
+				                   null
+			                   );
 			mDemands.Add(demand);
 		}
 
-		SacrificeDemand victoryDemand = DemandGenerator.VictoryDemand();
-		victoryDemand.mSatisfiedResult = new VictoryResult();
+		GodDemand victoryDemand = new GodDemand(
+			                          DemandGenerator.VictoryDemand(),
+			                          new VictoryResult(),
+			                          null
+		                          );
 		mDemands.Add(victoryDemand);
 
 		if(logDemandsOnStart)
 		{
-			foreach(SacrificeDemand sd in mDemands)
+			foreach(GodDemand gd in mDemands)
 			{
-				Utilities.LogEvent("YOUR GOD DEMANDS " + sd.GetShortDescription());
+				Utilities.LogEvent("YOUR GOD DEMANDS " + gd.GetShortDescription());
 			}
 		}
 	}
@@ -74,55 +137,76 @@ public class God : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		if(mFleetingDemands.Count < maxFleetingDemands)
+		if(mNumFleetingDemands < maxFleetingDemands)
 		{
 			mFleetingDemandTimer -= GameState.GameDeltaTime;
 			if(mFleetingDemandTimer <= 0)
 			{
-				SacrificeDemand d = DemandGenerator.SimpleDemand();
+				SacrificeDemand demand = DemandGenerator.SimpleDemand();
+				SacrificeResult satisfied = null;
+				SacrificeResult ignored = null;
 				float negativeChance = 0.8f - GameState.Favour * 0.1f;
 				float specialChance = 0.0f + GameState.Favour * 0.05f;
 				float roll = Random.value;
 				if(roll <= negativeChance)
-					d.mIgnoredResult = BoonLibrary.RandomTemporaryCurse();
+					ignored = BoonLibrary.RandomTemporaryCurse();
 				else
 				if(roll - negativeChance <= specialChance)
-					d.mSatisfiedResult = BoonLibrary.RandomTierOneBoon();
+					satisfied = BoonLibrary.RandomTierOneBoon();
 				else
-					d.mSatisfiedResult = BoonLibrary.RandomTemporaryBoon();
-				
-				mFleetingDemands.Add(new FleetingDemand(d, 30));
+					satisfied = BoonLibrary.RandomTemporaryBoon();
+
+				GodDemand d = new GodDemand(demand, satisfied, ignored);
+				d.mTimeLeft = 30;
+				mDemands.Add(d);
+
+				//mFleetingDemands.Add(new FleetingDemand(d, 30));
 				mFleetingDemandTimer = Random.Range(fleetingDemandTimer - (fleetingDemandTimer / 2), fleetingDemandTimer + (fleetingDemandTimer / 2));
 			}
 		}
 
-		for(int i = mFleetingDemands.Count - 1; i >= 0; --i)
+		for(int i = mDemands.Count - 1; i >= 0; --i)
 		{
-			FleetingDemand d = mFleetingDemands[i];
-			d.mTimeLeft -= GameState.GameDeltaTime;
-			if(d.mTimeLeft <= 0)
+			GodDemand d = mDemands[i];
+			if(d.mTimeLeft == -1)
 			{
-				if(d.mDemand.mIgnoredResult != null)
+				// fleeting demands are tacked on to the end, so once we hit a non-fleeting we're done
+				break;
+			}
+
+			if(d.mTimeLeft > 0)
+			{
+				d.mTimeLeft -= GameState.GameDeltaTime;
+				if(d.mTimeLeft <= 0)
 				{
-					d.mDemand.mIgnoredResult.DoEffect();
+					if(d.mIgnoredResult != null)
+					{
+						d.mIgnoredResult.DoEffect();
+					}
+					mDemands.RemoveAt(i);
 				}
-				mFleetingDemands.RemoveAt(i);
 			}
 		}
 	}
 
 	public void DebugPrint()
 	{
-		foreach(SacrificeDemand sd in mDemands)
+		foreach(GodDemand gd in mDemands)
 		{
-			Debug.Log("YOUR GOD DEMANDS " + sd.GetShortDescription());
+			Debug.Log("YOUR GOD DEMANDS " + gd.GetShortDescription());
 		}
 	}
 
 	public int AddFleetingDemand(SacrificeResult satisfiedResult, SacrificeResult ignoredResult, float time, string msg)
 	{
-		SacrificeDemand demand = DemandGenerator.SimpleDemand(satisfiedResult, ignoredResult);
-		mFleetingDemands.Add(new FleetingDemand(demand, time));
+		GodDemand demand = new GodDemand(
+			                   DemandGenerator.SimpleDemand(),
+			                   satisfiedResult,
+			                   ignoredResult
+		                   );
+		demand.mTimeLeft = time;
+		mDemands.Add(demand);
+
 		if(msg != null) {
 			Utilities.LogEvent(msg + demand.GetShortDescription());
 		}
@@ -132,14 +216,7 @@ public class God : MonoBehaviour {
 
 	public void RemoveDemand(int demandId)
 	{		
-		foreach(FleetingDemand d in mFleetingDemands) {
-			if(d.mDemand.mId == demandId) {
-				mFleetingDemands.Remove(d);
-				return;
-			}
-		}
-
-		foreach(SacrificeDemand d in mDemands)
+		foreach(GodDemand d in mDemands)
 		{
 			if(d.mId == demandId) {
 				mDemands.Remove(d);
@@ -153,21 +230,14 @@ public class God : MonoBehaviour {
 		List<SacrificeResult> results = new List<SacrificeResult>();
 
 		if(demandId > 0) {
-			SacrificeDemand demand;
-			FleetingDemand fleetingDemand = mFleetingDemands.Find(x => x.mDemand.mId == demandId);
-			if(fleetingDemand != null) {
-				demand = fleetingDemand.mDemand;
-			} else {
-				demand = mDemands.Find(x => x.mId == demandId);	
-			}
-
+			GodDemand demand = mDemands.Find(x => x.mId == demandId);
 			if(demand == null)
 			{
 				Debug.Log("No demand with id " + demandId);
 				return(results);
 			}
 
-			if(demand.CheckSatisfaction(people))
+			if(demand.mDemand.CheckSatisfaction(people))
 			{
 				Utilities.LogEvent("YES, THIS SACRIFICE PLEASES ME", 1f);
 				SacrificeResult sr = demand.mSatisfiedResult;
@@ -176,7 +246,26 @@ public class God : MonoBehaviour {
 					results.Add(sr);
 				}
 
-				RemoveDemand(demandId);
+				if(demand.mIsRenewable)
+				{
+					demand.mNumBuys++;
+					if(demand.mNumBuys <= 2)
+					{
+						demand.mDemand = DemandGenerator.SimpleDemand();
+					}
+					else if(demand.mNumBuys <= 4)
+					{
+						demand.mDemand = DemandGenerator.TierOneDemand();
+					}
+					else
+					{
+						demand.mDemand = DemandGenerator.TierTwoDemand();	
+					}
+				}
+				else
+				{
+					RemoveDemand(demandId);
+				}
 			}
 			else
 			{

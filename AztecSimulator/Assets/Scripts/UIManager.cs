@@ -58,7 +58,7 @@ public class UIManager : MonoBehaviour {
 
 	void Update () {
 		List<Person> selectedPeople = getSelectedPeople();
-		SacrificeDemand selectedDemand = getSelectedDemand();
+		God.GodDemand selectedDemand = getSelectedDemand();
 		transform.Find("Right/People/SacrificeButton").GetComponent<Button>().interactable = (selectedPeople.Count > 0);
 
 		// TODO: define a renderable interface, and generalize each of these loops to updateRenderable
@@ -86,12 +86,12 @@ public class UIManager : MonoBehaviour {
 			uiPerson.transform.gameObject.SetActive(i < people.Count);
 			// Update text
 			if (i < people.Count) {
-				string[] descriptionStrings = people[i].GetUIDescription(selectedDemand);
+				string[] descriptionStrings = people[i].GetUIDescription(selectedDemand != null ? selectedDemand.mDemand : null);
 				uiPerson.transform.Find("Toggle/TextTL").GetComponent<Text>().text = descriptionStrings[0];
 				uiPerson.transform.Find("Toggle/TextTR").GetComponent<Text>().text = descriptionStrings[1];
 				uiPerson.transform.Find("Toggle/BLGroup/Text").GetComponent<Text>().text = descriptionStrings[2];
 				Person.Attribute profession = people[i].GetAttribute(Person.AttributeType.PROFESSION);
-				uiPerson.transform.Find("Toggle/BLGroup/Icons/Icon1").gameObject.SetActive(selectedDemand != null && selectedDemand.IsRelevantAttribute(profession));
+				uiPerson.transform.Find("Toggle/BLGroup/Icons/Icon1").gameObject.SetActive(selectedDemand != null && selectedDemand.mDemand.IsRelevantAttribute(profession));
 				uiPerson.transform.Find("Toggle/BLGroup/Icons/Icon2").GetComponent<Image>().sprite = mSpriteManager.GetSprite(profession);
 				uiPerson.transform.Find("Toggle/BRGroup/Text").GetComponent<Text>().text = descriptionStrings[3];
 			}
@@ -110,7 +110,7 @@ public class UIManager : MonoBehaviour {
 			transform.Find("Left/TabGroup/Tab1/Text").GetComponent<Text>().text = fleetingDemandsTabName;
 			transform.Find("Left/Demands/Name").GetComponent<Text>().text = mGod.Name;
 			// todo: separate short term and long term demands
-			List<SacrificeDemand> demands = GetSelectedTabIndex() == 0 ? mGod.FleetingDemands.ConvertAll(fD => fD.mDemand) : mGod.Demands;
+			List<God.GodDemand> demands = GetSelectedTabIndex() == 0 ? mGod.FleetingDemands : mGod.Demands;
 			Transform demandContainer = transform.Find("Left/Demands/DemandList");
 			for(int i = 0; i < Mathf.Max(demands.Count, mUiDemandPool.Count); i++)
 			{
@@ -270,18 +270,12 @@ public class UIManager : MonoBehaviour {
 
 	}
 
-	private SacrificeDemand getSelectedDemand() {
+	private God.GodDemand getSelectedDemand() {
 		int demandId = getSelectedDemandId();
 		if(mGod != null && demandId != 0) {
-			// todo: have a single method for all demands
-			foreach (SacrificeDemand demand in mGod.Demands) {
+			foreach (God.GodDemand demand in mGod.Demands) {
 				if (demand.mId == demandId) {
 					return demand;
-				}
-			}
-			foreach (God.FleetingDemand fDemand in mGod.FleetingDemands) {
-				if (fDemand.mDemand.mId == demandId) {
-					return fDemand.mDemand;
 				}
 			}
 		}
