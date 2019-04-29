@@ -185,15 +185,25 @@ public class DemandGenerator {
 
 	public static SacrificeDemand VictoryDemand()
 	{
-		// appropriately tuned demands to win the game
-		SacrificeDemand professionDemand = new SacrificeDemand();
-		Criterion c = new Criterion();
-		c.mMinLevel = 7;
-		Person.Attribute[] attr = Person.RandomAttributes(1);
-		c.mAttributes.Add(attr[attr.Length-1]);
-		c.mCount = 5;
-		professionDemand.mCriteria.Add(c);
-		return(professionDemand);
+		// (maybe) appropriately tuned demands to win the game
+		if(Random.value < 0.5)
+		{
+			SacrificeDemand professionDemand = new SacrificeDemand();
+			Criterion profC = new Criterion();
+			profC.mMinLevel = 7;
+			Person.Attribute[] attr = Person.RandomAttributes(1);
+			profC.mAttributes.Add(attr[attr.Length-1]);
+			profC.mCount = 5;
+			professionDemand.mCriteria.Add(profC);
+			return(professionDemand);
+		}
+
+		SacrificeDemand experienceDemand = new SacrificeDemand();
+		Criterion expC = new Criterion();
+		expC.mMinLevel = 6;
+		expC.mCount = 3;
+		experienceDemand.mCriteria.Add(expC);
+		return(experienceDemand);
 	}
 
 	public static List<Person.Attribute> GenerateSatisfiableDemands(int preferredNum)
