@@ -27,12 +27,8 @@ public class DemandGenerator {
 		SacrificeDemand d = new SacrificeDemand();
 
 		Criterion c = new Criterion();
-
-		c.mMinLevel = Random.Range(0,11);
-		c.mMinAge = Random.Range(0, 21);
-		c.mCount = Random.Range(1, 6);
+		c.mCount = Random.Range(1, 3);
 		c.mAttributes = GenerateRandomDemands(1);
-
 		d.mCriteria.Add(c);
 
 		return(d);
