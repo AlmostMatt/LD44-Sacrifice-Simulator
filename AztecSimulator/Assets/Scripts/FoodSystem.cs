@@ -20,6 +20,9 @@ public class FoodSystem : MonoBehaviour {
 			totalFoodProduction += person.Efficiency;
 		}
 
+		int bonusFood = GameState.GetBoonValue(BoonType.BONUS_FOOD);
+		totalFoodProduction += bonusFood;
+
 		if(GameState.Drought)
 		{
 			totalFoodProduction /= 2;

@@ -8,9 +8,9 @@ public class RandomEventSystem : MonoBehaviour {
 	{
 		public Ongoing mOngoing; // UI notification
 
-		public abstract float Warn(); // return 0 if no warning
-		public abstract void Start();
-		public abstract bool Update();
+		public virtual float Warn() { return(0); } // return 0 if no warning
+		public abstract float Start();
+		public virtual bool Update() { return(false); } // return true to bail early
 		public virtual void Removed() {}
 	}
 		
@@ -54,7 +54,7 @@ public class RandomEventSystem : MonoBehaviour {
 					else
 					{
 						mState = EventSystemState.ACTIVE;
-						mEvent.Start();	
+						mTimer = mEvent.Start();	
 					}
 				}
 				break;
@@ -62,11 +62,11 @@ public class RandomEventSystem : MonoBehaviour {
 				if(mTimer <= 0)
 				{
 					mState = EventSystemState.ACTIVE;
-					mEvent.Start();
+					mTimer = mEvent.Start();
 				}
 				break;
 			case EventSystemState.ACTIVE:
-				if(mEvent.Update())
+				if(mEvent.Update() || mTimer <= 0)
 				{
 					mState = EventSystemState.COOLDOWN;
 				}
