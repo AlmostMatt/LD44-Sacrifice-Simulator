@@ -43,18 +43,28 @@ public class God : MonoBehaviour {
 			if(mLongDescOverride != null) {
 				return(mLongDescOverride);
 			}
+				
+			bool isFleeting = mTimeLeft >= 0;
+			bool isOffer = mSatisfiedResult != null;
+			int numLinesPreCriteria = (isFleeting ? 6 : 4);
+			string[] result = new string[numLinesPreCriteria + (2 * mDemand.NumCriteria)];
 
-			string[] result = new string[6 + (2 * mDemand.NumCriteria)];
+			int linesIdx = 0;
+			if(isFleeting)
+			{
+				result[linesIdx++] = isOffer ? "GOD OFFERS " : "GOD THREATENS ";
+				result[linesIdx++] = mTimeLeft >= 0 ? string.Format("({0:0.0})", mTimeLeft) : "";
+			}
+				
+			result[linesIdx++] = isOffer ? mSatisfiedResult.mName : mIgnoredResult.mName;
+			result[linesIdx++] = "";
+			result[linesIdx++] = isOffer ? "In exchange for" : "Unless you pay";
+			result[linesIdx++] = "";
 
-			result[0] = mSatisfiedResult == null ? "GOD THREATENS " : "GOD OFFERS ";
-			result[1] = mTimeLeft >= 0 ? string.Format("({0:0.0})", mTimeLeft) : "";
-			result[2] = mSatisfiedResult != null ? mSatisfiedResult.mName : mIgnoredResult.mName;
-			result[3] = "";
-			result[4] = mSatisfiedResult != null ? "In exchange for" : "Unless you pay";
-			result[5] = "";
-			for (int i=0; i< mDemand.NumCriteria; i++) {
-				result[6+(2*i)] = mDemand.mCriteria[i].GetPrefixString();
-				result[6+(2*i)+1] = mDemand.mCriteria[i].GetSuffixString();
+			for(int i = 0; i < mDemand.NumCriteria; i++)
+			{
+				result[numLinesPreCriteria + (2 * i)] = mDemand.mCriteria[i].GetPrefixString();
+				result[numLinesPreCriteria + (2 * i) + 1] = mDemand.mCriteria[i].GetSuffixString();
 			}
 
 			return result;
@@ -63,14 +73,16 @@ public class God : MonoBehaviour {
 		public Person.Attribute[] GetUIDescriptionIcons() {
 			Person.Attribute[] demandAttributes = mDemand.GetUIDescriptionIcons(); 
 
-			Person.Attribute[] attributes = new Person.Attribute[3 + demandAttributes.Length];
-			attributes[0] = Person.Attribute.NONE;
-			attributes[1] = Person.Attribute.NONE;
-			attributes[2] = Person.Attribute.NONE;
+			int numLinesPreCriteria = mTimeLeft >= 0 ? 3 : 2;
+			Person.Attribute[] attributes = new Person.Attribute[numLinesPreCriteria + demandAttributes.Length];
 
+			for(int i = 0; i < numLinesPreCriteria; ++i) { // TODO
+				attributes[i] = Person.Attribute.NONE;
+			}
+		
 			for(int i = 0; i < demandAttributes.Length; ++i)
 			{
-				attributes[i + 3] = demandAttributes[i];
+				attributes[i + numLinesPreCriteria] = demandAttributes[i];
 			}
 
 			return(attributes);
