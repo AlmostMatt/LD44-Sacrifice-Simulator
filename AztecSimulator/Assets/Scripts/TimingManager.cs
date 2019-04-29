@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TimingManager : MonoBehaviour {
 
@@ -13,14 +14,19 @@ public class TimingManager : MonoBehaviour {
 
 		if(Input.GetButtonUp("Jump"))
 		{
-			mPaused = !mPaused;
-			if(mPaused)
-				GameState.GameSpeed = 0;
-			else
-				GameState.GameSpeed = 1;
+			// assume that this is attached to a toggleable Play/Pause button
+			transform.GetComponent<Toggle>().isOn = !transform.GetComponent<Toggle>().isOn; 
 		}
 
 		GameState.GameDeltaTime = Time.deltaTime * GameState.GameSpeed;
 		GameState.GameTimeElapsed += GameState.GameDeltaTime;
+	}
+
+	public void TogglePause() {
+		mPaused = !mPaused;
+		if(mPaused)
+			GameState.GameSpeed = 0;
+		else
+			GameState.GameSpeed = 1;
 	}
 }
