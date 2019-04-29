@@ -297,13 +297,7 @@ public class UIManager : MonoBehaviour {
 		Person.Attribute selectedProfession = getSelectedProfession();
 		if (selectedPeople.Count == 0) { return; }
 		foreach (Person person in selectedPeople) {
-			// note: this could rely on the fact that profession happens to be the last attribute
-			for (int i =0; i < person.Attributes.Length; i++) {
-				if (person.Attributes[i].GetAttrType() == Person.AttributeType.PROFESSION) {
-					person.Attributes[i] = selectedProfession;
-				}
-			}
-			person.ResetLevel();
+			person.ChangeProfession(selectedProfession);
 		}
 	}
 

@@ -90,6 +90,25 @@ public class Person : MonoBehaviour {
 		mLevel = 1;
 		mXp = 0f;
 	}
+
+	public void ChangeProfession(Attribute newProfession)
+	{
+		// note: this could rely on the fact that profession happens to be the last attribute
+		for (int i =0; i < mAttributes.Length; i++) {
+			if (mAttributes[i].GetAttrType() == Person.AttributeType.PROFESSION) {
+				mAttributes[i] = newProfession;
+			}
+		}
+
+		int xpRetention = GameState.GetBoonValue(BoonType.PROFESSION_CHANGE_RETAIN_XP);
+		if(xpRetention > 0)
+			mXp = (xpRetention / 100f) * mXp;
+		else
+			mXp = 0;
+		
+		mLevel = GetLevelForXp(mXp);
+	}
+
 	// This should be called after the person has already been created and Awake completed.
 	public void OverrideRandomValues(Attribute profession = Attribute.NONE, int level = -1) {
 		if (profession != Attribute.NONE) {
@@ -101,6 +120,7 @@ public class Person : MonoBehaviour {
 		}
 		if (level != -1) {
 			mLevel = level;
+			mXp = level * (level - 1) * 5; // this is the current formula for total xp, based on required xp to level L = L * 10
 		}
 	}
 	public int Age
@@ -179,11 +199,7 @@ public class Person : MonoBehaviour {
 				mXp += xpGain * GameState.GameDeltaTime;
 			}
 
-			float xpToLevelUp = mLevel * 10;
-			if (mXp>= xpToLevelUp) {
-				mXp -= xpToLevelUp;
-				mLevel += 1;
-			}
+			mLevel = GetLevelForXp(mXp);
 		}
 
 		float healthDecayRate = mBaseHealthDecayRate;
@@ -208,6 +224,18 @@ public class Person : MonoBehaviour {
 			Utilities.LogEvent(deathMsg);
 			Utilities.GetPersonManager().RemovePerson(this);
 		}
+	}
+
+	private int GetLevelForXp(float xp)
+	{
+		int level = 0;
+		while(xp >= 0)
+		{
+			++level;
+			float xpToLevelUp = level * 10;
+			xp -= xpToLevelUp;
+		}
+		return(level);
 	}
 
 	// Returns a list of strings to be used in top-left, top-right, bottom-left, bottom-right order in a list of people
