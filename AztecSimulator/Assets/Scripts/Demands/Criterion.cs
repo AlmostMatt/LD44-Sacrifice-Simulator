@@ -55,29 +55,41 @@ public class Criterion {
 		return(mMinAge < 0 ? false : age >= mMinAge);
 	}
 
-	public string GetString()
+	// Returns a string to be shown before the profession
+	public string GetPrefixString()
 	{
 		string s = "";
-		if(mCount > 1)
-		{
+		if(mCount > 1) {
 			s = mCount + "x ";
 		}
+		if(mMinLevel >= 0) {
+			s += "Lvl " + mMinLevel + " ";
+		}
+		return(s);
+	}
 
+	public Person.Attribute GetProfession() {
+		foreach (Person.Attribute attr in mAttributes) {
+			if (attr.GetAttrType() == Person.AttributeType.PROFESSION) {
+				return attr;
+			}
+		}
+		return Person.Attribute.NONE;
+	}
+
+	//  Returns a string to be shown after the profession
+	public string GetSuffixString()
+	{
+		string s = "";
 		if(mMinAge >= 0)
 		{
 			s += "Age " + mMinAge + " ";
 		}
-
-		if(mMinLevel >= 0)
-		{
-			s += "Level " + mMinLevel + " ";
-		}
-			
-		s += Utilities.ConcatStrings(mAttributes.ConvertAll(
-			attr => System.Enum.GetName(typeof(Person.Attribute), (int)attr)
-		), true);
-
+		s += Utilities.ConcatStrings(
+			mAttributes.FindAll(attr =>attr.GetAttrType() != Person.AttributeType.PROFESSION)
+			.ConvertAll(attr => attr.ToString()), false);
+		// put a space before the suffix string if there is a suffix and also profession
+		if (s!="" && GetProfession() != Person.Attribute.NONE) { s = " " + s; }
 		return(s);
 	}
-
 }
