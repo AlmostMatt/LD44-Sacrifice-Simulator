@@ -124,7 +124,7 @@ public class God : MonoBehaviour {
 		foreach(SacrificeResult sr in BoonLibrary.sGuaranteedRenewableBoons)
 		{
 			GodDemand renewableDemand = new GodDemand(
-				                            DemandGenerator.SimpleDemand(),
+				                            DemandGenerator.ScaledDemand(0),
 				                            sr,
 				                            null
 			                            );
@@ -138,7 +138,7 @@ public class God : MonoBehaviour {
 		for(int i = 0; i < numTierOneDemands; ++i)
 		{
 			GodDemand demand = new GodDemand(
-				DemandGenerator.TierOneDemand(),
+				DemandGenerator.ScaledDemand(1),
 				boons[i].Make(1, GameState.Favour),
 				null
 			);
@@ -147,7 +147,7 @@ public class God : MonoBehaviour {
 		for(int i = 0; i < numTierTwoDemands; ++i)
 		{
 			GodDemand demand = new GodDemand(
-            	DemandGenerator.TierTwoDemand(),
+				DemandGenerator.ScaledDemand(3),
 				boons[numTierOneDemands+i].Make(3, GameState.Favour),
 				null
             );
@@ -179,7 +179,7 @@ public class God : MonoBehaviour {
 			if(mFleetingDemandTimer <= 0)
 			{
 				int tier = Mathf.FloorToInt(GameState.GameTimeElapsed / 120);
-				SacrificeDemand demand = DemandGenerator.SimpleDemand();
+				SacrificeDemand demand = DemandGenerator.ScaledDemand(tier);
 				SacrificeResult satisfied = null;
 				SacrificeResult ignored = null;
 				float negativeChance = 0.8f - GameState.Favour * 0.1f;
@@ -234,13 +234,13 @@ public class God : MonoBehaviour {
 		}
 	}
 
-	public int AddFleetingDemand(SacrificeResult satisfiedResult, SacrificeResult ignoredResult, float time, string msg)
+	public int AddFleetingDemand(int tier, SacrificeResult satisfiedResult, SacrificeResult ignoredResult, float time, string msg)
 	{
 		GodDemand demand = new GodDemand(
-			                   DemandGenerator.SimpleDemand(),
-			                   satisfiedResult,
-			                   ignoredResult
-		                   );
+			DemandGenerator.ScaledDemand(tier),
+            satisfiedResult,
+            ignoredResult
+        );
 		demand.mTimeLeft = time;
 		mDemands.Add(demand);
 
@@ -286,6 +286,8 @@ public class God : MonoBehaviour {
 				if(demand.mIsRenewable)
 				{
 					demand.mNumBuys++;
+					demand.mDemand = DemandGenerator.ScaledDemand(demand.mNumBuys);
+					/*
 					if(demand.mNumBuys <= 2)
 					{
 						demand.mDemand = DemandGenerator.SimpleDemand();
@@ -298,6 +300,7 @@ public class God : MonoBehaviour {
 					{
 						demand.mDemand = DemandGenerator.TierTwoDemand();	
 					}
+					*/
 				}
 				else
 				{

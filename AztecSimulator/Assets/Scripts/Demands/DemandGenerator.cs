@@ -3,12 +3,139 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class DemandGenerator {
+
+	public static SacrificeDemand ScaledDemand(int tier)
+	{
+		tier = Mathf.Max(0, tier + (Random.Range(0, 100) / 70));
+		if(tier == 0)
+		{
+			// one attribute that you have
+			return(EasiestDemand());
+		}
+
+		if(tier == 1)
+		{
+			// 1 attribute that you may not have
+			if(Random.value < 0.5)
+				return(BuildDemand(0,1,1));
+
+			// 2 on the same person
+			return(BuildDemand(1,1,2));
+		}
 	
-	public static SacrificeDemand SimpleDemand()
+		if(tier == 2)
+		{
+			if(Random.value < 0.5)
+			{
+				// 2 on the same person
+				return(BuildDemand(1,1,2));
+			}
+
+			// 1 attribute that you may not have, plus extra constraint
+			SacrificeDemand d = BuildDemand(0,1,1);
+			d.mCriteria[0].mMinLevel = Random.Range(2, 4);
+			return(d);
+		}
+
+		// tier >= 3
+		SacrificeDemand demand;
+		if(Random.value < 0.5)
+		{
+			// 2 attributes you have
+			demand = BuildDemand(2, 0, 1);
+		}
+		else if(Random.value < 0.5)
+		{
+			// one of each
+			demand = BuildDemand(1, 1, 1);
+		}
+		else
+		{
+			// 2 attributes that you may not have
+			demand = BuildDemand(0,2,1);
+		}
+
+		if(tier >= 4)
+		{
+			foreach(Criterion c in demand.mCriteria)
+			{
+				if(Random.value < 0.3)
+				{
+					c.mMinAge = Random.Range(10, 11 + (tier - 3) * 5);
+				}
+				else if(Random.value < 0.3)
+				{
+					c.mMinLevel = tier + 2;
+				}
+
+				if(Random.value < 0.1 + (tier / 10))
+				{
+					c.mCount = (tier / 2) + 1;
+				}
+			}
+		}
+
+		return(demand);
+	}
+
+	public static SacrificeDemand EasiestDemand()
+	{
+		// guaranteed to be satisfiable now
+		SacrificeDemand d = new SacrificeDemand();
+		List<Person.Attribute> attributes = GenerateSatisfiableDemands(1);
+		foreach(Person.Attribute attr in attributes)
+		{
+			Criterion c = new Criterion();
+			c.mAttributes.Add(attr);
+			d.mCriteria.Add(c);
+		}
+
+		return(d);
+	}
+
+	public static SacrificeDemand BuildDemand(int numGuaranteed, int numAny, int numPerCriterion)
 	{
 		SacrificeDemand d = new SacrificeDemand();
 
-		int numAttributes = Random.Range(1,3);
+		List<Person.Attribute> attributes = GenerateSatisfiableDemands(numGuaranteed);
+		List<Person.Attribute> anyAttrs = GenerateRandomDemandsDumb(numAny);
+
+		List<Person.Attribute> allAttrs = new List<Person.Attribute>();
+		for(int i = 0; i < anyAttrs.Count; ++i)
+		{
+			allAttrs.Add(anyAttrs[i]);
+		}
+		for(int i = 0; i < attributes.Count; ++i)
+		{
+			Person.Attribute attr = attributes[i];
+			if(!allAttrs.Contains(attr))
+			{
+				allAttrs.Add(attr);
+			}
+		}
+			
+		int idx = 0;
+		while(idx < allAttrs.Count)
+		{
+			Criterion c = new Criterion();
+			for(int i = 0; i < numPerCriterion && idx < allAttrs.Count; ++i)
+			{
+				c.mAttributes.Add(allAttrs[idx]);
+				++idx;
+			}
+			d.mCriteria.Add(c);
+		}
+
+		return(d);
+	}
+
+	public static SacrificeDemand SimpleDemand(int tier)
+	{
+		SacrificeDemand d = new SacrificeDemand();
+
+		int minAttr = Mathf.Min(2, 1+tier);
+		int maxAttr = Mathf.Min(3, 2+tier);
+		int numAttributes = Random.Range(minAttr,maxAttr + 1);
 		List<Person.Attribute> attributes = GenerateSatisfiableDemands(numAttributes);
 
 		// add them as separate criteria so that they're easier to satisfy
@@ -86,6 +213,12 @@ public class DemandGenerator {
 		}
 
 		return(demands);
+	}
+
+	public static List<Person.Attribute> GenerateRandomDemandsDumb(int howMany)
+	{
+		Person.Attribute[] attributesAndProfession = Person.RandomAttributes(howMany); // gives howMany + 1, because it tacks profession onto the end
+		return new List<Person.Attribute>(Utilities.RandomSubset(attributesAndProfession, howMany));
 	}
 
 	public static List<Person.Attribute> GenerateRandomDemands(int tier)

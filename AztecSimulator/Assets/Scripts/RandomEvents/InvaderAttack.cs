@@ -36,6 +36,7 @@ public class InvaderAttack : RandomEventSystem.RandomEvent {
 
 		mIntervened = false;
 		mDemandId = Utilities.GetGod().AddFleetingDemand(
+			difficultyBoost,
 			new InvaderAttack.GodIntervention(this),
 			null, 
 			mDuration, 

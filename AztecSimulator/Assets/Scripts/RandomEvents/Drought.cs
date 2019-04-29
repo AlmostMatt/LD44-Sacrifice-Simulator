@@ -38,6 +38,7 @@ public class Drought : RandomEventSystem.RandomEvent {
 		GameState.Ongoings.Add(mOngoing);
 		Utilities.LogEvent("A drought has befallen your farmland", 1f);
 		mDemandId = Utilities.GetGod().AddFleetingDemand(
+			diffIncrease,
 			new GodIntervention(this), 
 			null, 
 			mDuration, 

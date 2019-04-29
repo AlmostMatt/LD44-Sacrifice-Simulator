@@ -355,6 +355,7 @@ public class Person : MonoBehaviour {
 			// AttributeType.EYE_COLOR,
 		};
 
+		howMany = Mathf.Min(attrTypes.Length, howMany);
 		AttributeType[] randomAttributes = Utilities.RandomSubset(attrTypes, howMany);
 
 		Attribute[] attributes = new Attribute[howMany + 1];
