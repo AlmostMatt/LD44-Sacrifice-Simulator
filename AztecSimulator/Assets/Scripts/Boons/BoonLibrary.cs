@@ -19,11 +19,18 @@ public class BoonLibrary {
 	public static SacrificeResult[] sGuaranteedRenewableBoons = {
 		new FarmerXpBuff(),
 		new WarriorXpBuff(),
-		new CivilianXpBuff()
+		new CivilianXpBuff(),
 	};
 
 	private static SacrificeResultFactory[] sRandomizedBoons = {
-		new GoodCropBoon.Factory()
+		new Favour.Factory(),
+		new SurplusFoodUse.Factory(),
+		//new SacrificeBonus.Factory(),
+		//new SameProfessionXpBuff.Factory(),
+		//new CombatVictoryReward.Factory(),
+		//new WarriorChildProtect().Factory(),
+		//new ChangeProfessionRetainXp.Factory(),
+		//new HealthXpBonus.Factory()
 	};
 
 	private static SacrificeResult[] sTierOneBoons = {
@@ -31,7 +38,6 @@ public class BoonLibrary {
 		// new ImprovedLifespan(),
 //		new WarriorXpBuff(),
 		//new Favour(),
-		new SurplusFoodUse(),
 		new SacrificeBonus(),
 		new SameProfessionXpBuff(),
 		new CombatVictoryReward()
