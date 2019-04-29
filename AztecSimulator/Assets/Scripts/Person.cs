@@ -284,7 +284,8 @@ public class Person : MonoBehaviour {
 		bool isLevelRelevant = selectedDemand != null && selectedDemand.IsRelevantLevel(mLevel);
 		string levelString = "Lvl " + Utilities.ColorString(GetLevelString(), "green", isLevelRelevant);
 		string lifeString = (mIsHungry ? "STARVING! " : "") + " " + Mathf.Ceil(mHealth);
-		return new [] {mName + " (Age " + Age + ")", attrString, levelString, lifeString};
+		string ageString = Utilities.ColorString(mName + " (Age " + Age + ")", "green", selectedDemand != null && selectedDemand.IsRelevantAge(Age));
+		return new [] {ageString, attrString, levelString, lifeString};
 	}
 
 	// Returns a single multiline string
