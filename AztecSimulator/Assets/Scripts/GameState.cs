@@ -42,17 +42,25 @@ public class GameState {
 	}
 
 	private int mArmySize = 0;
-	public static int ArmySize // wow I didn't think this would actually work
+	public static int ArmySize
 	{
 		get { return(sGameState.mArmySize); }
 		set { sGameState.mArmySize = value; }
 	}
 
 	private int mInvaderSize = 0;
-	public static int InvaderSize // wow I didn't think this would actually work
+	public static int InvaderSize
 	{
 		get { return(sGameState.mInvaderSize); }
 		set { sGameState.mInvaderSize = value; }
+	}
+
+	// Time between births in seconds (ignores population limit)
+	private float mTimeBetweenBirths = 0;
+	public static float TimeBetweenBirths
+	{
+		get { return(sGameState.mTimeBetweenBirths); }
+		set { sGameState.mTimeBetweenBirths = value; }
 	}
 
 	private bool mDrought = false;

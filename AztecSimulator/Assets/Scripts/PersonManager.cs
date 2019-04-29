@@ -46,7 +46,6 @@ public class PersonManager : MonoBehaviour {
 		{
 			birthRate += GameState.FoodSurplus * 0.05f;
 		}
-
 		if(mRepopulateTimer > 0)
 		{
 			mRepopulateTimer -= GameState.GameDeltaTime * birthRate;
@@ -60,6 +59,7 @@ public class PersonManager : MonoBehaviour {
 			}
 			mRepopulateTimer = birthInterval;
 		}
+		GameState.TimeBetweenBirths = (birthInterval / birthRate);
 
 		// Update ArmySize
 		int armySize = 0;
