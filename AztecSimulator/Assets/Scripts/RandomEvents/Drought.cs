@@ -8,6 +8,8 @@ public class Drought : RandomEventSystem.RandomEvent {
 	private bool mIntervened = false;
 	private int mDemandId;
 
+	private Sprite mPrevBackgroundSprite;
+
 	private class GodIntervention : SacrificeResult {
 
 		private Drought mDrought;
@@ -26,6 +28,10 @@ public class Drought : RandomEventSystem.RandomEvent {
 		int diffIncrease = Mathf.FloorToInt(GameState.GameTimeElapsed / 60);
 		mDuration = (Random.Range(1, 4) + diffIncrease) * 10;
 		mIntervened = false;
+
+		SpriteRenderer background = Utilities.GetBackground();
+		mPrevBackgroundSprite = background.sprite;
+		background.sprite = Utilities.GetSpriteManager().GetSprite("DroughtBackground");
 
 		mOngoing = new Ongoing("DROUGHT", "Drought!", "A drought is reducing your crop yield.", mDuration, false);
 		GameState.Ongoings.Add(mOngoing);
@@ -52,6 +58,8 @@ public class Drought : RandomEventSystem.RandomEvent {
 			Utilities.LogEvent("The drought has ended.", 1f);
 
 		if(mDemandId > 0) Utilities.GetGod().RemoveDemand(mDemandId);
+
+		Utilities.GetBackground().sprite = mPrevBackgroundSprite;
 
 		GameState.Drought = false;
 

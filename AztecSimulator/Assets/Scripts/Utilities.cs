@@ -73,6 +73,11 @@ public static class Utilities {
 		return GameObject.FindGameObjectWithTag("SystemsAndManagers").GetComponent<RandomEventSystem>();
 	}
 
+	public static SpriteRenderer GetBackground()
+	{
+		return GameObject.FindGameObjectWithTag("Background").GetComponent<SpriteRenderer>();
+	}
+
 	public static void LogEvent(string message, float duration=2f)
 	{
 		GameObject uiManager = GameObject.FindGameObjectWithTag("UIManager");
