@@ -19,19 +19,26 @@ public class HoverInfo :  MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 		SetText(detailedMessage);
 		// TODO: maybe have canvas component for custom sorting
 	}
-	// TODO: generalize this so that it can create its own child game object and only needs info text as a property
+
+
+	void OnDisable()
+	{
+		mUiInfo.SetActive(false);
+	}
+
 	public void SetText(string newText) {
-		Debug.Log("set");
+		// I don't know why it happens, but mUiInfo seems to be temporarily null for new events
 		if (mUiInfo != null) {
-			Debug.Log(mUiInfo.transform.childCount);
 			mUiInfo.transform.GetChild(0).GetComponent<Text>().text = newText;
 		}
 	}
+
 	public void OnPointerEnter(PointerEventData eventData)
 	{
 		mUiInfo.SetActive(true);
 		// set global position relative to mouse
 	}
+
 	public void OnPointerExit(PointerEventData eventData)
 	{
 		mUiInfo.SetActive(false);
