@@ -62,7 +62,6 @@ public class God : MonoBehaviour {
 		victoryDemand.mSatisfiedResult = new VictoryResult();
 		mDemands.Add(victoryDemand);
 
-
 		if(logDemandsOnStart)
 		{
 			Utilities.LogEvent("YOUR GOD HAS MULTIPLE DEMANDS");
@@ -200,6 +199,35 @@ public class God : MonoBehaviour {
 		foreach(SacrificeResult r in results)
 		{
 			r.DoEffect();
+		}
+
+		if(GameState.HasBoon(BoonType.SACRIFICE_BONUS_XP))
+		{
+			List<Person> underleveled = personMgr.People.FindAll(x => x.Level < GameState.GetLevelCap(x.GetAttribute(Person.AttributeType.PROFESSION)));
+			if(underleveled != null && underleveled.Count > 0)
+			{
+				int xpBonus = 10;
+				Person p = Utilities.RandomSelection<Person>(underleveled.ToArray());
+				Utilities.LogEvent(p.Name + " got " + xpBonus + " bonus xp from the sacrifice");
+				p.AddXp(xpBonus);
+			}
+		}
+
+		if(GameState.HasBoon(BoonType.SACRIFICE_BONUS_HEALING))
+		{
+			List<Person> needHealing = personMgr.People.FindAll(x => x.Health < x.MaxHealth);
+			if(needHealing != null && needHealing.Count > 0)
+			{
+				float heal = 10;
+				Person p = Utilities.RandomSelection<Person>(needHealing.ToArray());
+				Utilities.LogEvent("The sacrifice restored " + heal + " lifeforce to " + p.Name);
+				p.Heal(heal);
+			}
+		}
+
+		if(GameState.HasBoon(BoonType.SACRIFICE_BONUS_FOOD))
+		{
+			// not sure how to do this one yet. would have to be timed to make sense?
 		}
 
 		return(results);

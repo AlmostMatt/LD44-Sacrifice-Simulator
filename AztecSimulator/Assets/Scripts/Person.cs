@@ -64,6 +64,7 @@ public class Person : MonoBehaviour {
 	private float mXp = 0f;
 
 	private float mHealth;
+	private float mMaxHealth;
 	private float mBaseHealthDecayRate;
 
 	public string Name {
@@ -76,6 +77,10 @@ public class Person : MonoBehaviour {
 	{
 		get { return(mHealth); }
 		set { mHealth = value; }
+	}
+	public float MaxHealth
+	{
+		get { return(mMaxHealth); }
 	}
 	public int Level 
 	{
@@ -106,6 +111,17 @@ public class Person : MonoBehaviour {
 		return Attribute.NONE;
 	}
 
+	public void AddXp(float amount)
+	{
+		// maybe this wants to be smarter about caps, idk
+		mXp += amount;
+	}
+
+	public void Heal(float amount)
+	{
+		mHealth += amount;
+	}
+
 	// Use this for initialization
 	//void Start () {
 	void Awake() {
@@ -120,7 +136,7 @@ public class Person : MonoBehaviour {
 		mAttributes[mAttributes.Length-1] = Attribute.FARMER;
 
 		mIsHungry = false;
-		mHealth = startingHealth;
+		mMaxHealth = mHealth = startingHealth;
 		//mBaseHealthDecayRate = Random.Range(0.45f, 0.55f);
 		mBaseHealthDecayRate = 0;
 		if(GameState.ImprovedLifespan1) mBaseHealthDecayRate *= 0.5f;
@@ -132,7 +148,7 @@ public class Person : MonoBehaviour {
 		mAge += 0.15f * GameState.GameDeltaTime;
 
 		Attribute profession = GetAttribute(AttributeType.PROFESSION);
-		if(mLevel < 2 + GameState.GetLevelCapIncrease(profession))
+		if(mLevel < GameState.GetLevelCap(profession))
 		{
 			if (profession != Attribute.NONE) {
 				int xpGain = 1; // 1 xp per second;
@@ -158,6 +174,8 @@ public class Person : MonoBehaviour {
 			healthDecayRate -= 0.05f * GameState.FoodSurplus;
 		}
 		mHealth -= healthDecayRate * GameState.GameDeltaTime;
+
+		mHealth = Mathf.Clamp(mHealth, 0, mMaxHealth);
 
 		if(mHealth <= 0)
 		{
