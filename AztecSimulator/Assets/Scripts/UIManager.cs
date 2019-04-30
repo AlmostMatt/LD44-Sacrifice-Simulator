@@ -55,6 +55,8 @@ public class UIManager : MonoBehaviour {
 			mProfessionToggles.Add(profession, toggle);
 		}
 		mProfessionToggles[Person.Attribute.FARMER].isOn = true;
+
+		OnTabChanged(true); // set active tab color initially
 	}
 
 	void Update () {
@@ -418,5 +420,13 @@ public class UIManager : MonoBehaviour {
 		}
 
 		// todo: update selected tab (demand list) and people container connections here
+		int selectedTabIndex = GetSelectedTabIndex();
+		Transform tabGroup = transform.Find("Left/TabGroup");
+		int tabIdx = 0;
+		foreach(Transform t in tabGroup)
+		{
+			t.GetComponentInChildren<Image>().color = tabIdx == selectedTabIndex ?  new Color(118f/255f, 242f/255f, 172/255f) : new Color(1f, 1f, 1f, 0.6f);
+			tabIdx++;
+		}
 	}
 }
