@@ -29,7 +29,7 @@ public class HungerSystem : MonoBehaviour {
 				fedPeople[i].Hungry = true;
 				names.Add(fedPeople[i].Name);
 			}
-			Utilities.LogEvent(Utilities.ConcatStrings(names, false) + " are starving!", 1f);
+			Utilities.LogEvent(Utilities.ConcatStrings(names, false) + (names.Count == 1 ? " is" : " are") + " starving!", 1f);
 		}
 		else if(fedPeople.Count < foodSupply && hungryPeople.Count > 0)
 		{
@@ -41,7 +41,7 @@ public class HungerSystem : MonoBehaviour {
 				hungryPeople[i].Hungry = false;
 				names.Add(hungryPeople[i].Name);
 			}
-			Utilities.LogEvent(Utilities.ConcatStrings(names, false) + " are no longer starving.", 1f);
+			Utilities.LogEvent(Utilities.ConcatStrings(names, false) + (names.Count == 1 ? " is" : " are") + " no longer starving.", 1f);
 		}
 	}
 }
