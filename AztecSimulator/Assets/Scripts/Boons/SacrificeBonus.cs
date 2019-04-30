@@ -26,7 +26,7 @@ public class SacrificeBonus : SacrificeResult {
 			break;
 		case 1:
 			mBoonType = BoonType.SACRIFICE_BONUS_HEALING;
-			mAmount = 10 * (1 + tier * luck);
+			mAmount = 10 * (1 + tier + luck);
 			mName = "Lifeforce Inheritance";
 			mDescription = "Each sacrifice restores " + mAmount + " lifeforce to a random person";
 			break;
