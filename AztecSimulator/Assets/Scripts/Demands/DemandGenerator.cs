@@ -78,7 +78,7 @@ public class DemandGenerator {
 				}
 				else if(Random.value < 0.3)
 				{
-					c.mMinLevel = tier + 2;
+					c.mMinLevel = tier + 1;
 				}
 					
 				if(personCount > 0 && Random.value < 0.1 + (tier / 10))
@@ -110,6 +110,16 @@ public class DemandGenerator {
 	public static SacrificeDemand BuildDemand(int numGuaranteed, int numAny, int numPerCriterion)
 	{
 		SacrificeDemand d = new SacrificeDemand();
+
+		// 11th hour special case hacks
+		if(numPerCriterion == 2)
+		{
+			Criterion doubleCrit = new Criterion();
+			Person.Attribute[] doubleAttrs = Person.RandomAttributes(1);
+			doubleCrit.mAttributes = new List<Person.Attribute>(doubleAttrs);
+			d.mCriteria.Add(doubleCrit);
+			return d;
+		}
 
 		List<Person.Attribute> attributes = GenerateSatisfiableDemands(numGuaranteed);
 		List<Person.Attribute> anyAttrs = GenerateRandomDemandsDumb(numAny);

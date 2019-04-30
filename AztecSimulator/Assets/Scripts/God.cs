@@ -132,8 +132,9 @@ public class God : MonoBehaviour {
 			mDemands.Add(renewableDemand);
 		}
 
-		int numTierOneDemands = 3;
-		int numTierTwoDemands = 3;
+		int numTierOneDemands = 2;
+		int numTierTwoDemands = 2;
+		int numTierThreeDemands = 2;
 		SacrificeResultFactory[] boons = BoonLibrary.RandomBoonFactories(6);
 		for(int i = 0; i < numTierOneDemands; ++i)
 		{
@@ -151,6 +152,15 @@ public class God : MonoBehaviour {
 				boons[numTierOneDemands+i].Make(3, GameState.Favour),
 				null
             );
+			mDemands.Add(demand);
+		}
+		for(int i = 0; i < numTierThreeDemands; ++i)
+		{
+			GodDemand demand = new GodDemand(
+				DemandGenerator.ScaledDemand(5),
+				boons[numTierOneDemands+numTierTwoDemands+i].Make(5, GameState.Favour),
+				null
+			);
 			mDemands.Add(demand);
 		}
 
