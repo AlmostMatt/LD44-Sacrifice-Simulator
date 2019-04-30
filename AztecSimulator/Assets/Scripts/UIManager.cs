@@ -33,6 +33,8 @@ public class UIManager : MonoBehaviour {
 	private List<string> mNotificationMessages = new List<string>();
 	private List<float> mNotificationDurations = new List<float>();
 
+	private static Color sAttentionColor = new Color(255f / 255f, 89f / 255f, 111f / 255f);
+
 	// Use this for initialization
 	void Awake () {
 		mGod = Utilities.GetGod();
@@ -109,7 +111,14 @@ public class UIManager : MonoBehaviour {
 		// Update the god and demands
 		if(mGod != null) {
 			string fleetingDemandsTabName = "Fleeting\r\nDemands";
-			if (mGod.FleetingDemands.Count > 0) {fleetingDemandsTabName += " (" + mGod.FleetingDemands.Count + ")"; }
+			if (mGod.FleetingDemands.Count > 0) {
+				fleetingDemandsTabName += " (" + mGod.FleetingDemands.Count + ")"; 
+				if(GetSelectedTabIndex() != 0)
+				{
+					Transform tab1 = transform.Find("Left/TabGroup/Tab1");
+					tab1.GetComponentInChildren<Image>().color = sAttentionColor;
+				}
+			}
 			transform.Find("Left/TabGroup/Tab1/Text").GetComponent<Text>().text = fleetingDemandsTabName;
 			transform.Find("Left/Demands/Name").GetComponent<Text>().text = mGod.Name;
 			// todo: separate short term and long term demands
