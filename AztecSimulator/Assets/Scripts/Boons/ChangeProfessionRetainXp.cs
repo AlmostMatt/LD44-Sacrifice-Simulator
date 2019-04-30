@@ -4,10 +4,15 @@ using UnityEngine;
 
 public class ChangeProfessionRetainXp : SacrificeResult {
 
-	private int mPercentRetained;
+	public class Factory : SacrificeResultFactory {
+		public SacrificeResult Make(int tier, int luck) { 
+			return new ChangeProfessionRetainXp(tier, luck);
+		}
+	}
 
-	public ChangeProfessionRetainXp() : base("Transferrable Knowledge", "") {
-		mPercentRetained = Random.Range(1, 6) * 10;
+	private int mPercentRetained;
+	public ChangeProfessionRetainXp(int tier, int luck) : base("Transferrable Knowledge", "") {
+		mPercentRetained = Mathf.Min(100, 10 * (1 + tier + Random.Range(Mathf.Min(6, 1+luck), 6)));
 		mDescription = "Your people retain " + mPercentRetained + "% of their xp when changing professions";
 	}
 

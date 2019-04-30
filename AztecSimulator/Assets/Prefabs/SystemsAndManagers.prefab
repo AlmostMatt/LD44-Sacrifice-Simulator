@@ -68,7 +68,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugEventIdx: -1
-  initialEventDelay: 2
+  initialEventDelay: 20
 --- !u!114 &114526150567914390
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -92,8 +92,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   logDemandsOnStart: 0
-  fleetingDemandTimer: 30
-  maxFleetingDemands: 2
+  fleetingDemandTimer: 60
+  maxFleetingDemands: 1
 --- !u!114 &114797501282310160
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -110,11 +110,15 @@ MonoBehaviour:
   - WARRIOR
   - CIVILIAN
   - DroughtBackground
+  - DROUGHT
+  - ATTACK
   sprites:
   - {fileID: 21300000, guid: 162db63a4fbf95446ba3a472f2cf5b5e, type: 3}
   - {fileID: 21300000, guid: 8557d86868293c347a760152ebc63f9a, type: 3}
   - {fileID: 21300000, guid: aad9b8eee95857847bf4544533a94154, type: 3}
   - {fileID: 21300000, guid: 40deeba6d47aa424a85a923f5daf91e0, type: 3}
+  - {fileID: 21300000, guid: 85f3d33b35b8cf047a8e3f0c58ec2fac, type: 3}
+  - {fileID: 21300000, guid: 8557d86868293c347a760152ebc63f9a, type: 3}
 --- !u!114 &114983575028213916
 MonoBehaviour:
   m_ObjectHideFlags: 1

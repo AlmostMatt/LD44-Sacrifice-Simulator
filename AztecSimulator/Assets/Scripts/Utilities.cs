@@ -95,7 +95,7 @@ public static class Utilities {
 
 		int[] chosenIndices = new int[numChoices];
 		for(int i = 0; i < numChoices; ++i) {
-			int pick = Random.Range(i, totalPossibilities);
+			int pick = Random.Range(0, totalPossibilities);
 			chosenIndices[i] = availableChoices[pick];
 			availableChoices[pick] = availableChoices[--totalPossibilities];
 		}
@@ -107,6 +107,7 @@ public static class Utilities {
 	}
 
 	public static T[] RandomSubset<T>(T[] possibleValues, int numToChoose) {
+		numToChoose = Mathf.Min(possibleValues.Length, numToChoose);
 		int[] listOfIndexes = new int[possibleValues.Length];
 		for(int i= 0; i< possibleValues.Length; ++i) {
 			listOfIndexes[i] = i;

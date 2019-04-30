@@ -23,21 +23,25 @@ public class HungerSystem : MonoBehaviour {
 		{
 			// randomly select people to go hungry
 			int[] choices = Utilities.RandomList(fedPeople.Count, fedPeople.Count - foodSupply);
+			List<string> names = new List<string>();
 			foreach(int i in choices)
 			{
 				fedPeople[i].Hungry = true;
-				Utilities.LogEvent(fedPeople[i].Name + " is starving!", 1f);
+				names.Add(fedPeople[i].Name);
 			}
+			Utilities.LogEvent(Utilities.ConcatStrings(names, false) + (names.Count == 1 ? " is" : " are") + " starving!", 1f);
 		}
 		else if(fedPeople.Count < foodSupply && hungryPeople.Count > 0)
 		{
 			// randomly select people to be fed
 			int[] choices = Utilities.RandomList(hungryPeople.Count, Mathf.Min(hungryPeople.Count, foodSupply - fedPeople.Count));
+			List<string> names = new List<string>();
 			foreach(int i in choices)
 			{
 				hungryPeople[i].Hungry = false;
-				Utilities.LogEvent(hungryPeople[i].Name + " is no longer starving.", 1f);
+				names.Add(hungryPeople[i].Name);
 			}
+			Utilities.LogEvent(Utilities.ConcatStrings(names, false) + (names.Count == 1 ? " is" : " are") + " no longer starving.", 1f);
 		}
 	}
 }

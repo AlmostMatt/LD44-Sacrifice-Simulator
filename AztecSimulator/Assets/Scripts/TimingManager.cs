@@ -18,7 +18,7 @@ public class TimingManager : MonoBehaviour {
 			transform.GetComponent<Toggle>().isOn = !transform.GetComponent<Toggle>().isOn; 
 		}
 
-		GameState.GameDeltaTime = Time.deltaTime * GameState.GameSpeed;
+		GameState.GameDeltaTime = Mathf.Min(1, Time.deltaTime) * GameState.GameSpeed;  // avoid huge frame time spikes
 		GameState.GameTimeElapsed += GameState.GameDeltaTime;
 	}
 

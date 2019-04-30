@@ -13,7 +13,7 @@ public class InvaderAttack : RandomEventSystem.RandomEvent {
 		private InvaderAttack mAttack;
 
 		public GodIntervention(InvaderAttack attack) 
-			: base("Divine Intervention - Protection", "God will protect your people from the attackers") 
+			: base("Protection", "God will protect your people from the attackers") 
 		{
 			mAttack = attack;
 		}
@@ -25,17 +25,18 @@ public class InvaderAttack : RandomEventSystem.RandomEvent {
 	}
 
 	public override float Start () {
-		mDuration = 30;
+		mDuration = 60f;
 		int difficultyBoost = Mathf.FloorToInt(GameState.GameTimeElapsed / 90);
 		mRequiredWarriors = Random.Range(1, 4) + difficultyBoost;
 		GameState.InvaderSize = mRequiredWarriors;
 
-		Utilities.LogEvent("An enemy army approaches! They look to be about " + mRequiredWarriors + " strong");
-		mOngoing = new Ongoing("ATTACK", "Invaders!", mRequiredWarriors + " enemy warriors approach!", mDuration, false);
+		Utilities.LogEvent("An enemy army approaches! They look to be " + mRequiredWarriors + " strong");
+		mOngoing = new Ongoing("ATTACK", "Invaders!", mRequiredWarriors + " enemy warrior" + (mRequiredWarriors == 1 ? " approaches" : "s approach") + "!\r\n(Match their numbers with your army)", mDuration, false);
 		GameState.Ongoings.Add(mOngoing);
 
 		mIntervened = false;
 		mDemandId = Utilities.GetGod().AddFleetingDemand(
+			difficultyBoost,
 			new InvaderAttack.GodIntervention(this),
 			null, 
 			mDuration, 

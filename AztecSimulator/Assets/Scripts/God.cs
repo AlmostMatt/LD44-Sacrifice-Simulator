@@ -116,7 +116,7 @@ public class God : MonoBehaviour {
 	}
 
 	void Start () {
-		mName = "MACUILCUETZPALIN, GOD OF AWESOME";
+		mName = GenerateName();
 		mDemands = new List<GodDemand>();
 		mFleetingDemandTimer = fleetingDemandTimer;
 		mNumFleetingDemands = 0;
@@ -124,7 +124,7 @@ public class God : MonoBehaviour {
 		foreach(SacrificeResult sr in BoonLibrary.sGuaranteedRenewableBoons)
 		{
 			GodDemand renewableDemand = new GodDemand(
-				                            DemandGenerator.SimpleDemand(),
+				                            DemandGenerator.ScaledDemand(0),
 				                            sr,
 				                            null
 			                            );
@@ -133,26 +133,34 @@ public class God : MonoBehaviour {
 		}
 
 		int numTierOneDemands = 2;
-		SacrificeResult[] tierOneBoons = BoonLibrary.RandomTierOneBoons(numTierOneDemands);
+		int numTierTwoDemands = 2;
+		int numTierThreeDemands = 2;
+		SacrificeResultFactory[] boons = BoonLibrary.RandomBoonFactories(6);
 		for(int i = 0; i < numTierOneDemands; ++i)
 		{
 			GodDemand demand = new GodDemand(
-									DemandGenerator.TierOneDemand(),
-									tierOneBoons[i],
-									null
-								);
+				DemandGenerator.ScaledDemand(1),
+				boons[i].Make(1, GameState.Favour),
+				null
+			);
 			mDemands.Add(demand);
 		}
-
-		int numTierTwoDemands = 2;
-		SacrificeResult[] tierTwoBoons = BoonLibrary.RandomTierTwoBoons(numTierTwoDemands);
 		for(int i = 0; i < numTierTwoDemands; ++i)
 		{
 			GodDemand demand = new GodDemand(
-				                   DemandGenerator.TierTwoDemand(),
-				                   tierTwoBoons[i],
-				                   null
-			                   );
+				DemandGenerator.ScaledDemand(3),
+				boons[numTierOneDemands+i].Make(3, GameState.Favour),
+				null
+            );
+			mDemands.Add(demand);
+		}
+		for(int i = 0; i < numTierThreeDemands; ++i)
+		{
+			GodDemand demand = new GodDemand(
+				DemandGenerator.ScaledDemand(5),
+				boons[numTierOneDemands+numTierTwoDemands+i].Make(5, GameState.Favour),
+				null
+			);
 			mDemands.Add(demand);
 		}
 
@@ -181,7 +189,7 @@ public class God : MonoBehaviour {
 			if(mFleetingDemandTimer <= 0)
 			{
 				int tier = Mathf.FloorToInt(GameState.GameTimeElapsed / 120);
-				SacrificeDemand demand = DemandGenerator.SimpleDemand();
+				SacrificeDemand demand = DemandGenerator.ScaledDemand(tier);
 				SacrificeResult satisfied = null;
 				SacrificeResult ignored = null;
 				float negativeChance = 0.8f - GameState.Favour * 0.1f;
@@ -191,7 +199,7 @@ public class God : MonoBehaviour {
 					ignored = BoonLibrary.RandomTemporaryCurse();
 				else
 				if(roll - negativeChance <= specialChance)
-					satisfied = BoonLibrary.RandomTierOneBoon();
+					satisfied = BoonLibrary.RandomBoon(tier, GameState.Favour);
 				else
 					satisfied = BoonLibrary.RandomTemporaryBoon(tier, GameState.Favour);
 
@@ -236,13 +244,13 @@ public class God : MonoBehaviour {
 		}
 	}
 
-	public int AddFleetingDemand(SacrificeResult satisfiedResult, SacrificeResult ignoredResult, float time, string msg)
+	public int AddFleetingDemand(int tier, SacrificeResult satisfiedResult, SacrificeResult ignoredResult, float time, string msg)
 	{
 		GodDemand demand = new GodDemand(
-			                   DemandGenerator.SimpleDemand(),
-			                   satisfiedResult,
-			                   ignoredResult
-		                   );
+			DemandGenerator.ScaledDemand(tier, true),
+            satisfiedResult,
+            ignoredResult
+        );
 		demand.mTimeLeft = time;
 		mDemands.Add(demand);
 
@@ -278,7 +286,7 @@ public class God : MonoBehaviour {
 
 			if(demand.mDemand.CheckSatisfaction(people))
 			{
-				Utilities.LogEvent("YES, THIS SACRIFICE PLEASES ME", 1f, true);
+				Utilities.LogEvent("YES, THIS SACRIFICE PLEASES ME", 2f, true);
 				SacrificeResult sr = demand.mSatisfiedResult;
 				if(sr != null)
 				{
@@ -288,6 +296,8 @@ public class God : MonoBehaviour {
 				if(demand.mIsRenewable)
 				{
 					demand.mNumBuys++;
+					demand.mDemand = DemandGenerator.ScaledDemand(demand.mNumBuys);
+					/*
 					if(demand.mNumBuys <= 2)
 					{
 						demand.mDemand = DemandGenerator.SimpleDemand();
@@ -300,6 +310,7 @@ public class God : MonoBehaviour {
 					{
 						demand.mDemand = DemandGenerator.TierTwoDemand();	
 					}
+					*/
 				}
 				else
 				{
@@ -308,11 +319,11 @@ public class God : MonoBehaviour {
 			}
 			else
 			{
-				Utilities.LogEvent("NO WHAT ARE YOU DOING", 1f, true);
+				Utilities.LogEvent("NO WHAT ARE YOU DOING", 2f, true);
 			}
 		}
 		else {
-			Utilities.LogEvent("THIS POINTLESS SACRIFICE PLEASES ME", 1f, true);
+			Utilities.LogEvent("THIS POINTLESS SACRIFICE PLEASES ME", 2f, true);
 		}
 
 		foreach(Person p in people)
@@ -358,5 +369,69 @@ public class God : MonoBehaviour {
 		}
 
 		return(results);
+	}
+
+	private static string[] sNameParts = {
+		"macuil",
+		"coz",
+		"cacu",
+		"auhtli",
+		"xochitl",
+		"cuetz",
+		"ahuia",
+		"teteo",
+		"centzon",
+		"mimix",
+		"coa",
+		"huitz",
+		"nahua",
+		"ilop",
+		"ochtli",
+		"texcat",
+		"zonatl",
+		"izta",
+		"cuhca",
+		"cinteotl",
+		"cihua",
+		"coatl",
+		"xiuhi",
+		"hue",
+		"temaz",
+		"calteci",
+		"coyotl",
+		"ztacuh",
+		"qui",
+		"micteca",
+		"cihuatl",
+		"neso",
+		"xochi",
+		"vpiltzin",
+		"tecuhtli",
+		"ixquite",
+		"catl",
+		"itzpa",
+		"palotl",
+		"totec",
+		"chico",
+		"malina",
+		"cuthli"
+	};
+
+	private static string[] sNameSuffixes = {
+		
+	};
+
+	private string GenerateName()
+	{
+		string[] parts = Utilities.RandomSubset(sNameParts, 3);
+		string name = "";
+		foreach(string s in parts)
+		{
+			name += s;
+		}
+
+		name += ", " + (Random.value < 0.5 ? "GOD" : "GODDESS") + " OF AWESOME";
+
+		return name.ToUpper();
 	}
 }

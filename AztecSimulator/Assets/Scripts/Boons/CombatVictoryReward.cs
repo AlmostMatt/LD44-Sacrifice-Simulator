@@ -4,21 +4,28 @@ using UnityEngine;
 
 public class CombatVictoryReward : SacrificeResult {
 
+	public class Factory : SacrificeResultFactory {
+		public SacrificeResult Make(int tier, int luck) { 
+			return new CombatVictoryReward(tier, luck);
+		}
+	}
+
 	private BoonType mBoon;
 	private int mAmount;
 
-	public CombatVictoryReward() : base("Spoils of War: ", "") {
+	private CombatVictoryReward(int tier, int luck) : base("Spoils of War: ", "") {
 		int whichReward = Random.Range(0, 2);
-		mAmount = Random.Range(1, 5) * 5;
 		switch(whichReward)
 		{
 		case 0:
+			mAmount = Mathf.Min(100, 10 * (tier * 2) + Random.Range(1, 3) * luck);
 			mName += "Lifeforce";
-			mDescription = "Combat victories heal a random person for " + mAmount;
+			mDescription = "Combat victories restore " + mAmount + " lifeforce to a random person";
 			mBoon = BoonType.COMBAT_VICTORY_BONUS_HEALING;
 			break;
 		case 1: 
-			mName += " Experience";
+			mAmount = 10 * (tier + luck);
+			mName += "Experience";
 			mDescription = "Combat victories give a random person +" + mAmount + "xp";
 			mBoon = BoonType.COMBAT_VICTORY_BONUS_XP;
 			break;

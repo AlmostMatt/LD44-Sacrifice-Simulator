@@ -19,32 +19,18 @@ public class BoonLibrary {
 	public static SacrificeResult[] sGuaranteedRenewableBoons = {
 		new FarmerXpBuff(),
 		new WarriorXpBuff(),
-		new CivilianXpBuff()
+		new CivilianXpBuff(),
 	};
 
 	private static SacrificeResultFactory[] sRandomizedBoons = {
-		new GoodCropBoon.Factory()
-	};
-
-	private static SacrificeResult[] sTierOneBoons = {
-		//new FarmerXpBuff(),
-		// new ImprovedLifespan(),
-//		new WarriorXpBuff(),
-		//new Favour(),
-		new SurplusFoodUse(),
-		new SacrificeBonus(),
-		new SameProfessionXpBuff(),
-		new CombatVictoryReward()
-	};
-
-	private static SacrificeResult[] sTierTwoBoons = {
-		//new FarmerXpBuff(),
-//		new ImprovedLifespan(),
-		//new WarriorXpBuff(),
-//		new Favour(),
-		new WarriorChildProtect(),
-		new ChangeProfessionRetainXp(),
-		new HealthXpBonus()
+		new Favour.Factory(),
+		new SurplusFoodUse.Factory(),
+		new SacrificeBonus.Factory(),
+		new SameProfessionXpBuff.Factory(),
+		new CombatVictoryReward.Factory(),
+		new WarriorChildProtect.Factory(),
+		new ChangeProfessionRetainXp.Factory(),
+		new HealthXpBonus.Factory()
 	};
 
 	private static SacrificeResult[] sSuperSpecialBoons = {
@@ -62,17 +48,19 @@ public class BoonLibrary {
 		return(Utilities.RandomSelection<SacrificeResultFactory>(sRandomizedBoons).Make(tier, luck));
 	}
 
-	public static SacrificeResult RandomTierOneBoon() {
-		return(Utilities.RandomSelection<SacrificeResult>(sTierOneBoons));
+	public static SacrificeResultFactory[] RandomBoonFactories(int howMany) {
+		return Utilities.RandomSubset<SacrificeResultFactory>(sRandomizedBoons, howMany);
 	}
 
-	public static SacrificeResult[] RandomTierOneBoons(int howMany)
+	public static SacrificeResult[] RandomBoons(int howMany, int tier, int luck)
 	{
-		return(Utilities.RandomSubset<SacrificeResult>(sTierOneBoons, howMany));
+		SacrificeResultFactory[] factories = Utilities.RandomSubset<SacrificeResultFactory>(sRandomizedBoons, howMany);
+		SacrificeResult[] results = new SacrificeResult[factories.Length];
+		for(int i = 0; i < factories.Length; ++i)
+		{
+			results[i] = factories[i].Make(tier, luck);
+		}
+		return results;
 	}
 
-	public static SacrificeResult[] RandomTierTwoBoons(int howMany)
-	{
-		return(Utilities.RandomSubset<SacrificeResult>(sTierTwoBoons, howMany));
-	}
 }

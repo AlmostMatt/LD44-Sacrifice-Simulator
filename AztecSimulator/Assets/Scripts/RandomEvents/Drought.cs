@@ -15,7 +15,7 @@ public class Drought : RandomEventSystem.RandomEvent {
 
 		private Drought mDrought;
 
-		public GodIntervention(Drought drought) : base("Divine Intervention - Rain", "Stops the drought") {
+		public GodIntervention(Drought drought) : base("Rain", "Stops the drought") {
 			mDrought = drought;
 		}
 
@@ -26,8 +26,8 @@ public class Drought : RandomEventSystem.RandomEvent {
 
 	public override float Start () {
 		GameState.Drought = true;
-		int diffIncrease = Mathf.FloorToInt(GameState.GameTimeElapsed / 60);
-		mDuration = (Random.Range(1, 4) + diffIncrease) * 10;
+		int diffIncrease = Mathf.FloorToInt(GameState.GameTimeElapsed / 120);
+		mDuration = (Random.Range(2, 5) + Mathf.FloorToInt(Mathf.Sqrt(diffIncrease))) * 5;
 		mIntervened = false;
 
 		Image background = Utilities.GetBackground();
@@ -38,6 +38,7 @@ public class Drought : RandomEventSystem.RandomEvent {
 		GameState.Ongoings.Add(mOngoing);
 		Utilities.LogEvent("A drought has befallen your farmland", 1f);
 		mDemandId = Utilities.GetGod().AddFleetingDemand(
+			diffIncrease,
 			new GodIntervention(this), 
 			null, 
 			mDuration, 

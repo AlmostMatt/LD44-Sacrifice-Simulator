@@ -6,13 +6,13 @@ public class Person : MonoBehaviour {
 	private static Dictionary<Person.Attribute, float> EFFICIENCY_BASE = new Dictionary<Person.Attribute, float> {
 		{Person.Attribute.FARMER, 1f},
 		{Person.Attribute.WARRIOR, 1f},
-		{Person.Attribute.CIVILIAN, 1.5f},
+		{Person.Attribute.CIVILIAN, 0.6f},
 		{Person.Attribute.NONE, 0f}
 	};
 	private static Dictionary<Person.Attribute, float> EFFICIENCY_PER_LEVEL = new Dictionary<Person.Attribute, float> {
 		{Person.Attribute.FARMER, 0.5f},
 		{Person.Attribute.WARRIOR, 0.5f},
-		{Person.Attribute.CIVILIAN, 0.5f},
+		{Person.Attribute.CIVILIAN, 0.2f},
 		{Person.Attribute.NONE, 0f}
 	};
 
@@ -197,13 +197,13 @@ public class Person : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		mAge += 0.15f * GameState.GameDeltaTime;
+		mAge += 0.2f * GameState.GameDeltaTime;
 
 		Attribute profession = GetAttribute(AttributeType.PROFESSION);
 		if(mLevel < GameState.GetLevelCap(profession))
 		{
 			if (profession != Attribute.NONE) {
-				int xpGain = 1; // 1 xp per second;
+				int xpGain = 1;
 				xpGain = GameState.GetBuffedXp(profession, xpGain);
 
 				if(GameState.HasBoon(BoonType.SAME_PROFESSION_XP_BONUS))
@@ -227,7 +227,7 @@ public class Person : MonoBehaviour {
 					xpGain += GameState.GetBoonValue(BoonType.UNHEALTHY_BONUS_XP);
 				}
 
-				mXp += xpGain * GameState.GameDeltaTime;
+				mXp += xpGain * 0.25f * GameState.GameDeltaTime;
 			}
 
 			mLevel = GetLevelForXp(mXp);
@@ -237,7 +237,7 @@ public class Person : MonoBehaviour {
 		if(mIsHungry)
 		{
 			// healthDecayRate *= 5;
-			healthDecayRate = 1;
+			healthDecayRate = 1.2f;
 		}
 		else if(GameState.HasBoon(BoonType.SURPLUS_FOOD_TO_HEALING))
 		{
@@ -284,7 +284,8 @@ public class Person : MonoBehaviour {
 		bool isLevelRelevant = selectedDemand != null && selectedDemand.IsRelevantLevel(mLevel);
 		string levelString = "Lvl " + Utilities.ColorString(GetLevelString(), "green", isLevelRelevant);
 		string lifeString = (mIsHungry ? "STARVING! " : "") + " " + Mathf.Ceil(mHealth);
-		return new [] {mName + " (Age " + Age + ")", attrString, levelString, lifeString};
+		string ageString = Utilities.ColorString(mName + " (Age " + Age + ")", "green", selectedDemand != null && selectedDemand.IsRelevantAge(Age));
+		return new [] {ageString, attrString, levelString, lifeString};
 	}
 
 	// Returns a single multiline string
@@ -355,6 +356,7 @@ public class Person : MonoBehaviour {
 			// AttributeType.EYE_COLOR,
 		};
 
+		howMany = Mathf.Min(attrTypes.Length, howMany);
 		AttributeType[] randomAttributes = Utilities.RandomSubset(attrTypes, howMany);
 
 		Attribute[] attributes = new Attribute[howMany + 1];
