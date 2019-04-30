@@ -406,7 +406,11 @@ public class God : MonoBehaviour {
 		"malina",
 		"cuthli"
 	};
+
+	private static string[] sNameSuffixes = {
 		
+	};
+
 	private string GenerateName()
 	{
 		string[] parts = Utilities.RandomSubset(sNameParts, 3);
@@ -416,7 +420,7 @@ public class God : MonoBehaviour {
 			name += s;
 		}
 
-		name += ", GOD OF AWESOME";
+		name += ", " + (Random.value < 0.5 ? "GOD" : "GODDESS") + " OF AWESOME";
 
 		return name.ToUpper();
 	}
