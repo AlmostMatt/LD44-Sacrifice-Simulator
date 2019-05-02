@@ -79,6 +79,9 @@ public class Person : MonoBehaviour {
 	private float mHealth;
 	private float mMaxHealth;
 	private float mBaseHealthDecayRate;
+	// info about recent health gain/loss in order to enable fancy UI
+	private float mRecentHealthChange;
+	private float mTimeSinceHealthChanged;
 
 	public string Name {
 		get { return(mName); } 
@@ -89,11 +92,14 @@ public class Person : MonoBehaviour {
 	public float Health
 	{
 		get { return(mHealth); }
-		set { mHealth = value; }
 	}
 	public float MaxHealth
 	{
 		get { return(mMaxHealth); }
+	}
+	public float RecentHealthChange
+	{
+		get { return(mRecentHealthChange); }
 	}
 	public int Level 
 	{
@@ -171,7 +177,18 @@ public class Person : MonoBehaviour {
 
 	public void Heal(float amount)
 	{
-		mHealth += amount;
+		float newHealth = Mathf.Clamp(mHealth + amount, 0, mMaxHealth);
+		// Handle the over-heal while at max HP case, in which timeSinceHealthChange should not update
+		if (newHealth != mHealth) {
+			mTimeSinceHealthChanged = 0f;
+			mRecentHealthChange += newHealth - mHealth;
+			mHealth = newHealth;
+		}
+	}
+
+	public void Damage(float amount)
+	{
+		Heal(-amount);
 	}
 
 	// Use this for initialization
@@ -244,10 +261,12 @@ public class Person : MonoBehaviour {
 			float healAmount = GameState.GetBoonValue(BoonType.SURPLUS_FOOD_TO_HEALING) / 100f;
 			healthDecayRate -=  healAmount * GameState.FoodSurplus;
 		}
-		mHealth -= healthDecayRate * GameState.GameDeltaTime;
-
-		mHealth = Mathf.Clamp(mHealth, 0, mMaxHealth);
-
+		Damage(healthDecayRate * GameState.GameDeltaTime);
+		// Time since health changed is strictly for UI purposes, so it does not use game-time.
+		mTimeSinceHealthChanged += Time.deltaTime;
+		if (mTimeSinceHealthChanged >= 1f) {
+			mRecentHealthChange = 0f;
+		}
 		if(mHealth <= 0)
 		{
 			string deathMsg = mName + " has died at the age of " + Age + ". Their lifeforce returns to the earth.";
@@ -283,7 +302,7 @@ public class Person : MonoBehaviour {
 		}
 		bool isLevelRelevant = selectedDemand != null && selectedDemand.IsRelevantLevel(mLevel);
 		string levelString = "Lvl " + Utilities.ColorString(GetLevelString(), "green", isLevelRelevant);
-		string lifeString = (mIsHungry ? "STARVING! " : "") + " " + Mathf.Ceil(mHealth);
+		string lifeString = (mIsHungry ? "<size=10>STARVING!</size> " : "") + " " + Utilities.ColorString(Utilities.ColorString(Mathf.Ceil(mHealth).ToString(), "red", mRecentHealthChange < 0f), "green", mRecentHealthChange > 0f);
 		string ageString = Utilities.ColorString(mName + " (Age " + Age + ")", "green", selectedDemand != null && selectedDemand.IsRelevantAge(Age));
 		return new [] {ageString, attrString, levelString, lifeString};
 	}

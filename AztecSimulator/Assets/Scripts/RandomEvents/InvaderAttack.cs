@@ -93,7 +93,7 @@ public class InvaderAttack : RandomEventSystem.RandomEvent {
 				string msg = "";
 				int[] hurtPeople = Utilities.RandomList(people.Count, warriorDiff);
 				foreach(int i in hurtPeople) {
-					people[i].Health -= Random.Range(40,90); // maybe we want to inflict "wounded" instead of directly damaging?
+					people[i].Damage(Random.Range(40,90)); // maybe we want to inflict "wounded" instead of directly damaging?
 					msg += people[i].Name + " was wounded in the attack.\r\n";
 				}
 				Utilities.LogEvent(msg);
