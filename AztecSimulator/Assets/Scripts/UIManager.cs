@@ -388,9 +388,12 @@ public class UIManager : MonoBehaviour {
 		}
 		transform.Find("Left/Log/Scroll View/Viewport/LogText").GetComponent<Text>().text = newLogText.Trim();
 
-		mNotificationIsGod.Add(isGod);
-		mNotificationMessages.Add(isGod ? "<b>" + message + "</b>" : message);
-		mNotificationDurations.Add(duration);
+		// Only notify for events that have a non-zero duration.
+		if (duration > 0f) {
+			mNotificationIsGod.Add(isGod);
+			mNotificationMessages.Add(isGod ? "<b>" + message + "</b>" : message);
+			mNotificationDurations.Add(duration);
+		}
 	}
 
 	private int GetSelectedTabIndex() {

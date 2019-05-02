@@ -89,14 +89,13 @@ public class InvaderAttack : RandomEventSystem.RandomEvent {
 			}
 			else if(warriorDiff > 0) {
 				List<Person> people = personMgr.People;
-				Utilities.LogEvent("Your warriors weren't able to stop all of the invaders.");
-				string msg = "";
+				Utilities.LogEvent(warriorDiff + " invaders made it past your army.");
 				int[] hurtPeople = Utilities.RandomList(people.Count, warriorDiff);
 				foreach(int i in hurtPeople) {
-					people[i].Damage(Random.Range(40,90)); // maybe we want to inflict "wounded" instead of directly damaging?
-					msg += people[i].Name + " was wounded in the attack.\r\n";
+					int dmg = Random.Range(40,90);
+					people[i].Damage(dmg); // maybe we want to inflict "wounded" instead of directly damaging?
+					Utilities.LogEvent(people[i].Name + "was wounded by invaders (-" + dmg+ ").", 0f);
 				}
-				Utilities.LogEvent(msg);
 			}
 		}
 

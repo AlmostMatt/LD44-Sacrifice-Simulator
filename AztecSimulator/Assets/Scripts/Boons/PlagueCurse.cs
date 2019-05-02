@@ -8,7 +8,7 @@ public class PlagueCurse : SacrificeResult {
 
 	public PlagueCurse() : base("Plague", "Illness will drain the lifeforce of your people")
 	{
-		mAmount = -Random.Range(2,6) * 10;
+		mAmount = Random.Range(2,6) * 10;
 	}
 
 	public override void DoEffect()
@@ -18,7 +18,8 @@ public class PlagueCurse : SacrificeResult {
 		{
 			if(Random.value < 0.5)
 			{
-				p.Heal(mAmount);
+				p.Damage(mAmount);
+				Utilities.LogEvent(p.Name + "was wounded by the plague (-" + mAmount + ").", 0f);
 			}
 		}
 	}

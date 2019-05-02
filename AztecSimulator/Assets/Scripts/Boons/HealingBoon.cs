@@ -19,9 +19,10 @@ public class HealingBoon : SacrificeResult {
 
 	public override void DoEffect() {
 		Utilities.LogEvent("God soothes the pains of your people.", 1f);
-		foreach(Person p in Utilities.GetPersonManager().People)
+		foreach(Person p in Utilities.GetPersonManager().People.FindAll(p => p.Health < p.MaxHealth))
 		{
 			p.Heal(mAmount);
+			Utilities.LogEvent(p.Name + "was healed (+" + mAmount + ").", 0f);
 		}
 	}
 }
