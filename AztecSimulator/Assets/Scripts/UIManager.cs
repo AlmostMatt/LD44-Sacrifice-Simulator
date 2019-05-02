@@ -67,7 +67,9 @@ public class UIManager : MonoBehaviour {
 	void Update () {
 		List<Person> selectedPeople = getSelectedPeople();
 		God.GodDemand selectedDemand = getSelectedDemand();
-		transform.Find("Right/People/SacrificeButton").GetComponent<Button>().interactable = (selectedPeople.Count > 0);
+		// Only allow sacrificing if either no demand is selected or all of the required conditions are met
+		bool canSacrifice = selectedPeople.Count > 0 && (selectedDemand == null || selectedDemand.mDemand.CheckSatisfaction(selectedPeople));
+		transform.Find("Right/People/SacrificeButton").GetComponent<Button>().interactable = canSacrifice;
 
 		// TODO: define a renderable interface, and generalize each of these loops to updateRenderable
 		// Ongoing is an example of a renderable
