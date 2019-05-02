@@ -36,7 +36,7 @@ public class UIManager : MonoBehaviour {
 	// For tab colors
 	private static Color sAttentionColor = new Color(255f / 255f, 89f / 255f, 111f / 255f);
 	private static Color sSelectedColor = new Color(118f/255f, 242f/255f, 172/255f);
-	private static Color sNormalColor = new Color(1f, 1f, 1f, 0.6f);
+	private static Color sNormalColor = new Color(1f, 1f, 1f, 150f/255f);
 
 	// Use this for initialization
 	void Awake () {
@@ -51,7 +51,7 @@ public class UIManager : MonoBehaviour {
 		Person.Attribute[] professions = Utilities.GetAttrValues(Person.AttributeType.PROFESSION);
 		foreach (Person.Attribute profession in professions) {
 			GameObject professionObject = Instantiate(uiProfessionObject);
-			professionObject.transform.SetParent(transform.Find("Right/Person/Professions/ProfessionList"), false);
+			professionObject.transform.SetParent(transform.Find("Right/Person/Content/Professions/ProfessionList"), false);
 			professionObject.transform.Find("Toggle/Icon").GetComponent<Image>().sprite = mSpriteManager.GetSprite(profession); 
 			professionObject.transform.Find("Toggle/Name").GetComponent<Text>().text = profession.ToString(); 
 			professionObject.transform.Find("Toggle/InfoText").GetComponent<Text>().text = profession.GetDescription(); 
@@ -108,7 +108,7 @@ public class UIManager : MonoBehaviour {
 		// Update the single-person info view
 		if (selectedPeople.Count > 0) {
 			Person selectedPerson = selectedPeople[0];
-			transform.Find("Right/Person/PersonInfo/Text").GetComponent<Text>().text = selectedPerson.GetLongUIDescription();
+			transform.Find("Right/Person/Content/PersonInfo/Text").GetComponent<Text>().text = selectedPerson.GetLongUIDescription();
 		}
 
 		// Update the god and demands
@@ -223,7 +223,7 @@ public class UIManager : MonoBehaviour {
 				else
 				{
 					uiNotification.transform.SetParent(notificationContainer);
-					uiNotification.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.392f);
+					uiNotification.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.8f);
 				}
 			}
 
