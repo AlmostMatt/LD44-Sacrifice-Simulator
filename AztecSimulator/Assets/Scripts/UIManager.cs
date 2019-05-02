@@ -392,12 +392,17 @@ public class UIManager : MonoBehaviour {
 	}
 
 	private int GetSelectedTabIndex() {
-		// TODO: use the toggle group to find the tab more easily
-		if (transform.Find("Left/TabGroup/Tab1").GetComponent<Toggle>().isOn) { return 0; }
-		else if (transform.Find("Left/TabGroup/Tab2").GetComponent<Toggle>().isOn) { return 1; }
-		else if (transform.Find("Left/TabGroup/Tab3").GetComponent<Toggle>().isOn) { return 2; }
-		else if (transform.Find("Left/TabGroup/Tab4").GetComponent<Toggle>().isOn) { return 3; }
-		return -1;
+		Transform tabGroup = transform.Find("Left/TabGroup");
+		int tabIdx = 0;
+		foreach(Transform t in tabGroup)
+		{
+			if (t.GetComponentInChildren<Toggle>().isOn) {
+				return tabIdx;
+			}
+			tabIdx++;
+		}
+		Debug.Log("WARNING: No tab selected");
+		return 0;
 	}
 
 	private Transform GetPeopleContainer() {

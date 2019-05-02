@@ -215,32 +215,17 @@ Prefab:
       propertyPath: bgm
       value: 
       objectReference: {fileID: 741168842}
-    - target: {fileID: 224705816519100644, guid: 1bcf8527d7f90294ebeeb5a5b3be6c32,
+    - target: {fileID: 224598071033880760, guid: 1bcf8527d7f90294ebeeb5a5b3be6c32,
         type: 2}
       propertyPath: m_AnchorMax.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 224705816519100644, guid: 1bcf8527d7f90294ebeeb5a5b3be6c32,
+    - target: {fileID: 224598071033880760, guid: 1bcf8527d7f90294ebeeb5a5b3be6c32,
         type: 2}
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 224855720949198124, guid: 1bcf8527d7f90294ebeeb5a5b3be6c32,
-        type: 2}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224855720949198124, guid: 1bcf8527d7f90294ebeeb5a5b3be6c32,
-        type: 2}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224295413749337962, guid: 1bcf8527d7f90294ebeeb5a5b3be6c32,
-        type: 2}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224358483096094514, guid: 1bcf8527d7f90294ebeeb5a5b3be6c32,
+    - target: {fileID: 224404451071861232, guid: 1bcf8527d7f90294ebeeb5a5b3be6c32,
         type: 2}
       propertyPath: m_SizeDelta.y
       value: 0
