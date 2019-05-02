@@ -33,7 +33,10 @@ public class UIManager : MonoBehaviour {
 	private List<string> mNotificationMessages = new List<string>();
 	private List<float> mNotificationDurations = new List<float>();
 
+	// For tab colors
 	private static Color sAttentionColor = new Color(255f / 255f, 89f / 255f, 111f / 255f);
+	private static Color sSelectedColor = new Color(118f/255f, 242f/255f, 172/255f);
+	private static Color sNormalColor = new Color(1f, 1f, 1f, 0.6f);
 
 	// Use this for initialization
 	void Awake () {
@@ -113,12 +116,13 @@ public class UIManager : MonoBehaviour {
 			string fleetingDemandsTabName = "Fleeting\r\nDemands";
 			if (mGod.FleetingDemands.Count > 0) {
 				fleetingDemandsTabName += " (" + mGod.FleetingDemands.Count + ")"; 
-				if(GetSelectedTabIndex() != 0)
-				{
-					Transform tab1 = transform.Find("Left/TabGroup/Tab1");
-					tab1.GetComponentInChildren<Image>().color = sAttentionColor;
-				}
 			}
+			if(GetSelectedTabIndex() != 0)
+			{
+				Transform tab1 = transform.Find("Left/TabGroup/Tab1");
+				tab1.GetComponentInChildren<Image>().color = mGod.FleetingDemands.Count > 0 ?  sAttentionColor : sNormalColor;
+			}
+
 			transform.Find("Left/TabGroup/Tab1/Text").GetComponent<Text>().text = fleetingDemandsTabName;
 			transform.Find("Left/Demands/Name").GetComponent<Text>().text = mGod.Name;
 			// todo: separate short term and long term demands
@@ -434,7 +438,7 @@ public class UIManager : MonoBehaviour {
 		int tabIdx = 0;
 		foreach(Transform t in tabGroup)
 		{
-			t.GetComponentInChildren<Image>().color = tabIdx == selectedTabIndex ?  new Color(118f/255f, 242f/255f, 172/255f) : new Color(1f, 1f, 1f, 0.6f);
+			t.GetComponentInChildren<Image>().color = tabIdx == selectedTabIndex ?  sSelectedColor : sNormalColor;
 			tabIdx++;
 		}
 	}
