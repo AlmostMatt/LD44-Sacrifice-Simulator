@@ -62,12 +62,19 @@ public class GameState {
 		set { sGameState.mInvaderSize = value; }
 	}
 
-	// Time between births in seconds (ignores population limit)
+	// Time between births in seconds (ignores population limit, can be infinity)
 	private float mTimeBetweenBirths = 0;
 	public static float TimeBetweenBirths
 	{
 		get { return(sGameState.mTimeBetweenBirths); }
 		set { sGameState.mTimeBetweenBirths = value; }
+	} // 
+	// Time until next birth in seconds (ignores population limit, can be infinity)
+	private float mTimeUntilBirth = 0;
+	public static float TimeUntilBirth
+	{
+		get { return(sGameState.mTimeUntilBirth); }
+		set { sGameState.mTimeUntilBirth = value; }
 	}
 
 	private bool mDrought = false;

@@ -1712,7 +1712,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Food: 0/10'
+  m_Text: 'Birth every s.
+
+    Next in 30.0s.'
 --- !u!114 &114056654121137048
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2507,7 +2509,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_IgnoreLayout: 0
-  m_MinWidth: 100
+  m_MinWidth: 120
   m_MinHeight: 32
   m_PreferredWidth: -1
   m_PreferredHeight: -1

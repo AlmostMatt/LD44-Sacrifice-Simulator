@@ -283,7 +283,13 @@ public class UIManager : MonoBehaviour {
 			? "Army: " + GameState.ArmyStrength
 			: Utilities.ColorString("Army: " + GameState.ArmyStrength + "/" + GameState.InvaderSize, "red", GameState.InvaderSize > GameState.ArmyStrength);
 		transform.Find("Top/Left/Item2/Text").GetComponent<Text>().text = armyString;
-		transform.Find("Top/Left/Item3/Text").GetComponent<Text>().text = string.Format("Birth every\r\n{0:0.0} seconds", GameState.TimeBetweenBirths);
+		string birthString1 = float.IsInfinity(GameState.TimeBetweenBirths) ? "Birth rate is 0" : string.Format("Birth every {0:0.0}s", GameState.TimeBetweenBirths);
+		string birthString2 = mPersonManager.People.Count == PersonManager.MAX_POPULATION
+			? "(max population)"
+			: (float.IsInfinity(GameState.TimeUntilBirth)
+				? "(need civilians)"
+				: string.Format("Next in {0:0.0}s", GameState.TimeUntilBirth));
+		transform.Find("Top/Left/Item3/Text").GetComponent<Text>().text = birthString1 + "\r\n" + birthString2;
 		// Population
 		transform.Find("Top/Right/Item1/Text").GetComponent<Text>().text = "Population: " + people.Count + "/" + PersonManager.MAX_POPULATION;
 	}
