@@ -63,6 +63,7 @@ public class PersonManager : MonoBehaviour {
 			mRepopulateTimer = birthInterval;
 		}
 		GameState.TimeBetweenBirths = (birthInterval / birthRate);
+		GameState.TimeUntilBirth = (mRepopulateTimer / birthRate);
 
 		// Update ArmySize
 		float armyStrength = 0;
@@ -78,7 +79,7 @@ public class PersonManager : MonoBehaviour {
 			List<Person> children = mPeople.FindAll(x => x.Age <= childAge);
 			if(children != null)
 			{
-				armyStrength += children.Count * effectiveness;
+				armyStrength += warriors.Count * children.Count * effectiveness;
 			}
 		}
 

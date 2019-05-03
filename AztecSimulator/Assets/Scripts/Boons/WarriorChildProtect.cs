@@ -15,7 +15,7 @@ public class WarriorChildProtect : SacrificeResult {
 	private WarriorChildProtect(int tier, int luck) : base("Youngling Protection", "") {
 		mAge = Random.Range(5, Mathf.Max(11 - luck));
 		mEffectiveness = 20 * (tier * 2 + luck);
-		mDescription = "Warriors get +" + (mEffectiveness / 100f) + " effectiveness for each person of age " + mAge + " or lower";
+		mDescription = "Each warrior gets +" + (mEffectiveness / 100f) + " army size for each person of age " + mAge + " or lower";
 	}
 
 	public override void DoEffect()
