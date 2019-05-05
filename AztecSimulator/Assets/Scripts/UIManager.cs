@@ -64,47 +64,41 @@ public class UIManager : MonoBehaviour {
 		OnTabChanged(true); // set active tab color initially
 	}
 
+	void UpdateRenderables<T>(List<T> renderables, GameObject newObject, List<GameObject> objectPool, Transform uiContainer)
+		where T : IRenderable {
+		for(int i = 0; i < Mathf.Max(renderables.Count, objectPool.Count); i++)
+		{
+			GameObject uiObject;
+			// Spawn new UI person
+			if (i >= objectPool.Count) {
+				uiObject = Instantiate(newObject);
+				objectPool.Add(uiObject);
+			} else {
+				uiObject = objectPool[i];
+			}
+			uiObject.transform.SetParent(uiContainer);
+			// Update visibility
+			uiObject.transform.gameObject.SetActive(i < renderables.Count);
+			// Update text
+			if (i < renderables.Count) {
+				renderables[i].RenderTo(uiObject);
+			}
+		}
+	}
+
 	void Update () {
 		List<Person> selectedPeople = getSelectedPeople();
-		God.GodDemand selectedDemand = getSelectedDemand();
+		GodDemand selectedDemand = getSelectedDemand();
 		// Only allow sacrificing if either no demand is selected or all of the required conditions are met
 		bool canSacrifice = selectedPeople.Count > 0 && (selectedDemand == null || selectedDemand.mDemand.CheckSatisfaction(selectedPeople));
 		transform.Find("Right/People/SacrificeButton").GetComponent<Button>().interactable = canSacrifice;
 
-		// TODO: define a renderable interface, and generalize each of these loops to updateRenderable
-		// Ongoing is an example of a renderable
-
-		// Update people
-		// TODO: use people-changed-listener instead of update
 		List<Person> people = mPersonManager.People;
 		Transform peopleContainer = GetPeopleContainer();
-		for(int i = 0; i < Mathf.Max(people.Count, mUiPeoplePool.Count); i++)
-		{
-			GameObject uiPerson;
-			// Spawn new UI person
-			if (i >= mUiPeoplePool.Count) {
-				uiPerson = Instantiate(uiPersonObject);
-				mUiPeoplePool.Add(uiPerson);
-				if (GetSelectedTabIndex() == 2) {
-					uiPerson.GetComponentInChildren<Toggle>().group = mPeopleToggleGroup;
-				}
-			} else {
-				uiPerson = mUiPeoplePool[i];
-			}
-			uiPerson.transform.SetParent(peopleContainer);
-			// Update visibility
-			uiPerson.transform.gameObject.SetActive(i < people.Count);
-			// Update text
-			if (i < people.Count) {
-				string[] descriptionStrings = people[i].GetUIDescription(selectedDemand != null ? selectedDemand.mDemand : null);
-				uiPerson.transform.Find("Toggle/TextTL").GetComponent<Text>().text = descriptionStrings[0];
-				uiPerson.transform.Find("Toggle/TextTR").GetComponent<Text>().text = descriptionStrings[1];
-				uiPerson.transform.Find("Toggle/BLGroup/Text").GetComponent<Text>().text = descriptionStrings[2];
-				Person.Attribute profession = people[i].GetAttribute(Person.AttributeType.PROFESSION);
-				uiPerson.transform.Find("Toggle/BLGroup/Icons/Icon1").gameObject.SetActive(selectedDemand != null && selectedDemand.mDemand.IsRelevantAttribute(profession));
-				uiPerson.transform.Find("Toggle/BLGroup/Icons/Icon2").GetComponent<Image>().sprite = mSpriteManager.GetSprite(profession);
-				uiPerson.transform.Find("Toggle/BRGroup/Text").GetComponent<Text>().text = descriptionStrings[3];
-			}
+		UpdateRenderables(people, uiPersonObject, mUiPeoplePool, peopleContainer);
+		// TODO: add a callback for when a new UI person is created to call this
+		foreach (GameObject uiPerson in mUiPeoplePool) {
+			uiPerson.GetComponentInChildren<Toggle>().group = (GetSelectedTabIndex() == 2) ? mPeopleToggleGroup : null;
 		}
 
 		// Update the single-person info view
@@ -128,7 +122,7 @@ public class UIManager : MonoBehaviour {
 			transform.Find("Left/TabGroup/Tab1/Text").GetComponent<Text>().text = fleetingDemandsTabName;
 			transform.Find("Left/Demands/Name").GetComponent<Text>().text = mGod.Name;
 			// todo: separate short term and long term demands
-			List<God.GodDemand> demands = GetSelectedTabIndex() == 0 ? mGod.FleetingDemands : mGod.PermanentDemands;
+			List<GodDemand> demands = GetSelectedTabIndex() == 0 ? mGod.FleetingDemands : mGod.PermanentDemands;
 			Transform demandContainer = transform.Find("Left/Demands/DemandList/Viewport/Content");
 			int renewCount = 0;
 			int nonRenewCount = 0;
@@ -337,10 +331,10 @@ public class UIManager : MonoBehaviour {
 
 	}
 
-	private God.GodDemand getSelectedDemand() {
+	public GodDemand getSelectedDemand() {
 		int demandId = getSelectedDemandId();
 		if(mGod != null && demandId != 0) {
-			foreach (God.GodDemand demand in mGod.Demands) {
+			foreach (GodDemand demand in mGod.Demands) {
 				if (demand.mId == demandId) {
 					return demand;
 				}

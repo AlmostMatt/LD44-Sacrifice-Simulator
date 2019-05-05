@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class Person : MonoBehaviour {
+public class Person : MonoBehaviour, IRenderable {
 	private static Dictionary<Person.Attribute, float> EFFICIENCY_BASE = new Dictionary<Person.Attribute, float> {
 		{Person.Attribute.FARMER, 1f},
 		{Person.Attribute.WARRIOR, 1f},
@@ -386,6 +387,18 @@ public class Person : MonoBehaviour {
 		}
 
 		return(attributes);
+	}
+
+	public void RenderTo(GameObject uiPrefab) {
+		GodDemand selectedDemand = Utilities.GetSelectedDemand();
+		string[] descriptionStrings = GetUIDescription(selectedDemand != null ? selectedDemand.mDemand : null);
+		uiPrefab.transform.Find("Toggle/TextTL").GetComponent<Text>().text = descriptionStrings[0];
+		uiPrefab.transform.Find("Toggle/TextTR").GetComponent<Text>().text = descriptionStrings[1];
+		uiPrefab.transform.Find("Toggle/BLGroup/Text").GetComponent<Text>().text = descriptionStrings[2];
+		Person.Attribute profession = GetAttribute(Person.AttributeType.PROFESSION);
+		uiPrefab.transform.Find("Toggle/BLGroup/Icons/Icon1").gameObject.SetActive(selectedDemand != null && selectedDemand.mDemand.IsRelevantAttribute(profession));
+		uiPrefab.transform.Find("Toggle/BLGroup/Icons/Icon2").GetComponent<Image>().sprite = Utilities.GetSpriteManager().GetSprite(profession);
+		uiPrefab.transform.Find("Toggle/BRGroup/Text").GetComponent<Text>().text = descriptionStrings[3];
 	}
 }
 
