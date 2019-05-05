@@ -129,6 +129,7 @@ public class UIManager : MonoBehaviour {
 			uiDemand.GetComponent<Toggle>().group = mDemandToggleGroup;
 		}
 
+		// TODO: define a class to represent a notification message, and have it implement IRenderable
 		// Update notification objects
 		// UPDATE: this now only shows and updates the timer of the first (oldest) notification
 		Transform notificationContainer = transform.Find("BRCorner");
@@ -183,28 +184,7 @@ public class UIManager : MonoBehaviour {
 
 		// Update ongoing objects
 		Transform ongoingContainer = transform.Find("TRCorner/OngoingGroup");
-		// TODO: maintain a list of Ongoing structs
-		//List<Ongoing> ongoings = new List<Ongoing>();
-		//ongoings.Add(new Ongoing("WARRIOR", "Ongoing!", "4 Enemy Warriors are approaching!", 92.1f, true));
-		List<Ongoing> ongoings = GameState.Ongoings;
-		for(int i = 0; i < Mathf.Max(ongoings.Count, mUiOngoingPool.Count); i++)
-		{
-			GameObject uiOngoing;
-			// Spawn new UI ongoing
-			if (i >= mUiOngoingPool.Count) {
-				uiOngoing = Instantiate(uiOngoingObject);
-				mUiOngoingPool.Add(uiOngoing);
-				uiOngoing.transform.SetParent(ongoingContainer);
-			} else {
-				uiOngoing = mUiOngoingPool[i];
-			}
-			// Update visibility
-			uiOngoing.transform.gameObject.SetActive(i < ongoings.Count);
-			// Update text and alpha
-			if (i < ongoings.Count) {
-				ongoings[i].RenderTo(uiOngoing);
-			}
-		}
+		UpdateRenderables(GameState.Ongoings, uiOngoingObject, mUiOngoingPool, ongoingContainer);
 
 		// Update the top UI bar
 		string foodString = Utilities.ColorString("Food: " + GameState.FoodSupply + "/" + people.Count, "red", people.Count > GameState.FoodSupply);

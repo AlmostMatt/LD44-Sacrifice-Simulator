@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Ongoing
+public class Ongoing : IRenderable
 {
 	public string mIconName;
 	public string mTitle;
