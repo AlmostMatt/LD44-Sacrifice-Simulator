@@ -118,79 +118,15 @@ public class UIManager : MonoBehaviour {
 				Transform tab1 = transform.Find("Left/TabGroup/Tab1");
 				tab1.GetComponentInChildren<Image>().color = mGod.FleetingDemands.Count > 0 ?  sAttentionColor : sNormalColor;
 			}
-
 			transform.Find("Left/TabGroup/Tab1/Text").GetComponent<Text>().text = fleetingDemandsTabName;
 			transform.Find("Left/Demands/Name").GetComponent<Text>().text = mGod.Name;
-			// todo: separate short term and long term demands
 			List<GodDemand> demands = GetSelectedTabIndex() == 0 ? mGod.FleetingDemands : mGod.PermanentDemands;
 			Transform demandContainer = transform.Find("Left/Demands/DemandList/Viewport/Content");
-			int renewCount = 0;
-			int nonRenewCount = 0;
-			for(int i = 0; i < Mathf.Max(demands.Count, mUiDemandPool.Count); i++)
-			{
-				GameObject uiDemand;
-				// Spawn new UI demand
-				if (i >= mUiDemandPool.Count) {
-					uiDemand = Instantiate(uiDemandObject);
-					mUiDemandPool.Add(uiDemand);
-					uiDemand.transform.SetParent(demandContainer);
-					uiDemand.GetComponent<Toggle>().group = mDemandToggleGroup;
-				} else {
-					uiDemand = mUiDemandPool[i];
-				}
-				// Update visibility
-				uiDemand.transform.gameObject.SetActive(i < demands.Count);
-				// Update text and store id in name
-				if (i < demands.Count) {
-					
-					// Update position
-					RectTransform rt = uiDemand.GetComponent<RectTransform>();
-					if(demands[i].mTimeLeft >= 0)
-					{
-						// Relying on GridLayout for now
-						//rt.anchoredPosition = new Vector2(0f, 90f * (i - (demands.Count - 1) / 2f));	
-					}
-					else
-					{
-						float left = -120f;
-						float right = 120f;
-						float x;
-						float y;
-						if(demands[i].mIsRenewable) {
-							y = 90f * renewCount++;
-							x = left;
-						} else {
-							y = 90f * nonRenewCount++;
-							x = right;
-						}
-						// Relying on GridLayout for now
-						//rt.anchoredPosition = new Vector2(x, y - 150f);
-					}
-
-					uiDemand.name = demands[i].mId.ToString();
-					uiDemand.GetComponent<HoverInfo>().SetText(demands[i].GetResultDescription());
-					string[] demandStrings = demands[i].GetUIDescriptionStrings(selectedPeople);
-					string[] demandIconNames = demands[i].GetUIDescriptionIconNames();
-					int numRows = Mathf.Min(demandStrings.Length / 2, demandIconNames.Length);
-					Transform uiDemandVGroup = uiDemand.transform.Find("VGroup");
-					for (int rowI = 0; rowI < Mathf.Max(numRows, uiDemandVGroup.childCount); rowI++) {
-						Transform row;
-						if (rowI >= uiDemandVGroup.childCount) {
-							row = Instantiate(uiDemandVGroup.GetChild(0));
-							row.SetParent(uiDemandVGroup, false);
-						} else {
-							row = uiDemandVGroup.GetChild(rowI);
-						}
-						row.gameObject.SetActive(rowI < numRows);
-						if (rowI < numRows) {
-							row.GetChild(0).GetComponent<Text>().text = demandStrings[2 * rowI];
-							row.GetChild(1).GetComponent<Image>().sprite = mSpriteManager.GetSprite(demandIconNames[rowI]);
-							row.GetChild(1).gameObject.SetActive(demandIconNames[rowI] != "" && demandIconNames[rowI] != "NONE");
-							row.GetChild(2).GetComponent<Text>().text = demandStrings[2 * rowI + 1];
-						}
-					}
-				}
-			}
+			UpdateRenderables(demands, uiDemandObject, mUiDemandPool, demandContainer);
+		}
+		// TODO: add a callback for when a new UI demand is created to call this
+		foreach (GameObject uiDemand in mUiDemandPool) {
+			uiDemand.GetComponent<Toggle>().group = mDemandToggleGroup;
 		}
 
 		// Update notification objects
@@ -306,7 +242,7 @@ public class UIManager : MonoBehaviour {
 		}
 	}
 
-	private List<Person> getSelectedPeople() {
+	public List<Person> getSelectedPeople() {
 		List<Person> people = mPersonManager.People;
 		List<Person> result = new List<Person>();
 		for(int i = 0; i < Mathf.Min(people.Count, mUiPeoplePool.Count); i++)

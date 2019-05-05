@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GodDemand : IRenderable
 {
@@ -89,6 +90,29 @@ public class GodDemand : IRenderable
 	}
 
 	public void RenderTo(GameObject uiPrefab) {
-
+		List<Person> selectedPeople = Utilities.GetSelectedPeople();
+		// Hack: The GameObject stores demand ID in order to make selected demand lookup possible
+		uiPrefab.name = mId.ToString();
+		uiPrefab.GetComponent<HoverInfo>().SetText(GetResultDescription());
+		string[] demandStrings = GetUIDescriptionStrings(selectedPeople);
+		string[] demandIconNames = GetUIDescriptionIconNames();
+		int numRows = Mathf.Min(demandStrings.Length / 2, demandIconNames.Length);
+		Transform uiDemandVGroup = uiPrefab.transform.Find("VGroup");
+		for (int rowI = 0; rowI < Mathf.Max(numRows, uiDemandVGroup.childCount); rowI++) {
+			Transform row;
+			if (rowI >= uiDemandVGroup.childCount) {
+				row = GameObject.Instantiate(uiDemandVGroup.GetChild(0));
+				row.SetParent(uiDemandVGroup, false);
+			} else {
+				row = uiDemandVGroup.GetChild(rowI);
+			}
+			row.gameObject.SetActive(rowI < numRows);
+			if (rowI < numRows) {
+				row.GetChild(0).GetComponent<Text>().text = demandStrings[2 * rowI];
+				row.GetChild(1).GetComponent<Image>().sprite = Utilities.GetSpriteManager().GetSprite(demandIconNames[rowI]);
+				row.GetChild(1).gameObject.SetActive(demandIconNames[rowI] != "" && demandIconNames[rowI] != "NONE");
+				row.GetChild(2).GetComponent<Text>().text = demandStrings[2 * rowI + 1];
+			}
+		}
 	}
 }

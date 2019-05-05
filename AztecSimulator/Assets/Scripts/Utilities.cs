@@ -56,6 +56,7 @@ public static class Utilities {
 
 	public static SpriteManager GetSpriteManager()
 	{
+		// TODO: optimize this function for frequent calls by storing spriteManager in a variable
 		return GameObject.FindGameObjectWithTag("SystemsAndManagers").GetComponent<SpriteManager>();
 	}
 
@@ -69,10 +70,24 @@ public static class Utilities {
 		return GameObject.FindGameObjectWithTag("SystemsAndManagers").GetComponent<God>();
 	}
 
+	public static UIManager GetUIManager()
+	{
+		// TODO: optimize this function for frequent calls by storing uiManager in a variable
+		// TODO: handle no-ui-manager edge case in all functions that call this
+		GameObject uiManager = GameObject.FindGameObjectWithTag("UIManager");
+		return uiManager.GetComponent<UIManager>();
+	}
+
 	public static GodDemand GetSelectedDemand()
 	{
-		GameObject uiManager = GameObject.FindGameObjectWithTag("UIManager");
-		return uiManager.GetComponent<UIManager>().getSelectedDemand();
+		// TODO: optimize this function for frequent calls by having UIManager memoize
+		return GetUIManager().getSelectedDemand();
+	}
+
+	public static List<Person> GetSelectedPeople()
+	{
+		// TODO: optimize this function for frequent calls by having UIManager memoize
+		return GetUIManager().getSelectedPeople();
 	}
 
 	public static RandomEventSystem GetEventSystem()
@@ -85,11 +100,8 @@ public static class Utilities {
 		return GameObject.FindGameObjectWithTag("Background").GetComponent<Image>();
 	}
 
-	public static void LogEvent(string message, float duration=2f, bool isGod=false)
-	{
-		GameObject uiManager = GameObject.FindGameObjectWithTag("UIManager");
-		if (uiManager != null) { uiManager.GetComponent<UIManager>().LogEvent(message, duration, isGod); }
-		else { Debug.Log("Logged event: " + message); }
+	public static void LogEvent(string message, float duration=2f, bool isGod=false) {
+		GetUIManager().LogEvent(message, duration, isGod);
 	}
 
 	public static int[] RandomList(int totalPossibilities, int numChoices) {
