@@ -380,8 +380,11 @@ public class UIManager : MonoBehaviour {
 		t.Find("DialogText").GetComponent<Text>().text = s;
 	}
 
-	public void DialogClosed()
+	public void OnCloseDialog()
 	{
+		Transform t = transform.Find("PopupDialog");
+		t.gameObject.SetActive(false);
+
 		if(mDialogCallback != null)
 		{
 			mDialogCallback.OnDialogClosed();
