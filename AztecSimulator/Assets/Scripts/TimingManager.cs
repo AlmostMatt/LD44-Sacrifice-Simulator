@@ -33,7 +33,7 @@ public class TimingManager : MonoBehaviour {
 		SetPaused(!mPaused);
 	}
 
-	public void SetPaused(bool paused)
+	private void SetPaused(bool paused)
 	{
 		mPaused = paused;
 		if(mPaused)

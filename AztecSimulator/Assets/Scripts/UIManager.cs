@@ -33,8 +33,6 @@ public class UIManager : MonoBehaviour {
 	private List<string> mNotificationMessages = new List<string>();
 	private List<float> mNotificationDurations = new List<float>();
 
-	private IDialogCallback mDialogCallback;
-
 	// For tab colors
 	private static Color sAttentionColor = new Color(255f / 255f, 89f / 255f, 111f / 255f);
 	private static Color sSelectedColor = new Color(118f/255f, 242f/255f, 172/255f);
@@ -368,24 +366,6 @@ public class UIManager : MonoBehaviour {
 		{
 			t.GetComponentInChildren<Image>().color = tabIdx == selectedTabIndex ?  sSelectedColor : sNormalColor;
 			tabIdx++;
-		}
-	}
-
-	public void ShowMessage(string s, IDialogCallback callback)
-	{
-		mDialogCallback = callback;
-
-		Transform t = transform.Find("PopupDialog");
-		t.gameObject.SetActive(true);
-		t.Find("DialogText").GetComponent<Text>().text = s;
-	}
-
-	public void DialogClosed()
-	{
-		if(mDialogCallback != null)
-		{
-			mDialogCallback.OnDialogClosed();
-			mDialogCallback = null;
 		}
 	}
 }
