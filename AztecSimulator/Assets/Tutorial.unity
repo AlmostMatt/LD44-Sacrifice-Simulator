@@ -817,43 +817,48 @@ Prefab:
       propertyPath: m_MinWidth
       value: 120
       objectReference: {fileID: 0}
+    - target: {fileID: 114801673993657294, guid: 1bcf8527d7f90294ebeeb5a5b3be6c32,
+        type: 2}
+      propertyPath: startPaused
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1bcf8527d7f90294ebeeb5a5b3be6c32, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &539734681
+--- !u!1 &137571450
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 539734683}
-  - component: {fileID: 539734682}
+  - component: {fileID: 137571452}
+  - component: {fileID: 137571451}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: GameSetup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &539734682
+--- !u!114 &137571451
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 539734681}
+  m_GameObject: {fileID: 137571450}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6998d0e26052f5943a26a422b79d1514, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scenarioName: Default
---- !u!4 &539734683
+  scenarioName: Tutorial
+--- !u!4 &137571452
 Transform:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 539734681}
+  m_GameObject: {fileID: 137571450}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 483.61212, y: 238.45023, z: -5.3983216}
   m_LocalScale: {x: 1, y: 1, z: 1}

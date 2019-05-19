@@ -161,4 +161,11 @@ public class GameState {
 	{
 		get { return(sGameState.mOngoings); }
 	}
+
+	private IScenario mScenario;
+	public static IScenario Scenario
+	{
+		get { return(sGameState.mScenario); }
+		set { sGameState.mScenario = value; }
+	}
 }
