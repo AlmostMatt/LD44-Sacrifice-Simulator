@@ -62,11 +62,10 @@ public class UIManager : MonoBehaviour {
 			mProfessionToggles.Add(profession, toggle);
 		}
 		mProfessionToggles[Person.Attribute.FARMER].isOn = true;
+        OnTabChanged(true); // set active tab color initially
+    }
 
-		OnTabChanged(true); // set active tab color initially
-	}
-
-	void UpdateRenderables<T>(List<T> renderables, GameObject newObject, List<GameObject> objectPool, Transform uiContainer)
+    void UpdateRenderables<T>(List<T> renderables, GameObject newObject, List<GameObject> objectPool, Transform uiContainer)
 		where T : IRenderable {
 		for(int i = 0; i < Mathf.Max(renderables.Count, objectPool.Count); i++)
 		{
@@ -103,8 +102,13 @@ public class UIManager : MonoBehaviour {
 			uiPerson.GetComponentInChildren<Toggle>().group = (GetSelectedTabIndex() == 2) ? mPeopleToggleGroup : null;
 		}
 
-		// Update the single-person info view
-		if (selectedPeople.Count > 0) {
+        // Select someone if nobody is selected when vieweing the single person view
+        if (GetSelectedTabIndex() == 2 && mUiPeoplePool.Count > 0 && selectedPeople.Count == 0)
+        {
+            mUiPeoplePool[0].GetComponentInChildren<Toggle>().isOn = true;
+        }
+        // Update the single-person info view
+        if (selectedPeople.Count > 0) {
 			Person selectedPerson = selectedPeople[0];
 			transform.Find("Right/Person/Content/PersonInfo/Text").GetComponent<Text>().text = selectedPerson.GetLongUIDescription();
 		}
@@ -350,10 +354,6 @@ public class UIManager : MonoBehaviour {
 		clearSelectedDemands();
 		// todo: clear selected demand
 		int selectedTab = GetSelectedTabIndex();
-		if (selectedTab == 2 && mUiPeoplePool.Count > 0) {
-			// select the first person
-			mUiPeoplePool[0].GetComponentInChildren<Toggle>().isOn = true;
-		}
 		foreach (GameObject uiPerson in mUiPeoplePool) {
 			Toggle toggle = uiPerson.GetComponentInChildren<Toggle>();
 			// use a toggle group for the people tab.
