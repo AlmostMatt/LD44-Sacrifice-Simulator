@@ -34,6 +34,18 @@ public class UIManager : MonoBehaviour {
 	private List<float> mNotificationDurations = new List<float>();
 
 	private IDialogCallback mDialogCallback;
+	private struct DialogMessage
+	{
+		public string msg;
+		public IDialogCallback c;
+		public DialogMessage(string message, IDialogCallback callback)
+		{
+			msg = message;
+			c = callback;
+		}
+	};
+	private List<DialogMessage> mPendingDialogMessages = new List<DialogMessage>();
+	private bool mDialogOpen = false;
 
 	// For tab colors
 	private static Color sAttentionColor = new Color(255f / 255f, 89f / 255f, 111f / 255f);
@@ -208,6 +220,18 @@ public class UIManager : MonoBehaviour {
 		transform.Find("Top/Left/Item3/Text").GetComponent<Text>().text = birthString1 + "\r\n" + birthString2;
 		// Population
 		transform.Find("Top/Right/Item1/Text").GetComponent<Text>().text = "Population: " + people.Count + "/" + PersonManager.MAX_POPULATION;
+
+		if(mPendingDialogMessages.Count > 0 && !mDialogOpen)
+		{
+			DialogMessage dm = mPendingDialogMessages[0];
+			mDialogCallback = dm.c;
+
+			Transform popDialog = transform.Find("PopupDialog");
+			popDialog.gameObject.SetActive(true);
+			popDialog.Find("DialogText").GetComponent<Text>().text = dm.msg;
+
+			mPendingDialogMessages.RemoveAt(0);
+		}
 	}
 
 	private void clearSelectedPeople() {
@@ -318,7 +342,7 @@ public class UIManager : MonoBehaviour {
 		}
 	}
 
-	private int GetSelectedTabIndex() {
+	public int GetSelectedTabIndex() {
 		Transform tabGroup = transform.Find("Left/TabGroup");
 		int tabIdx = 0;
 		foreach(Transform t in tabGroup)
@@ -373,11 +397,7 @@ public class UIManager : MonoBehaviour {
 
 	public void ShowMessage(string s, IDialogCallback callback)
 	{
-		mDialogCallback = callback;
-
-		Transform t = transform.Find("PopupDialog");
-		t.gameObject.SetActive(true);
-		t.Find("DialogText").GetComponent<Text>().text = s;
+		mPendingDialogMessages.Add(new DialogMessage(s, callback));
 	}
 
 	public void OnCloseDialog()
