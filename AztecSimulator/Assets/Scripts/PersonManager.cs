@@ -15,7 +15,7 @@ public class PersonManager : MonoBehaviour {
 	public int numStartingPeople = 8;
 	public static float birthInterval = 20;
 
-	private List<Person> mPeople;
+	private List<Person> mPeople = new List<Person>();
 
 	public List<Person> People {
 		get { return(mPeople); }
@@ -27,8 +27,7 @@ public class PersonManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
-		mPeople = new List<Person>();
+        mPeople.Clear();
 		List<SpawnPersonRecord> startingPeople = GameState.Scenario.GetStartingPeople();
 		foreach(SpawnPersonRecord record in startingPeople)
 		{

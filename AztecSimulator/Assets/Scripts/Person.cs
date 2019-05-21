@@ -122,6 +122,11 @@ public class Person : MonoBehaviour, IRenderable {
 		// note: this could rely on the fact that profession happens to be the last attribute
 		for (int i =0; i < mAttributes.Length; i++) {
 			if (mAttributes[i].GetAttrType() == Person.AttributeType.PROFESSION) {
+                // No XP loss when selecting the current profession
+                if (mAttributes[i] == newProfession)
+                {
+                    return;
+                }
 				mAttributes[i] = newProfession;
 			}
 		}
