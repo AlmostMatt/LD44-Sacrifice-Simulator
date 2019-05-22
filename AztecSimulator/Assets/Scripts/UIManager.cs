@@ -302,7 +302,7 @@ public class UIManager : MonoBehaviour {
 	}
 
 	private Person.Attribute getSelectedProfession() {
-		foreach (KeyValuePair<Person.Attribute, Toggle> entry in mProfessionToggles) {
+        foreach (KeyValuePair<Person.Attribute, Toggle> entry in mProfessionToggles) {
 			if (entry.Value.isOn) {
 				return entry.Key;
 			}
@@ -345,12 +345,17 @@ public class UIManager : MonoBehaviour {
     public void OnChangeSelectedPeople()
     {
         List<Person> selectedPeople = getSelectedPeople();
-        if (selectedPeople.Count == 1) {
+        // Only adjust toggles when they are active in the hierarchy.
+        if (selectedPeople.Count == 1 && mProfessionToggles[Person.Attribute.FARMER].gameObject.activeInHierarchy) {
             Person person = selectedPeople[0];
             Person.Attribute profession = person.GetAttribute(Person.AttributeType.PROFESSION);
+            // Set the new value to ON. Let toggle group handle unselecting.
             foreach (KeyValuePair<Person.Attribute, Toggle> entry in mProfessionToggles)
             {
-                entry.Value.isOn = entry.Key == profession;
+                if (entry.Key == profession)
+                {
+                    entry.Value.isOn = true;
+                }
             }
         }
     }
