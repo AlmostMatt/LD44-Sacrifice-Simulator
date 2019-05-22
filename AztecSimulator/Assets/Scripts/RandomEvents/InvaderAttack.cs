@@ -27,7 +27,7 @@ public class InvaderAttack : RandomEventSystem.RandomEvent {
 	public override float Start () {
 		mDuration = 60f;
 		int difficultyBoost = Mathf.FloorToInt(GameState.GameTimeElapsed / 90);
-		mRequiredWarriors = Random.Range(1, 4) + difficultyBoost;
+		mRequiredWarriors = Random.Range(1, 3) + difficultyBoost;
 		GameState.InvaderSize = mRequiredWarriors;
 
 		Utilities.LogEvent("An enemy army approaches! They look to be " + mRequiredWarriors + " strong");
