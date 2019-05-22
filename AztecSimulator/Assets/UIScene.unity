@@ -5575,6 +5575,7 @@ GameObject:
   - component: {fileID: 1576988178}
   - component: {fileID: 1576988177}
   - component: {fileID: 1576988176}
+  - component: {fileID: 1576988179}
   m_Layer: 5
   m_Name: Item2
   m_TagString: Untagged
@@ -5661,6 +5662,20 @@ MonoBehaviour:
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
   m_ChildControlHeight: 1
+--- !u!114 &1576988179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1576988174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a3000c5027913d449bababccb5eb372, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiInfoPrefab: {fileID: 1240788408535290, guid: 257d578164704a34aa0e3a0c67b3521f,
+    type: 2}
+  detailedMessage: Increased by warriors. Defends against invaders.
 --- !u!1 &1668776777
 GameObject:
   m_ObjectHideFlags: 0
@@ -6159,6 +6174,7 @@ GameObject:
   - component: {fileID: 1821706495}
   - component: {fileID: 1821706494}
   - component: {fileID: 1821706493}
+  - component: {fileID: 1821706496}
   m_Layer: 5
   m_Name: Item1
   m_TagString: Untagged
@@ -6245,6 +6261,20 @@ MonoBehaviour:
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
   m_ChildControlHeight: 1
+--- !u!114 &1821706496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1821706491}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a3000c5027913d449bababccb5eb372, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiInfoPrefab: {fileID: 1240788408535290, guid: 257d578164704a34aa0e3a0c67b3521f,
+    type: 2}
+  detailedMessage: Produced by farmers. Without food, your people will starve.
 --- !u!1 &1840302899
 GameObject:
   m_ObjectHideFlags: 0
@@ -7208,6 +7238,7 @@ GameObject:
   - component: {fileID: 2023890923}
   - component: {fileID: 2023890922}
   - component: {fileID: 2023890921}
+  - component: {fileID: 2023890924}
   m_Layer: 5
   m_Name: Item3
   m_TagString: Untagged
@@ -7294,6 +7325,20 @@ MonoBehaviour:
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
   m_ChildControlHeight: 1
+--- !u!114 &2023890924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2023890919}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a3000c5027913d449bababccb5eb372, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiInfoPrefab: {fileID: 1240788408535290, guid: 257d578164704a34aa0e3a0c67b3521f,
+    type: 2}
+  detailedMessage: Birth rate is increased by civilians.
 --- !u!1 &2050044985
 GameObject:
   m_ObjectHideFlags: 0
