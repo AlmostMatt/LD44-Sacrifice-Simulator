@@ -238,11 +238,20 @@ public class UIManager : MonoBehaviour {
     void InitializeUIPerson(GameObject uiPerson)
     {
         Toggle toggle = uiPerson.GetComponentInChildren<Toggle>();
-        toggle.group = (GetSelectedTabIndex() == 2) ? mPeopleToggleGroup : null;
-        toggle.onValueChanged.AddListener(delegate
-        {
-            OnChangeSelectedPeople();
-        });
+        toggle.onValueChanged.AddListener(OnChangeSelectedPeople);
+        UpdateUIPersonForTab(uiPerson);
+    }
+
+    void UpdateUIPersonForTab(GameObject uiPerson)
+    {
+        bool isRadioButton = GetSelectedTabIndex() == 2;
+        uiPerson.transform.Find("Toggle/DotBackground").gameObject.SetActive(isRadioButton);
+        uiPerson.transform.Find("Toggle/CheckBackground").gameObject.SetActive(!isRadioButton);
+        Toggle toggle = uiPerson.GetComponentInChildren<Toggle>();
+        toggle.group = isRadioButton ? mPeopleToggleGroup : null;
+        toggle.graphic = isRadioButton
+            ? uiPerson.transform.Find("Toggle/DotBackground/Dot").GetComponent<Image>()
+            : uiPerson.transform.Find("Toggle/CheckBackground/Checkmark").GetComponent<Image>();
     }
 
 
@@ -342,7 +351,7 @@ public class UIManager : MonoBehaviour {
 
     // Called when a person is either selected or unselected
     // (which can also happen when changing tabs)
-    public void OnChangeSelectedPeople()
+    public void OnChangeSelectedPeople(bool isOn)
     {
         List<Person> selectedPeople = getSelectedPeople();
         // Only adjust toggles when they are active in the hierarchy.
@@ -414,10 +423,8 @@ public class UIManager : MonoBehaviour {
 		clearSelectedDemands();
 		int selectedTab = GetSelectedTabIndex();
 		foreach (GameObject uiPerson in mUiPeoplePool) {
-			Toggle toggle = uiPerson.GetComponentInChildren<Toggle>();
-			// use a toggle group for the people tab.
-			toggle.group = selectedTab == 2 ? mPeopleToggleGroup : null;
-		}
+            UpdateUIPersonForTab(uiPerson);
+        }
 
 		// todo: update selected tab (demand list) and people container connections here
 		int selectedTabIndex = GetSelectedTabIndex();
