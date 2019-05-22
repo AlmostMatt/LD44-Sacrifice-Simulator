@@ -5,15 +5,15 @@ using UnityEngine.UI;
 
 public class Person : MonoBehaviour, IRenderable {
 	private static Dictionary<Person.Attribute, float> EFFICIENCY_BASE = new Dictionary<Person.Attribute, float> {
-		{Person.Attribute.FARMER, 1f},
+		{Person.Attribute.FARMER, 1.5f},
 		{Person.Attribute.WARRIOR, 1f},
-		{Person.Attribute.CIVILIAN, 0.6f},
+		{Person.Attribute.CIVILIAN, 0.5f},
 		{Person.Attribute.NONE, 0f}
 	};
 	private static Dictionary<Person.Attribute, float> EFFICIENCY_PER_LEVEL = new Dictionary<Person.Attribute, float> {
-		{Person.Attribute.FARMER, 0.5f},
+		{Person.Attribute.FARMER, 0.75f},
 		{Person.Attribute.WARRIOR, 0.5f},
-		{Person.Attribute.CIVILIAN, 0.2f},
+		{Person.Attribute.CIVILIAN, 0.25f},
 		{Person.Attribute.NONE, 0f}
 	};
 
@@ -256,11 +256,11 @@ public class Person : MonoBehaviour, IRenderable {
 			mLevel = GetLevelForXp(mXp);
 		}
 
-		float healthDecayRate = mBaseHealthDecayRate;
+		float healthDecayRate = mBaseHealthDecayRate; // 0.
 		if(mIsHungry)
 		{
 			// healthDecayRate *= 5;
-			healthDecayRate = 1.2f;
+			healthDecayRate = 3f;
 		}
 		else if(GameState.HasBoon(BoonType.SURPLUS_FOOD_TO_HEALING))
 		{

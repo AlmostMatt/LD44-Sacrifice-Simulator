@@ -20,13 +20,8 @@ public class FoodSystem : MonoBehaviour {
 			totalFoodProduction += person.Efficiency;
 		}
 
-		int bonusFood = GameState.GetBoonValue(BoonType.BONUS_FOOD);
-		totalFoodProduction += bonusFood;
-
-		if(GameState.Drought)
-		{
-			totalFoodProduction /= 2;
-		}
+		int bonusFoodPercent = GameState.GetBoonValue(BoonType.BONUS_FOOD_PERCENT);
+        totalFoodProduction *= (100f + bonusFoodPercent) / 100f;
 
 		GameState.FoodSurplus = Mathf.Max(0, totalFoodProduction - mPersonMgr.People.Count);
 		GameState.FoodSupply = (int)Mathf.Floor(totalFoodProduction);

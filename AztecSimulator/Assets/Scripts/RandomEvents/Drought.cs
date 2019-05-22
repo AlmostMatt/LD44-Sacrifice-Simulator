@@ -25,20 +25,22 @@ public class Drought : RandomEventSystem.RandomEvent {
 	}
 
 	public override float Start () {
-		GameState.Drought = true;
-		int diffIncrease = Mathf.FloorToInt(GameState.GameTimeElapsed / 120);
-		mDuration = (Random.Range(2, 5) + Mathf.FloorToInt(Mathf.Sqrt(diffIncrease))) * 5;
+        GameState.SetBoon(BoonType.BONUS_FOOD_PERCENT, GameState.GetBoonValue(BoonType.BONUS_FOOD_PERCENT) - 50);
+        // ~15s at minute 0, ~20s at minute 4, ~25s at minute 9, ~30s at minute 16
+        float diffIncrease = Mathf.Sqrt(GameState.GameTimeElapsed / 60f);
+		mDuration = (Random.Range(13, 18) + Mathf.FloorToInt(5 * diffIncrease));
 		mIntervened = false;
 
 		Image background = Utilities.GetBackground();
 		mPrevBackgroundSprite = background.sprite;
 		background.sprite = Utilities.GetSpriteManager().GetSprite("DroughtBackground");
 
-		mOngoing = new Ongoing("DROUGHT", "Drought!", "A drought is reducing your crop yield.", mDuration, false);
+        string description = "-50% food production for " + mDuration + " seconds";
+        mOngoing = new Ongoing("DROUGHT", "Drought!", description, mDuration, false);
 		GameState.Ongoings.Add(mOngoing);
 		Utilities.LogEvent("A drought has befallen your farmland", 1f);
 		mDemandId = Utilities.GetGod().AddFleetingDemand(
-			diffIncrease,
+			(int)diffIncrease,
 			new GodIntervention(this), 
 			null, 
 			mDuration, 
@@ -63,8 +65,7 @@ public class Drought : RandomEventSystem.RandomEvent {
 
 		Utilities.GetBackground().sprite = mPrevBackgroundSprite;
 
-		GameState.Drought = false;
-
+        GameState.SetBoon(BoonType.BONUS_FOOD_PERCENT, GameState.GetBoonValue(BoonType.BONUS_FOOD_PERCENT) + 50);
 		GameState.Ongoings.Remove(mOngoing);
 		mOngoing = null;
 		Utilities.GetEventSystem().ScheduleEvent(new Drought(), Random.Range(45, 91));

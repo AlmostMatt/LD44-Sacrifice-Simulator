@@ -22,29 +22,31 @@ public class FertilityBoon : SacrificeResult {
 		public FertilityEvent(int boost, float duration) {
 			mBoost = boost;
 			mDuration = duration;
-			mOngoing = new Ongoing("BirthRateBoost", sName, sDesc, mDuration, true); 
+            string description = "+" + mBoost + "% birth rate";
+            mOngoing = new Ongoing("BirthRateBoost", sName, description, mDuration, true); 
 		}
 
 		public override float Start()
-		{
-			GameState.SetBoon(BoonType.BONUS_FERTILITY, mBoost);
+        {
+            GameState.SetBoon(BoonType.BONUS_BIRTHS_PERCENT, GameState.GetBoonValue(BoonType.BONUS_BIRTHS_PERCENT) + mBoost);
 			GameState.Ongoings.Add(mOngoing);
 			return(mDuration);
 		}
 
 		public override void Removed()
-		{
-			GameState.SetBoon(BoonType.BONUS_FERTILITY, 0);
-			GameState.Ongoings.Remove(mOngoing);
+        {
+            GameState.SetBoon(BoonType.BONUS_BIRTHS_PERCENT, GameState.GetBoonValue(BoonType.BONUS_BIRTHS_PERCENT) - mBoost);
+            GameState.Ongoings.Remove(mOngoing);
 		}
 	}
 
 	private int mBoost;
 	private int mDuration;
-	private FertilityBoon(int tier, int luck) : base(sName, "Temporary birth rate increase") {
-		mBoost = 100 + tier * 10 + luck * 10;
-		mDuration = 10;
-	}
+	private FertilityBoon(int tier, int luck) : base(sName, "") {
+		mBoost = 80 + (20 * (tier + luck));
+		mDuration = 15;
+        mDescription = "+" + mBoost + "% birth rate for " + mDuration + " seconds";
+    }
 
 	public override void DoEffect()
 	{

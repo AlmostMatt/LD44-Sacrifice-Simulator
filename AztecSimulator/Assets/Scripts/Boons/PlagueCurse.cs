@@ -19,7 +19,7 @@ public class PlagueCurse : SacrificeResult {
 			if(Random.value < 0.5)
 			{
 				p.Damage(mAmount);
-				Utilities.LogEvent(p.Name + "was wounded by the plague (-" + mAmount + ").", 0f);
+				Utilities.LogEvent(p.Name + " was wounded by the plague (-" + mAmount + ").", 0f);
 			}
 		}
 	}

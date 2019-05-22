@@ -52,7 +52,7 @@ public class PersonManager : MonoBehaviour {
 			float birthrateIncrease = GameState.GetBoonValue(BoonType.SURPLUS_FOOD_TO_BIRTHRATE) / 100f;
 			birthRate += birthrateIncrease * GameState.FoodSurplus;
 		}
-		birthRate += (GameState.GetBoonValue(BoonType.BONUS_FERTILITY) / 100f);
+		birthRate *= (100f + GameState.GetBoonValue(BoonType.BONUS_BIRTHS_PERCENT)) / 100f;
 
 		if(mRepopulateTimer > 0)
 		{

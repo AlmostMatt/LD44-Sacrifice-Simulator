@@ -77,13 +77,6 @@ public class GameState {
 		set { sGameState.mTimeUntilBirth = value; }
 	}
 
-	private bool mDrought = false;
-	public static bool Drought 
-	{
-		get { return(sGameState.mDrought); }
-		set { sGameState.mDrought = value; }
-	}
-
 	private bool mImprovedLifespan1 = false;
 	public static bool ImprovedLifespan1
 	{
@@ -91,25 +84,24 @@ public class GameState {
 		set { sGameState.mImprovedLifespan1 = value; }
 	}
 
-	private Dictionary<Person.Attribute, List<int>> mXpBuffs = new Dictionary<Person.Attribute, List<int>>();
-	public static void AddXpBuff(Person.Attribute profession, int multiplier)
+	private Dictionary<Person.Attribute, int> mXpBuffs = new Dictionary<Person.Attribute, int>();
+	public static void AddXpBuff(Person.Attribute profession, int xpMultiplierIncrease)
 	{
-		if(!sGameState.mXpBuffs.ContainsKey(profession))
-			sGameState.mXpBuffs.Add(profession, new List<int>());
-		
-		List<int> buffs = sGameState.mXpBuffs[profession];
-		buffs.Add(multiplier);
+        if (!sGameState.mXpBuffs.ContainsKey(profession))
+        {
+            sGameState.mXpBuffs.Add(profession, 1 + xpMultiplierIncrease);
+        }
+        else
+        {
+            sGameState.mXpBuffs[profession] = sGameState.mXpBuffs[profession] + xpMultiplierIncrease;
+        }
 	}
 	public static int GetBuffedXp(Person.Attribute profession, int baseValue)
 	{
 		if(!sGameState.mXpBuffs.ContainsKey(profession))
 			return(baseValue);
-		
-		foreach(int mult in sGameState.mXpBuffs[profession])
-		{
-			baseValue *= mult;
-		}
-		return(baseValue);
+
+        return baseValue * sGameState.mXpBuffs[profession];
 	}
 
 	private Dictionary<Person.Attribute, int> mLevelCapIncreases = new Dictionary<Person.Attribute, int>();

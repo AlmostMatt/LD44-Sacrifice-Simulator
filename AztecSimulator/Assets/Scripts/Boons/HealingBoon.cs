@@ -13,7 +13,7 @@ public class HealingBoon : SacrificeResult {
 	private int mAmount;
 
 	private HealingBoon(int tier, int luck) : base("Healing Blessing", "") {
-		mAmount = 10 * (1 + tier + luck);
+		mAmount = 20 * (1 + tier + luck);
 		mDescription = "Restores " + mAmount + " lifeforce to your people";
 	}
 

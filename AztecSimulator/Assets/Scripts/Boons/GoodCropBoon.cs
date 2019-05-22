@@ -25,14 +25,14 @@ public class GoodCropBoon : SacrificeResult {
 
 		public override float Start()
 		{
-			GameState.SetBoon(BoonType.BONUS_FOOD, mBoost);
+			GameState.SetBoon(BoonType.BONUS_FOOD_PERCENT, GameState.GetBoonValue(BoonType.BONUS_FOOD_PERCENT) + mBoost);
 			GameState.Ongoings.Add(mOngoing);
 			return(mDuration);
 		}
 
 		public override void Removed()
 		{
-			GameState.SetBoon(BoonType.BONUS_FOOD, 0);
+            GameState.SetBoon(BoonType.BONUS_FOOD_PERCENT, GameState.GetBoonValue(BoonType.BONUS_FOOD_PERCENT) - mBoost);
 			GameState.Ongoings.Remove(mOngoing);
 		}
 	}
@@ -41,9 +41,9 @@ public class GoodCropBoon : SacrificeResult {
 	private float mDuration;
 	private GoodCropBoon(int tier, int luck) : base("Blessed Crops", "")
 	{
-		mBoost = 1 + tier + luck;
-		mDuration = 10f;
-		mDescription = "+" + mBoost + " food for " + mDuration + " seconds";
+		mBoost = 25 + (25 * (tier + luck));
+		mDuration = 30f;
+		mDescription = "+" + mBoost + "% food for " + mDuration + " seconds";
 	}
 
 	public override void DoEffect()

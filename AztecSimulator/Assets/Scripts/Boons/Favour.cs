@@ -15,7 +15,7 @@ public class Favour : SacrificeResult {
 		}
 	}
 
-	private Favour() : base("Favour", "God takes favour on your people") {}
+	private Favour() : base("Favour", "God takes favour on your people.\r\n(Random demands will be better for you)") {}
 
 	public override void DoEffect() {
 		Utilities.LogEvent("Your people find favour with god", 1f);
