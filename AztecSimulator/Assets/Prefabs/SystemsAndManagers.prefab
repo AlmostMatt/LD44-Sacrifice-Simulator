@@ -68,7 +68,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugEventIdx: -1
-  initialEventDelay: 20
+  initialEventDelay: 30
 --- !u!114 &114526150567914390
 MonoBehaviour:
   m_ObjectHideFlags: 1
