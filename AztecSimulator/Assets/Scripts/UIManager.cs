@@ -71,9 +71,7 @@ public class UIManager : MonoBehaviour {
 			professionObject.transform.Find("Toggle/InfoText").GetComponent<Text>().text = profession.GetDescription(); 
 			Toggle toggle = professionObject.GetComponentInChildren<Toggle>();
 			toggle.group = mProfessionToggleGroup;
-            toggle.onValueChanged.AddListener(delegate {
-                OnChangeProfession();
-            });
+            toggle.onValueChanged.AddListener(OnChangeProfession);
             mProfessionToggles.Add(profession, toggle);
 		}
 		mProfessionToggles[Person.Attribute.FARMER].isOn = true;
@@ -329,13 +327,17 @@ public class UIManager : MonoBehaviour {
 	}
 
 	// Called when a profession button is clicked
-	public void OnChangeProfession() {
-		List<Person> selectedPeople = getSelectedPeople();
-		Person.Attribute selectedProfession = getSelectedProfession();
-		if (selectedPeople.Count == 0) { return; }
-		foreach (Person person in selectedPeople) {
-			person.ChangeProfession(selectedProfession);
-		}
+	public void OnChangeProfession(bool isOn) {
+        if (isOn)
+        {
+            List<Person> selectedPeople = getSelectedPeople();
+            Person.Attribute selectedProfession = getSelectedProfession();
+            if (selectedPeople.Count == 0) { return; }
+            foreach (Person person in selectedPeople)
+            {
+                person.ChangeProfession(selectedProfession);
+            }
+        }
 	}
 
     // Called when a person is either selected or unselected
@@ -343,16 +345,12 @@ public class UIManager : MonoBehaviour {
     public void OnChangeSelectedPeople()
     {
         List<Person> selectedPeople = getSelectedPeople();
-        Person.Attribute selectedProfession = getSelectedProfession();
         if (selectedPeople.Count == 1) {
             Person person = selectedPeople[0];
             Person.Attribute profession = person.GetAttribute(Person.AttributeType.PROFESSION);
             foreach (KeyValuePair<Person.Attribute, Toggle> entry in mProfessionToggles)
             {
-                if (entry.Key == profession)
-                {
-                    entry.Value.isOn = true;
-                }
+                entry.Value.isOn = entry.Key == profession;
             }
         }
     }
