@@ -915,6 +915,31 @@ Prefab:
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114382367740347138, guid: 1bcf8527d7f90294ebeeb5a5b3be6c32,
+        type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 114382367740347138, guid: 1bcf8527d7f90294ebeeb5a5b3be6c32,
+        type: 2}
+      propertyPath: m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224404451071861232, guid: 1bcf8527d7f90294ebeeb5a5b3be6c32,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114630785851517504, guid: 1bcf8527d7f90294ebeeb5a5b3be6c32,
+        type: 2}
+      propertyPath: m_Value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224598071033880760, guid: 1bcf8527d7f90294ebeeb5a5b3be6c32,
+        type: 2}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1bcf8527d7f90294ebeeb5a5b3be6c32, type: 2}
   m_IsPrefabParent: 0
