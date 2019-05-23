@@ -224,7 +224,8 @@ public class UIManager : MonoBehaviour {
 
 		if(mPendingDialogMessages.Count > 0 && !mDialogOpen)
 		{
-			DialogMessage dm = mPendingDialogMessages[0];
+            mDialogOpen = true;
+            DialogMessage dm = mPendingDialogMessages[0];
 			mDialogCallback = dm.c;
 
 			Transform popDialog = transform.Find("PopupDialog");
@@ -444,10 +445,12 @@ public class UIManager : MonoBehaviour {
 
 	public void OnCloseDialog()
 	{
+        Debug.Log("closing dialog.");
 		Transform t = transform.Find("PopupDialog");
 		t.gameObject.SetActive(false);
+        mDialogOpen = false;
 
-		if(mDialogCallback != null)
+        if (mDialogCallback != null)
 		{
 			mDialogCallback.OnDialogClosed();
 			mDialogCallback = null;
