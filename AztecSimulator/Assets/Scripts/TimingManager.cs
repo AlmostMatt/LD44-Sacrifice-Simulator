@@ -21,8 +21,8 @@ public class TimingManager : MonoBehaviour {
 
 		if(Input.GetButtonUp("Jump"))
 		{
-			// assume that this is attached to a toggleable Play/Pause button
-			transform.GetComponent<Toggle>().isOn = !transform.GetComponent<Toggle>().isOn; 
+			//transform.GetComponent<Toggle>().isOn = !transform.GetComponent<Toggle>().isOn; 
+			TogglePause();
 		}
 
 		GameState.GameDeltaTime = Mathf.Min(1, Time.deltaTime) * GameState.GameSpeed;  // avoid huge frame time spikes
@@ -40,5 +40,8 @@ public class TimingManager : MonoBehaviour {
 			GameState.GameSpeed = 0;
 		else
 			GameState.GameSpeed = 1;
+
+		// TODO: UIManager registers a callback instead?
+		Utilities.GetUIManager().OnGamePaused(mPaused);
 	}
 }

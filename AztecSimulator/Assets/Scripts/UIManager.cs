@@ -224,6 +224,10 @@ public class UIManager : MonoBehaviour {
 
 		if(mPendingDialogMessages.Count > 0 && !mDialogOpen)
 		{
+			// messages pause the game by default. could make this optional if we need to.
+			Utilities.SetGamePaused(true);
+			// TODO: disable pause button too
+
             mDialogOpen = true;
             DialogMessage dm = mPendingDialogMessages[0];
 			mDialogCallback = dm.c;
@@ -445,15 +449,25 @@ public class UIManager : MonoBehaviour {
 
 	public void OnCloseDialog()
 	{
-        Debug.Log("closing dialog.");
 		Transform t = transform.Find("PopupDialog");
 		t.gameObject.SetActive(false);
         mDialogOpen = false;
 
-        if (mDialogCallback != null)
+        if(mDialogCallback != null)
 		{
 			mDialogCallback.OnDialogClosed();
 			mDialogCallback = null;
 		}
+	}
+
+	public void SetPauseButtonEnabled(bool enabled)
+	{
+		// TODO
+	}
+
+	public void OnGamePaused(bool paused)
+	{
+		// TODO: update pause button. Probably don't even want the pause button to be a toggle anymore, since the game can be paused through other ways
+		// so it might as well just be a button with an image that changes whenever the game is paused/unpaused
 	}
 }

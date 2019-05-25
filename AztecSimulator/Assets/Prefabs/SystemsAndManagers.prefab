@@ -25,6 +25,7 @@ GameObject:
   - component: {fileID: 114418207911983054}
   - component: {fileID: 114526150567914390}
   - component: {fileID: 114797501282310160}
+  - component: {fileID: 114723087305912066}
   m_Layer: 0
   m_Name: SystemsAndManagers
   m_TagString: SystemsAndManagers
@@ -94,6 +95,18 @@ MonoBehaviour:
   logDemandsOnStart: 0
   fleetingDemandTimer: 60
   maxFleetingDemands: 1
+--- !u!114 &114723087305912066
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1964679472227468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d49b989c12e6b84aa4c57f4628626cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startPaused: 0
 --- !u!114 &114797501282310160
 MonoBehaviour:
   m_ObjectHideFlags: 1

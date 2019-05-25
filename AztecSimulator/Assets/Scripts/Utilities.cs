@@ -78,6 +78,20 @@ public static class Utilities {
 		return uiManager.GetComponent<UIManager>();
 	}
 
+	public static TimingManager GetTimingManager()
+	{
+		return GameObject.FindGameObjectWithTag("SystemsAndManagers").GetComponent<TimingManager>();
+	}
+
+	public static void SetGamePaused(bool paused, bool disablePauseButton = false)
+	{
+		GetTimingManager().SetPaused(paused);
+		if(disablePauseButton)
+		{
+			GetUIManager().SetPauseButtonEnabled(false);
+		}
+	}
+
 	public static GodDemand GetSelectedDemand()
 	{
 		// TODO: optimize this function for frequent calls by having UIManager memoize
