@@ -289,15 +289,15 @@ public class UIManager : MonoBehaviour {
     private void InitializeUIPerson(GameObject uiPerson)
     {
         Person person = mUiPeopleMap.GetKey(uiPerson);
-        uiPerson.transform.SetParent(transform.Find("Center (H)/ProfessionGroups/V/" + person.Profession.ToString() + "/G"), false);
+        string container = "Center (H)/ProfessionGroups/V/" + person.Profession.ToString() + "/Scrollable/Viewport/Content (G)";
+        uiPerson.transform.SetParent(transform.Find(container), false);
     }
 
     private void InitializeUIDemand(GameObject uiDemand)
     {
         GodDemand demand = mUiDemandMap.GetKey(uiDemand);
-        Transform fleetingDemandContainer = transform.Find("Center (H)/DemandGroups/V/Fleeting/G");
-        Transform permanentDemandContainer = transform.Find("Center (H)/DemandGroups/V/Permanent/G");
-        uiDemand.transform.SetParent(demand.IsFleeting ? fleetingDemandContainer : permanentDemandContainer, false);
+        string groupName = demand.IsFleeting ? "Fleeting" : "Permanent";
+        uiDemand.transform.SetParent(transform.Find("Center (H)/DemandGroups/V/" + groupName + "/Viewport/Content (G)"), false);
     }
 
 	public void OnTabChanged(bool isTheActiveTab) {

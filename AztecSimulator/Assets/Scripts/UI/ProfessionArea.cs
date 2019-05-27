@@ -12,7 +12,7 @@ public class ProfessionArea : MonoBehaviour, IDropHandler
         if (changeSuccessful)
         {
             eventData.pointerDrag.transform.localPosition = Vector3.zero;
-            eventData.pointerDrag.transform.SetParent(transform.Find("G"), false);
+            eventData.pointerDrag.transform.SetParent(transform.Find("Scrollable/Viewport/Content (G)"), false);
         }
     }
 }
