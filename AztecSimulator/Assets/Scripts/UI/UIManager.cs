@@ -76,6 +76,7 @@ public class UIManager : MonoBehaviour {
                 {
                     uiObject = objectPool[objectPool.Count - 1];
                     objectPool.RemoveAt(objectPool.Count - 1);
+                    uiObject.SetActive(true);
                 } else
                 {
                     uiObject = Instantiate(newObject);
@@ -96,6 +97,7 @@ public class UIManager : MonoBehaviour {
         {
             renderableObjectMap.RemoveValue(uiObject);
             objectPool.Add(uiObject);
+            uiObject.SetActive(false);
         }
 	}
 
@@ -215,6 +217,11 @@ public class UIManager : MonoBehaviour {
 			//mGod.MakeSacrifice(relevantDemand, selectedPeople);
 		}
 	}
+
+    public GameObject GetUiDemand(GodDemand demand)
+    {
+        return mUiDemandMap.GetValue(demand);
+    }
 
     // Called when a GameObject is dropped on a profession area
     // Returns false if the dropped object is not a person.

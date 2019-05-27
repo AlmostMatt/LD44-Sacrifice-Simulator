@@ -64,8 +64,24 @@ public class GodDemand : IRenderable
         return ""; //  "ATTACK";
 	}
 
+    public List<int> GetFilledSlots()
+    {
+        Transform relevantUiDemand = Utilities.GetUIManager().GetUiDemand(this).transform;
+        List<int> filledSlots = new List<int>();
+        for (int j = 0; j < 3; j++)
+        {
+            Transform personSlot = relevantUiDemand.Find("V/PersonSlots").GetChild(j);
+            if (personSlot.GetChild(personSlot.childCount - 1).GetComponent<Draggable>() != null)
+            {
+                filledSlots.Add(j);
+            }            
+        }
+        return filledSlots;
+    }
+
     public List<int> GetRelevantSlots(Person person)
     {
+        List<int> filledSlots = GetFilledSlots();
         List<int> relevantSlots = new List<int>();
         int demandSlotIndex = 0;
         foreach (Criterion criterion in mDemand.mCriteria)
@@ -73,7 +89,7 @@ public class GodDemand : IRenderable
             bool isSatisfied = criterion.CheckSatisfaction(person);
             for (int j = 0; j < Mathf.Max(criterion.mCount, 1); j++)
             {
-                if (isSatisfied)
+                if (isSatisfied && !filledSlots.Contains(demandSlotIndex))
                 {
                     relevantSlots.Add(demandSlotIndex);
                 }
