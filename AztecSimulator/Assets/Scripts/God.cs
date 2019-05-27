@@ -185,18 +185,14 @@ public class God : MonoBehaviour {
 		}
 	}
 
-	public List<SacrificeResult> MakeSacrifice(int demandId, List<Person> people) {
-
+	public List<SacrificeResult> MakeSacrifice(GodDemand demand, List<Person> people) {
 		List<SacrificeResult> results = new List<SacrificeResult>();
-
-		if(demandId > 0) {
-			GodDemand demand = mDemands.Find(x => x.mId == demandId);
-			if(demand == null)
-			{
-				Debug.Log("No demand with id " + demandId);
-				return(results);
-			}
-
+        int demandId = mDemands.IndexOf(demand);
+        if (demandId == -1)
+        {
+            Debug.Log("WARNING: No demand with id " + demandId);
+        }
+        if (demandId > 0) {
 			if(demand.mDemand.CheckSatisfaction(people))
 			{
 				Utilities.LogEvent("YES, THIS SACRIFICE PLEASES ME", 2f, true);

@@ -98,6 +98,7 @@ public class UIManager : MonoBehaviour {
             renderableObjectMap.RemoveValue(uiObject);
             objectPool.Add(uiObject);
             uiObject.SetActive(false);
+            uiObject.transform.SetParent(null, false);
         }
 	}
 
@@ -204,20 +205,6 @@ public class UIManager : MonoBehaviour {
 		}
 	}
 
-	// called when the sacrifice button is clicked
-	public void OnSacrifice() {
-        // TODO: sacrifice relevant people
-        List<Person> selectedPeople = new List<Person>();//getSelectedPeople();
-		Debug.Log("Sacrificing " + selectedPeople.Count + " people.");
-		if (selectedPeople.Count == 0) { return; }
-
-		if(mGod != null) {
-			string sacrificedNames = Utilities.ConcatStrings(selectedPeople.ConvertAll(person => person.Name));
-			LogEvent("You sacrifice " + sacrificedNames + " to " + mGod.Name, 1f);
-			//mGod.MakeSacrifice(relevantDemand, selectedPeople);
-		}
-	}
-
     public GameObject GetUiDemand(GodDemand demand)
     {
         return mUiDemandMap.GetValue(demand);
@@ -235,7 +222,7 @@ public class UIManager : MonoBehaviour {
         return true;
     }
 
-    // Called when a GameObject is dropped on a profession area
+    // Called when a GameObject is dropped on a demand slot, whether or not it is a valid drop
     // Returns the list of person slots that are relevant.
     public List<int> OnDropPersonOnDemand(GameObject uiPerson, GameObject uiDemand)
     {
@@ -245,6 +232,26 @@ public class UIManager : MonoBehaviour {
         }
         return mUiDemandMap.GetKey(uiDemand).GetRelevantSlots(mUiPeopleMap.GetKey(uiPerson));
     }
+
+    // Called immediately after a person is successfully dropped on a demand slot
+    public void MaybeSacrifice(GameObject uiDemandObject)
+    {
+        GodDemand demand = mUiDemandMap.GetKey(uiDemandObject);
+        if (demand.IsSatisfied())
+        {
+            List<Person> peopleToSacrifice = demand.GetAssociatedPeople().ConvertAll(obj => mUiPeopleMap.GetKey(obj));
+            Debug.Log("Sacrificing " + peopleToSacrifice.Count + " people.");
+            if (mGod != null)
+            {
+                string sacrificedNames = Utilities.ConcatStrings(peopleToSacrifice.ConvertAll(person => person.Name));
+                LogEvent("You sacrifice " + sacrificedNames + " to " + mGod.Name, 1f);
+                mGod.MakeSacrifice(demand, peopleToSacrifice);
+            }
+
+        }
+    }
+
+
 
     public void LogEvent(string message, float duration=2f, bool isGod=false) {
 		message = message.Trim();

@@ -62,26 +62,47 @@ public class GodDemand : IRenderable
 	public string GetUIDescriptionIconName() {
         // TODO: have relevant icons
         return ""; //  "ATTACK";
-	}
+    }
 
-    public List<int> GetFilledSlots()
+    public bool IsSatisfied()
+    {
+        return GetEmptySlots().Count == 0;
+    }
+
+    public List<GameObject> GetAssociatedPeople()
     {
         Transform relevantUiDemand = Utilities.GetUIManager().GetUiDemand(this).transform;
-        List<int> filledSlots = new List<int>();
+        List<GameObject> associatedPeople = new List<GameObject>();
+        for (int j = 0; j < 3; j++)
+        {
+            Draggable draggable = relevantUiDemand.Find("V/PersonSlots").GetChild(j).GetComponentInChildren<Draggable>();
+            if (draggable != null)
+            {
+                associatedPeople.Add(draggable.gameObject);
+            }
+        }
+        return associatedPeople;
+    }
+
+    public List<int> GetEmptySlots()
+    {
+        Transform relevantUiDemand = Utilities.GetUIManager().GetUiDemand(this).transform;
+        List<int> emptySlots = new List<int>();
         for (int j = 0; j < 3; j++)
         {
             Transform personSlot = relevantUiDemand.Find("V/PersonSlots").GetChild(j);
-            if (personSlot.GetChild(personSlot.childCount - 1).GetComponent<Draggable>() != null)
+            // A slot is empty if the child if it is active and doesn't have a draggable child
+            if (personSlot.gameObject.activeInHierarchy && personSlot.GetComponentInChildren<Draggable>() == null)
             {
-                filledSlots.Add(j);
-            }            
+                emptySlots.Add(j);
+            }
         }
-        return filledSlots;
+        return emptySlots;
     }
 
     public List<int> GetRelevantSlots(Person person)
     {
-        List<int> filledSlots = GetFilledSlots();
+        List<int> emptySlots = GetEmptySlots();
         List<int> relevantSlots = new List<int>();
         int demandSlotIndex = 0;
         foreach (Criterion criterion in mDemand.mCriteria)
@@ -89,7 +110,7 @@ public class GodDemand : IRenderable
             bool isSatisfied = criterion.CheckSatisfaction(person);
             for (int j = 0; j < Mathf.Max(criterion.mCount, 1); j++)
             {
-                if (isSatisfied && !filledSlots.Contains(demandSlotIndex))
+                if (isSatisfied && emptySlots.Contains(demandSlotIndex))
                 {
                     relevantSlots.Add(demandSlotIndex);
                 }

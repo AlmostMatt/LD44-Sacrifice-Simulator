@@ -25,7 +25,7 @@ public class TestDriver : MonoBehaviour {
 		PersonManager personMgr = Utilities.GetPersonManager();
 		List<Person> people = new List<Person>();
 		people.Add(personMgr.People[Random.Range(0, personMgr.People.Count)]);
-		List<SacrificeResult> results = g.MakeSacrifice(0, people);
+		List<SacrificeResult> results = g.MakeSacrifice(g.Demands[0], people);
 		foreach(SacrificeResult r in results)
 		{
 			Debug.Log("YOUR SACRIFICE YIELDED:");
