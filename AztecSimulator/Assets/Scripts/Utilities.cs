@@ -92,18 +92,6 @@ public static class Utilities {
 		}
 	}
 
-	public static GodDemand GetSelectedDemand()
-	{
-		// TODO: optimize this function for frequent calls by having UIManager memoize
-		return GetUIManager().getSelectedDemand();
-	}
-
-	public static List<Person> GetSelectedPeople()
-	{
-		// TODO: optimize this function for frequent calls by having UIManager memoize
-		return GetUIManager().getSelectedPeople();
-	}
-
 	public static RandomEventSystem GetEventSystem()
 	{
 		return GameObject.FindGameObjectWithTag("SystemsAndManagers").GetComponent<RandomEventSystem>();

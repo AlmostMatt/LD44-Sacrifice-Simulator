@@ -313,29 +313,6 @@ public class Person : MonoBehaviour, IRenderable {
 		return new [] {ageString, attrString, levelString, lifeString};
 	}
 
-	// Returns a single multiline string
-	public string GetLongUIDescription()
-	{
-		string result = "<size=20>Name: " + mName + "</size>\r\n";
-		if (mLevel == GameState.GetLevelCap(GetAttribute(AttributeType.PROFESSION))) {
-			result += "Level: " + GetLevelString() + "\r\n";
-		} else {
-			result += "Level: " + GetLevelString() + "(" + GetLevelUpProgressPercent() + "% to next level)\r\n";
-		}
-		result += "Profession: " + GetAttribute(AttributeType.PROFESSION).ToString() + "\r\n";
-		result += "Age: " + Age + "\r\n";
-		result += "Lifeforce: " + Mathf.Ceil(mHealth) + "\r\n";
-		string attrString = "";
-		for(int i = 0; i < mAttributes.Length; ++i) {
-			if (mAttributes[i].GetAttrType() != AttributeType.PROFESSION) {
-				string attr = System.Enum.GetName(typeof(Attribute), (int)mAttributes[i]);
-				attrString += attr + ", ";
-			}
-		}
-		result += "Attributes: " + attrString;
-		return result;
-	}
-
 	private int GetLevelUpProgressPercent()
 	{
 		float requiredXpForCurrentLevel = GetTotalXpForLevel(mLevel);
@@ -395,15 +372,38 @@ public class Person : MonoBehaviour, IRenderable {
 	}
 
 	public void RenderTo(GameObject uiPrefab) {
-		GodDemand selectedDemand = Utilities.GetSelectedDemand();
-		string[] descriptionStrings = GetUIDescription(selectedDemand != null ? selectedDemand.mDemand : null);
-		uiPrefab.transform.Find("Toggle/TextTL").GetComponent<Text>().text = descriptionStrings[0];
-		uiPrefab.transform.Find("Toggle/TextTR").GetComponent<Text>().text = descriptionStrings[1];
-		uiPrefab.transform.Find("Toggle/BLGroup/Text").GetComponent<Text>().text = descriptionStrings[2];
-		Person.Attribute profession = GetAttribute(Person.AttributeType.PROFESSION);
-		uiPrefab.transform.Find("Toggle/BLGroup/Icons/Icon1").gameObject.SetActive(selectedDemand != null && selectedDemand.mDemand.IsRelevantAttribute(profession));
-		uiPrefab.transform.Find("Toggle/BLGroup/Icons/Icon2").GetComponent<Image>().sprite = Utilities.GetSpriteManager().GetSprite(profession);
-		uiPrefab.transform.Find("Toggle/BRGroup/Text").GetComponent<Text>().text = descriptionStrings[3];
-	}
+        // TODO: use hovered or partially completed demand to control the person's highlight
+        // GodDemand selectedDemand = Utilities.GetSelectedDemand();
+        // selectedDemand.mDemand.IsRelevantAttribute(profession)
+
+        // Level txt
+        uiPrefab.transform.Find("H/Level").GetComponent<Text>().text = mLevel.ToString();
+        // Profession
+        Person.Attribute profession = GetAttribute(Person.AttributeType.PROFESSION);
+        uiPrefab.transform.Find("H/Profession/Image").GetComponent<Image>().sprite = Utilities.GetSpriteManager().GetSprite(profession);
+        // Attributes
+        Person.Attribute[] attributes = System.Array.FindAll(mAttributes, a => a.GetAttrType() != Person.AttributeType.PROFESSION);
+        for (int i = 0; i < 2; i++)
+        {
+            Image attrImage = uiPrefab.transform.Find("H/V/Attribute" + (i+1).ToString()).GetComponent<Image>();
+            attrImage.enabled = (i < attributes.Length);
+            if (i < attributes.Length)
+            {
+                //attrImage.sprite = Utilities.GetSpriteManager().GetSprite(attributes)[i];
+            }
+        }
+        // HP / XP bars
+        uiPrefab.transform.Find("H/HP/Bar").localScale = new Vector3(1f, mHealth / MaxHealth, 1f);
+        if (mLevel == GameState.GetLevelCap(GetAttribute(AttributeType.PROFESSION)))
+        {
+            uiPrefab.transform.Find("H/XP/Bar").localScale = new Vector3(1f, 1f, 1f);
+            uiPrefab.transform.Find("H/XP/Bar").GetComponent<Image>().color = new Color(.7f, .7f, .7f);
+        }
+        else
+        {
+            uiPrefab.transform.Find("H/XP/Bar").GetComponent<Image>().color = new Color(1f, 1f, 0f);
+            uiPrefab.transform.Find("H/XP/Bar").localScale = new Vector3(1f, GetLevelUpProgressPercent()/100f, 1f);
+        }
+    }
 }
 

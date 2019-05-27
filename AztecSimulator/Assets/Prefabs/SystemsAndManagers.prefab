@@ -126,9 +126,9 @@ MonoBehaviour:
   - DROUGHT
   - ATTACK
   sprites:
-  - {fileID: 21300000, guid: eff0b435cb49a104a9448a76d835c68d, type: 3}
-  - {fileID: 21300000, guid: f0f38a84a3d6dca44b2ddae38fb57854, type: 3}
-  - {fileID: 21300000, guid: adab4da7d4701ef4bb94d867acec9d04, type: 3}
+  - {fileID: 21300000, guid: c4e7e94388c49164385f90dd5d4e15f3, type: 3}
+  - {fileID: 21300000, guid: 06375d4ea347b3641bfaef662d1039a7, type: 3}
+  - {fileID: 21300000, guid: 8f4232a856e03d540a09ee46b7fe57e2, type: 3}
   - {fileID: 21300000, guid: 749015f3c2238514199f6c84781b85b0, type: 3}
   - {fileID: 21300000, guid: 85f3d33b35b8cf047a8e3f0c58ec2fac, type: 3}
   - {fileID: 21300000, guid: 8557d86868293c347a760152ebc63f9a, type: 3}

@@ -13,16 +13,11 @@ public class UIManager : MonoBehaviour {
 	public GameObject uiProfessionObject;
 	public GameObject uiOngoingObject;
 
-	private ToggleGroup mDemandToggleGroup;
-	private ToggleGroup mProfessionToggleGroup;
-	private ToggleGroup mPeopleToggleGroup;
-
 	private List<GameObject> mUiPeoplePool = new List<GameObject>();
-	private List<GameObject> mUiDemandPool = new List<GameObject>();
-	private List<GameObject> mUiNotificationPool = new List<GameObject>();
+    private List<GameObject> mUiDemandPool = new List<GameObject>();
+    private List<GameObject> mUiDemandPool2 = new List<GameObject>();
+    private List<GameObject> mUiNotificationPool = new List<GameObject>();
 	private List<GameObject> mUiOngoingPool = new List<GameObject>();
-
-	private Dictionary<Person.Attribute, Toggle> mProfessionToggles = new Dictionary<Person.Attribute, Toggle>();
 
 	private God mGod;
 	private PersonManager mPersonManager;
@@ -57,25 +52,6 @@ public class UIManager : MonoBehaviour {
 		mGod = Utilities.GetGod();
 		mPersonManager = Utilities.GetPersonManager();
 		mSpriteManager = Utilities.GetSpriteManager();
-		// create toggle groups for dynaically instantiate toggles.
-		mDemandToggleGroup = CreateToggleGroup("demandToggleGroup", true);
-		mProfessionToggleGroup = CreateToggleGroup("professionToggleGroup", false);
-		mPeopleToggleGroup = CreateToggleGroup("peopleToggleGroup", false);
-
-		Person.Attribute[] professions = Utilities.GetAttrValues(Person.AttributeType.PROFESSION);
-		foreach (Person.Attribute profession in professions) {
-			GameObject professionObject = Instantiate(uiProfessionObject);
-			professionObject.transform.SetParent(transform.Find("Right/Person/Content/Professions/ProfessionList"), false);
-			professionObject.transform.Find("Toggle/Icon").GetComponent<Image>().sprite = mSpriteManager.GetSprite(profession); 
-			professionObject.transform.Find("Toggle/Name").GetComponent<Text>().text = profession.ToString(); 
-			professionObject.transform.Find("Toggle/InfoText").GetComponent<Text>().text = profession.GetDescription(); 
-			Toggle toggle = professionObject.GetComponentInChildren<Toggle>();
-			toggle.group = mProfessionToggleGroup;
-            toggle.onValueChanged.AddListener(OnChangeProfession);
-            mProfessionToggles.Add(profession, toggle);
-		}
-		mProfessionToggles[Person.Attribute.FARMER].isOn = true;
-        OnTabChanged(true); // set active tab color initially
     }
 
     void UpdateRenderables<T>(List<T> renderables, GameObject newObject, List<GameObject> objectPool, Transform uiContainer, System.Action<GameObject> onCreateCallback = null)
@@ -105,53 +81,24 @@ public class UIManager : MonoBehaviour {
 	}
 
     void Update () {
-		List<Person> selectedPeople = getSelectedPeople();
-		GodDemand selectedDemand = getSelectedDemand();
-		// Only allow sacrificing if either no demand is selected or all of the required conditions are met
-		bool canSacrifice = selectedPeople.Count > 0 && (selectedDemand == null || selectedDemand.mDemand.CheckSatisfaction(selectedPeople));
-		transform.Find("Right/People/SacrificeButton").GetComponent<Button>().interactable = canSacrifice;
-
 		List<Person> people = mPersonManager.People;
-		Transform peopleContainer = GetPeopleContainer();
-		UpdateRenderables(people, uiPersonObject, mUiPeoplePool, peopleContainer, InitializeUIPerson);
-
-        // Select someone if nobody is selected when vieweing the single person view
-        if (GetSelectedTabIndex() == 2 && mUiPeoplePool.Count > 0 && selectedPeople.Count == 0)
-        {
-            mUiPeoplePool[0].GetComponentInChildren<Toggle>().isOn = true;
-        }
-        // Update the single-person info view
-        if (selectedPeople.Count > 0) {
-			Person selectedPerson = selectedPeople[0];
-			transform.Find("Right/Person/Content/PersonInfo/Text").GetComponent<Text>().text = selectedPerson.GetLongUIDescription();
-		}
+		Transform peopleContainer = GetPeopleContainer(Person.Attribute.FARMER);
+		UpdateRenderables(people, uiPersonObject, mUiPeoplePool, peopleContainer);
 
 		// Update the god and demands
 		if(mGod != null) {
-			string fleetingDemandsTabName = "Fleeting\r\nDemands";
-			if (mGod.FleetingDemands.Count > 0) {
-				fleetingDemandsTabName += " (" + mGod.FleetingDemands.Count + ")"; 
-			}
-			if(GetSelectedTabIndex() != 0)
-			{
-				Transform tab1 = transform.Find("Left/TabGroup/Tab1");
-				tab1.GetComponentInChildren<Image>().color = mGod.FleetingDemands.Count > 0 ?  sAttentionColor : sNormalColor;
-			}
-			transform.Find("Left/TabGroup/Tab1/Text").GetComponent<Text>().text = fleetingDemandsTabName;
-			transform.Find("Left/Demands/Name").GetComponent<Text>().text = mGod.Name;
-			List<GodDemand> demands = GetSelectedTabIndex() == 0 ? mGod.FleetingDemands : mGod.PermanentDemands;
-			Transform demandContainer = transform.Find("Left/Demands/DemandList/Viewport/Content");
-			UpdateRenderables(demands, uiDemandObject, mUiDemandPool, demandContainer);
-		}
-		// TODO: add a callback for when a new UI demand is created to call this
-		foreach (GameObject uiDemand in mUiDemandPool) {
-			uiDemand.GetComponent<Toggle>().group = mDemandToggleGroup;
-		}
+            // TODO: show the god name somewhere			
+            //transform.Find("Left/Demands/Name").GetComponent<Text>().text = mGod.Name;
+            Transform fleetingDemandContainer = transform.Find("Center (H)/DemandGroups/V/Fleeting/G");
+            Transform permanentDemandContainer = transform.Find("Center (H)/DemandGroups/V/Permanent/G");
+            UpdateRenderables(mGod.FleetingDemands, uiDemandObject, mUiDemandPool, fleetingDemandContainer);
+            UpdateRenderables(mGod.PermanentDemands, uiDemandObject, mUiDemandPool2, permanentDemandContainer);
+        }
 
-		// TODO: define a class to represent a notification message, and have it implement IRenderable
-		// Update notification objects
-		// UPDATE: this now only shows and updates the timer of the first (oldest) notification
-		Transform notificationContainer = transform.Find("BRCorner");
+        // TODO: define a class to represent a notification message, and have it implement IRenderable
+        // Update notification objects
+        // UPDATE: this now only shows and updates the timer of the first (oldest) notification
+        Transform notificationContainer = transform.Find("BRCorner");
 		Transform godContainer = transform.Find("BLCorner");
 		for(int i = 0; i < Mathf.Max(mNotificationMessages.Count, mUiNotificationPool.Count); i++)
 		{
@@ -240,139 +187,24 @@ public class UIManager : MonoBehaviour {
 		}
 	}
 
-    void InitializeUIPerson(GameObject uiPerson)
-    {
-        Toggle toggle = uiPerson.GetComponentInChildren<Toggle>();
-        toggle.onValueChanged.AddListener(OnChangeSelectedPeople);
-        UpdateUIPersonForTab(uiPerson);
-    }
-
-    void UpdateUIPersonForTab(GameObject uiPerson)
-    {
-        bool isRadioButton = GetSelectedTabIndex() == 2;
-        uiPerson.transform.Find("Toggle/DotBackground").gameObject.SetActive(isRadioButton);
-        uiPerson.transform.Find("Toggle/CheckBackground").gameObject.SetActive(!isRadioButton);
-        Toggle toggle = uiPerson.GetComponentInChildren<Toggle>();
-        toggle.group = isRadioButton ? mPeopleToggleGroup : null;
-        toggle.graphic = isRadioButton
-            ? uiPerson.transform.Find("Toggle/DotBackground/Dot").GetComponent<Image>()
-            : uiPerson.transform.Find("Toggle/CheckBackground/Checkmark").GetComponent<Image>();
-    }
-
-
-    private void clearSelectedPeople() {
-		for(int i = 0; i < mUiPeoplePool.Count; i++)
-		{
-			GameObject uiPerson = mUiPeoplePool[i];
-			Toggle selectedToggle = uiPerson.transform.GetComponentInChildren<Toggle>();
-			selectedToggle.isOn = false;
-		}
-	}
-
-	private void clearSelectedDemands() {
-		for(int i = 0; i < mUiDemandPool.Count; i++)
-		{
-			GameObject uiDemand = mUiDemandPool[i];
-			Toggle selectedToggle = uiDemand.transform.GetComponentInChildren<Toggle>();
-			selectedToggle.isOn = false;
-		}
-	}
-
-	public List<Person> getSelectedPeople() {
-		List<Person> people = mPersonManager.People;
-		List<Person> result = new List<Person>();
-		for(int i = 0; i < Mathf.Min(people.Count, mUiPeoplePool.Count); i++)
-		{
-			GameObject uiPerson = mUiPeoplePool[i];
-			Toggle selectedToggle = uiPerson.transform.GetComponentInChildren<Toggle>();
-			if (selectedToggle.isOn) {
-				result.Add(people[i]);
-			}
-		}
-		return result;
-	}
-
-	private int getSelectedDemandId() {
-		if (!mDemandToggleGroup.AnyTogglesOn()) {
-			return 0;
-		}
-		Toggle activeDemand = mDemandToggleGroup.ActiveToggles().First();
-		int demandId;
-		System.Int32.TryParse(activeDemand.gameObject.name, out demandId);
-		return demandId;
-
-	}
-
-	public GodDemand getSelectedDemand() {
-		int demandId = getSelectedDemandId();
-		if(mGod != null && demandId != 0) {
-			foreach (GodDemand demand in mGod.Demands) {
-				if (demand.mId == demandId) {
-					return demand;
-				}
-			}
-		}
-		return null;
-	}
-
-	private Person.Attribute getSelectedProfession() {
-        foreach (KeyValuePair<Person.Attribute, Toggle> entry in mProfessionToggles) {
-			if (entry.Value.isOn) {
-				return entry.Key;
-			}
-		}
-		return Person.Attribute.NONE;
-	}
-
 	// called when the sacrifice button is clicked
 	public void OnSacrifice() {
-		List<Person> selectedPeople = getSelectedPeople();
+        // TODO: sacrifice relevant people
+        List<Person> selectedPeople = new List<Person>();//getSelectedPeople();
 		Debug.Log("Sacrificing " + selectedPeople.Count + " people.");
 		if (selectedPeople.Count == 0) { return; }
-
 
 		if(mGod != null) {
 			string sacrificedNames = Utilities.ConcatStrings(selectedPeople.ConvertAll(person => person.Name));
 			LogEvent("You sacrifice " + sacrificedNames + " to " + mGod.Name, 1f);
-			mGod.MakeSacrifice(getSelectedDemandId(), selectedPeople);
-			mDemandToggleGroup.SetAllTogglesOff();
+			//mGod.MakeSacrifice(relevantDemand, selectedPeople);
 		}
-		clearSelectedPeople();
 	}
 
-	// Called when a profession button is clicked
-	public void OnChangeProfession(bool isOn) {
-        if (isOn)
-        {
-            List<Person> selectedPeople = getSelectedPeople();
-            Person.Attribute selectedProfession = getSelectedProfession();
-            if (selectedPeople.Count == 0) { return; }
-            foreach (Person person in selectedPeople)
-            {
-                person.ChangeProfession(selectedProfession);
-            }
-        }
+	// Called when a person is dropped on a profession area
+	public void OnChangeProfession(Person person, Person.Attribute newProfession) {
+        person.ChangeProfession(newProfession);
 	}
-
-    // Called when a person is either selected or unselected
-    // (which can also happen when changing tabs)
-    public void OnChangeSelectedPeople(bool isOn)
-    {
-        List<Person> selectedPeople = getSelectedPeople();
-        // Only adjust toggles when they are active in the hierarchy.
-        if (selectedPeople.Count == 1 && mProfessionToggles[Person.Attribute.FARMER].gameObject.activeInHierarchy) {
-            Person person = selectedPeople[0];
-            Person.Attribute profession = person.GetAttribute(Person.AttributeType.PROFESSION);
-            // Set the new value to ON. Let toggle group handle unselecting.
-            foreach (KeyValuePair<Person.Attribute, Toggle> entry in mProfessionToggles)
-            {
-                if (entry.Key == profession)
-                {
-                    entry.Value.isOn = true;
-                }
-            }
-        }
-    }
 
     public void LogEvent(string message, float duration=2f, bool isGod=false) {
 		message = message.Trim();
@@ -382,7 +214,8 @@ public class UIManager : MonoBehaviour {
 			// Bullet point
 			newLogText += "\u2022 " + mEventMessages[i] + "\r\n";
 		}
-		transform.Find("Left/Log/Scroll View/Viewport/LogText").GetComponent<Text>().text = newLogText.Trim();
+        // TODO: have a log in the scene again
+		// transform.Find("Left/Log/Scroll View/Viewport/LogText").GetComponent<Text>().text = newLogText.Trim();
 
 		// Only notify for events that have a non-zero duration.
 		if (duration > 0f) {
@@ -406,40 +239,14 @@ public class UIManager : MonoBehaviour {
 		return 0;
 	}
 
-	private Transform GetPeopleContainer() {
-		int tabIndex = GetSelectedTabIndex();
-		var leftPeopleList = transform.Find("Left/People/PeopleList/Viewport/Content");
-		var rightPeopleList = transform.Find("Right/People/PeopleList/Viewport/Content");
-		return tabIndex == 2 ? leftPeopleList : rightPeopleList;
-	}
-
-	private ToggleGroup CreateToggleGroup(string name, bool canUnselect) {
-		GameObject emptyObj = new GameObject(name);
-		emptyObj.transform.parent = transform;
-		ToggleGroup group = emptyObj.AddComponent<ToggleGroup>();
-		group.allowSwitchOff = canUnselect;
-		return group;
+	private Transform GetPeopleContainer(Person.Attribute profession) {
+        return transform.Find("Center (H)/ProfessionGroups/V/" + profession.ToString() + "/G");
 	}
 
 	public void OnTabChanged(bool isTheActiveTab) {
 		// only do this logic once.
 		if (!isTheActiveTab) { return; }
-		clearSelectedPeople();
-		clearSelectedDemands();
 		int selectedTab = GetSelectedTabIndex();
-		foreach (GameObject uiPerson in mUiPeoplePool) {
-            UpdateUIPersonForTab(uiPerson);
-        }
-
-		// todo: update selected tab (demand list) and people container connections here
-		int selectedTabIndex = GetSelectedTabIndex();
-		Transform tabGroup = transform.Find("Left/TabGroup");
-		int tabIdx = 0;
-		foreach(Transform t in tabGroup)
-		{
-			t.GetComponentInChildren<Image>().color = tabIdx == selectedTabIndex ?  sSelectedColor : sNormalColor;
-			tabIdx++;
-		}
 	}
 
 	public void ShowMessage(string s, IDialogCallback callback)

@@ -109,7 +109,7 @@ GameObject:
   - component: {fileID: 222454301999411624}
   - component: {fileID: 114944960765729640}
   m_Layer: 5
-  m_Name: ProfessionGroup
+  m_Name: FARMER
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -856,7 +856,7 @@ GameObject:
   - component: {fileID: 222291830695933522}
   - component: {fileID: 114746986855261166}
   m_Layer: 5
-  m_Name: ProfessionGroup
+  m_Name: WARRIOR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1151,7 +1151,7 @@ GameObject:
   - component: {fileID: 222153247154000546}
   - component: {fileID: 114634352525060302}
   m_Layer: 5
-  m_Name: ProfessionGroup
+  m_Name: CIVILIAN
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1319,7 +1319,7 @@ GameObject:
   - component: {fileID: 224822697515058650}
   - component: {fileID: 114176826428265232}
   m_Layer: 5
-  m_Name: DemandGroup
+  m_Name: Fleeting
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1476,7 +1476,7 @@ GameObject:
   - component: {fileID: 224299748889879140}
   - component: {fileID: 114113265891949178}
   m_Layer: 5
-  m_Name: DemandGroup
+  m_Name: Permanent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2336,7 +2336,7 @@ MonoBehaviour:
   m_StartAxis: 0
   m_CellSize: {x: 80, y: 40}
   m_Spacing: {x: 5, y: 5}
-  m_Constraint: 1
+  m_Constraint: 0
   m_ConstraintCount: 3
 --- !u!114 &114161846931770732
 MonoBehaviour:
@@ -2580,7 +2580,7 @@ MonoBehaviour:
   m_StartAxis: 0
   m_CellSize: {x: 80, y: 40}
   m_Spacing: {x: 5, y: 5}
-  m_Constraint: 1
+  m_Constraint: 0
   m_ConstraintCount: 3
 --- !u!114 &114242958987271690
 MonoBehaviour:
@@ -3105,28 +3105,6 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1778697782685010}
-        m_MethodName: SetActive
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1925468514807760}
-        m_MethodName: SetActive
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 114929193105920086}
         m_MethodName: OnTabChanged
         m_Mode: 0
@@ -3181,7 +3159,7 @@ MonoBehaviour:
   m_StartAxis: 0
   m_CellSize: {x: 190, y: 55}
   m_Spacing: {x: 5, y: 5}
-  m_Constraint: 1
+  m_Constraint: 0
   m_ConstraintCount: 2
 --- !u!114 &114383906811085384
 MonoBehaviour:
@@ -3412,7 +3390,7 @@ MonoBehaviour:
   m_StartAxis: 0
   m_CellSize: {x: 190, y: 55}
   m_Spacing: {x: 5, y: 5}
-  m_Constraint: 1
+  m_Constraint: 0
   m_ConstraintCount: 2
 --- !u!114 &114472464597707394
 MonoBehaviour:
@@ -3462,7 +3440,7 @@ MonoBehaviour:
   m_StartAxis: 0
   m_CellSize: {x: 80, y: 40}
   m_Spacing: {x: 5, y: 5}
-  m_Constraint: 1
+  m_Constraint: 0
   m_ConstraintCount: 3
 --- !u!114 &114484464080419576
 MonoBehaviour:
@@ -4786,28 +4764,6 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1778697782685010}
-        m_MethodName: SetActive
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1925468514807760}
-        m_MethodName: SetActive
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 114929193105920086}
         m_MethodName: OnTabChanged
         m_Mode: 0
@@ -5273,9 +5229,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiNotificationObject: {fileID: 1256509187561746, guid: 8983bb212d90c554fb98a1b352fbda2b,
     type: 2}
-  uiPersonObject: {fileID: 1477710084108462, guid: 54d6375a8dd6838458beda9de5e7498d,
+  uiPersonObject: {fileID: 1679340972771738, guid: e7ea2ead4ef9b1141843860a2831c7aa,
     type: 2}
-  uiDemandObject: {fileID: 1310113316287112, guid: 8fe479ead20320b4cbc541637f40181c,
+  uiDemandObject: {fileID: 1228691288022022, guid: e9b08d6884379f5409e4851bebcab67f,
     type: 2}
   uiProfessionObject: {fileID: 1561607604244672, guid: b464a62562cb7214f99ad6973ec65d4f,
     type: 2}

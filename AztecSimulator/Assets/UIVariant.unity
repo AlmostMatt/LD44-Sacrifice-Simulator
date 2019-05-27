@@ -1101,45 +1101,30 @@ Prefab:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114460179701541556, guid: 5708ba3743573e5438ed362deaa402b6,
-        type: 2}
-      propertyPath: m_CellSize.x
-      value: 190
-      objectReference: {fileID: 0}
     - target: {fileID: 114383244302653130, guid: 5708ba3743573e5438ed362deaa402b6,
         type: 2}
-      propertyPath: m_CellSize.x
-      value: 190
-      objectReference: {fileID: 0}
-    - target: {fileID: 114383244302653130, guid: 5708ba3743573e5438ed362deaa402b6,
-        type: 2}
-      propertyPath: m_CellSize.y
-      value: 55
-      objectReference: {fileID: 0}
-    - target: {fileID: 114383244302653130, guid: 5708ba3743573e5438ed362deaa402b6,
-        type: 2}
-      propertyPath: m_Padding.m_Left
+      propertyPath: m_Constraint
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114383244302653130, guid: 5708ba3743573e5438ed362deaa402b6,
+    - target: {fileID: 114160489388757778, guid: 5708ba3743573e5438ed362deaa402b6,
         type: 2}
-      propertyPath: m_ConstraintCount
-      value: 2
+      propertyPath: m_Constraint
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114484018542379124, guid: 5708ba3743573e5438ed362deaa402b6,
+        type: 2}
+      propertyPath: m_Constraint
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114460179701541556, guid: 5708ba3743573e5438ed362deaa402b6,
+        type: 2}
+      propertyPath: m_Constraint
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114225021206283886, guid: 5708ba3743573e5438ed362deaa402b6,
         type: 2}
-      propertyPath: m_ConstraintCount
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 114460179701541556, guid: 5708ba3743573e5438ed362deaa402b6,
-        type: 2}
-      propertyPath: m_ConstraintCount
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114460179701541556, guid: 5708ba3743573e5438ed362deaa402b6,
-        type: 2}
-      propertyPath: m_CellSize.y
-      value: 55
+      propertyPath: m_Constraint
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5708ba3743573e5438ed362deaa402b6, type: 2}

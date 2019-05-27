@@ -16,7 +16,7 @@ public class HoverInfo :  MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 	public void Awake() {
 		mUiInfo = Instantiate(uiInfoPrefab);
 		mUiInfo.SetActive(false);
-		GameObject canvasObject = GameObject.Find("UI Canvas");
+		GameObject canvasObject = Utilities.GetUIManager().gameObject;
 		mCanvasTransform = canvasObject.GetComponent<RectTransform>();
 		mUiInfo.transform.SetParent(canvasObject.transform, false);
 		//Rect corners = RectTransformUtility.PixelAdjustRect(
