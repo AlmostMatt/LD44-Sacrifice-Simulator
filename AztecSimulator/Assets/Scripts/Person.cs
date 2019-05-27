@@ -87,6 +87,10 @@ public class Person : MonoBehaviour, IRenderable {
 	public string Name {
 		get { return(mName); } 
 	}
+    public Attribute Profession
+    {
+        get { return (GetAttribute(AttributeType.PROFESSION)); }
+    }
 	public Attribute[] Attributes {
 		get { return(mAttributes); }
 	}

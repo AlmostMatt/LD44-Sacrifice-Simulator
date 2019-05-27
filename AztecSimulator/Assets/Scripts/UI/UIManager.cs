@@ -14,13 +14,14 @@ public class UIManager : MonoBehaviour {
 	public GameObject uiOngoingObject;
 
 	private List<GameObject> mUiPeoplePool = new List<GameObject>();
-
+    private BidirectionalMap<Person, GameObject> mUiPeopleMap = new BidirectionalMap<Person, GameObject>();
     private List<GameObject> mUiDemandPool = new List<GameObject>();
-    private List<GameObject> mUiDemandPool2 = new List<GameObject>();
+    private BidirectionalMap<GodDemand, GameObject> mUiDemandMap = new BidirectionalMap<GodDemand, GameObject>();
     private List<GameObject> mUiNotificationPool = new List<GameObject>();
 	private List<GameObject> mUiOngoingPool = new List<GameObject>();
+    private BidirectionalMap<Ongoing, GameObject> mUiOngoingMap = new BidirectionalMap<Ongoing, GameObject>();
 
-	private God mGod;
+    private God mGod;
 	private PersonManager mPersonManager;
 	private SpriteManager mSpriteManager;
 
@@ -55,45 +56,58 @@ public class UIManager : MonoBehaviour {
 		mSpriteManager = Utilities.GetSpriteManager();
     }
 
-    void UpdateRenderables<T>(List<T> renderables, GameObject newObject, List<GameObject> objectPool, Transform uiContainer, System.Action<GameObject> onCreateCallback = null)
-		where T : IRenderable {
-		for(int i = 0; i < Mathf.Max(renderables.Count, objectPool.Count); i++)
+    void UpdateRenderables<T>(
+        List<T> renderables,
+        GameObject newObject,
+        List<GameObject> objectPool,
+        BidirectionalMap<T, GameObject> renderableObjectMap,
+        Transform uiContainer,
+        System.Action<GameObject> onCreateCallback = null)
+		where T : IRenderable
+    {
+        // Put all GameObjects in a set, and remove the objects that are still in used
+        HashSet<GameObject> unusedObjects = new HashSet<GameObject>(renderableObjectMap.Values);
+        foreach (T renderable in renderables)
 		{
 			GameObject uiObject;
 			// Spawn new UI person
-			if (i >= objectPool.Count) {
-				uiObject = Instantiate(newObject);
-				objectPool.Add(uiObject);
+			if (!renderableObjectMap.ContainsKey(renderable)) {
+                if (objectPool.Count > 0)
+                {
+                    uiObject = objectPool[objectPool.Count - 1];
+                    objectPool.RemoveAt(objectPool.Count - 1);
+                } else
+                {
+                    uiObject = Instantiate(newObject);
+                }
                 uiObject.transform.SetParent(uiContainer);
+                renderableObjectMap.Add(renderable, uiObject);
                 if (onCreateCallback != null)
                 {
                     onCreateCallback(uiObject);
                 }
 			} else {
-				uiObject = objectPool[i];
-			}
-			// Update visibility
-			uiObject.transform.gameObject.SetActive(i < renderables.Count);
-			// Update text
-			if (i < renderables.Count) {
-				renderables[i].RenderTo(uiObject);
-			}
+				uiObject = renderableObjectMap.GetValue(renderable);
+                unusedObjects.Remove(uiObject);
+            }
+            renderable.RenderTo(uiObject);
 		}
+        foreach (GameObject uiObject in unusedObjects)
+        {
+            renderableObjectMap.RemoveValue(uiObject);
+            objectPool.Add(uiObject);
+        }
 	}
 
     void Update () {
 		List<Person> people = mPersonManager.People;
-		Transform peopleContainer = GetPeopleContainer(Person.Attribute.FARMER);
-		UpdateRenderables(people, uiPersonObject, mUiPeoplePool, peopleContainer);
+		UpdateRenderables(people, uiPersonObject, mUiPeoplePool, mUiPeopleMap, null, InitializeUIPerson);
 
 		// Update the god and demands
 		if(mGod != null) {
             // TODO: show the god name somewhere			
             //transform.Find("Left/Demands/Name").GetComponent<Text>().text = mGod.Name;
-            Transform fleetingDemandContainer = transform.Find("Center (H)/DemandGroups/V/Fleeting/G");
-            Transform permanentDemandContainer = transform.Find("Center (H)/DemandGroups/V/Permanent/G");
-            UpdateRenderables(mGod.FleetingDemands, uiDemandObject, mUiDemandPool, fleetingDemandContainer);
-            UpdateRenderables(mGod.PermanentDemands, uiDemandObject, mUiDemandPool2, permanentDemandContainer);
+            UpdateRenderables(mGod.Demands, uiDemandObject, mUiDemandPool, mUiDemandMap, null, InitializeUIDemand);
         }
 
         // TODO: define a class to represent a notification message, and have it implement IRenderable
@@ -151,7 +165,7 @@ public class UIManager : MonoBehaviour {
 
 		// Update ongoing objects
 		Transform ongoingContainer = transform.Find("TRCorner/OngoingGroup");
-		UpdateRenderables(GameState.Ongoings, uiOngoingObject, mUiOngoingPool, ongoingContainer);
+		UpdateRenderables(GameState.Ongoings, uiOngoingObject, mUiOngoingPool, mUiOngoingMap, ongoingContainer);
 
 		// Update the top UI bar
 		string foodString = Utilities.ColorString("Food: " + GameState.FoodSupply + "/" + people.Count, "red", people.Count > GameState.FoodSupply);
@@ -202,9 +216,15 @@ public class UIManager : MonoBehaviour {
 		}
 	}
 
-	// Called when a person is dropped on a profession area
-	public void OnChangeProfession(Person person, Person.Attribute newProfession) {
-        person.ChangeProfession(newProfession);
+	// Called when a GameObject is dropped on a profession area
+    // Returns false if the dropped object is not a person.
+	public bool OnChangeProfession(GameObject uiObject, Person.Attribute newProfession) {
+        if (!mUiPeopleMap.ContainsValue(uiObject))
+        {
+            return false;
+        }
+        mUiPeopleMap.GetKey(uiObject).ChangeProfession(newProfession);
+        return true;
 	}
 
     public void LogEvent(string message, float duration=2f, bool isGod=false) {
@@ -238,11 +258,21 @@ public class UIManager : MonoBehaviour {
 		}
 		Debug.Log("WARNING: No tab selected");
 		return 0;
-	}
+    }
 
-	private Transform GetPeopleContainer(Person.Attribute profession) {
-        return transform.Find("Center (H)/ProfessionGroups/V/" + profession.ToString() + "/G");
-	}
+    private void InitializeUIPerson(GameObject uiPerson)
+    {
+        Person person = mUiPeopleMap.GetKey(uiPerson);
+        uiPerson.transform.parent = transform.Find("Center (H)/ProfessionGroups/V/" + person.Profession.ToString() + "/G");
+    }
+
+    private void InitializeUIDemand(GameObject uiDemand)
+    {
+        GodDemand demand = mUiDemandMap.GetKey(uiDemand);
+        Transform fleetingDemandContainer = transform.Find("Center (H)/DemandGroups/V/Fleeting/G");
+        Transform permanentDemandContainer = transform.Find("Center (H)/DemandGroups/V/Permanent/G");
+        uiDemand.transform.parent = demand.IsFleeting ? fleetingDemandContainer : permanentDemandContainer;
+    }
 
 	public void OnTabChanged(bool isTheActiveTab) {
 		// only do this logic once.

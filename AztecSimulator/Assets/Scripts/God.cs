@@ -21,11 +21,11 @@ public class God : MonoBehaviour {
 	}
 	public List<GodDemand> PermanentDemands
 	{
-		get { return(mDemands.FindAll(x => x.mTimeLeft == -1f)); }
+		get { return(mDemands.FindAll(x => !x.IsFleeting)); }
 	}
 	public List<GodDemand> FleetingDemands
 	{
-		get { return(mDemands.FindAll(x => x.mTimeLeft > 0)); }
+		get { return(mDemands.FindAll(x => x.IsFleeting)); }
 	}
 
 	void Start () {

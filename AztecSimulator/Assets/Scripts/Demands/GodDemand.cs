@@ -17,8 +17,9 @@ public class GodDemand : IRenderable
 	public int mNumBuys = 0;
 
 	public string[] mLongDescOverride;
+    public bool IsFleeting { get { return mTimeLeft != -1f; } }
 
-	public GodDemand(SacrificeDemand demand, SacrificeResult satisfiedResult, SacrificeResult ignoredResult)
+    public GodDemand(SacrificeDemand demand, SacrificeResult satisfiedResult, SacrificeResult ignoredResult)
 	{
 		mId = ++sId;
 
@@ -43,10 +44,9 @@ public class GodDemand : IRenderable
 			return(mLongDescOverride);
 		}
 
-		bool isFleeting = mTimeLeft >= 0;
 		bool isOffer = mSatisfiedResult != null;
 		string[] result = new string[2];
-		if(isFleeting)
+		if(IsFleeting)
 		{
 			result[0] = isOffer ? "OFFER: " + mSatisfiedResult.mName : "THREAT: " + mIgnoredResult.mName;
 			result[1] = mTimeLeft >= 0 ? string.Format("({0:0.0})", mTimeLeft) : "";
@@ -67,8 +67,6 @@ public class GodDemand : IRenderable
 	public void RenderTo(GameObject uiPrefab) {
         // TODO: associated dropped people on the demand
         List<Person> selectedPeople = new List<Person>();// Utilities.GetSelectedPeople();
-		// Hack: The GameObject stores demand ID in order to make selected demand lookup possible
-		uiPrefab.name = mId.ToString();
 		uiPrefab.GetComponent<HoverInfo>().SetText(GetResultDescription());
         // Text
         string[] demandStrings = GetUIDescriptionStrings(selectedPeople);
