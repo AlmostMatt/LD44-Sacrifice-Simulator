@@ -108,6 +108,7 @@ GameObject:
   - component: {fileID: 114847170579491170}
   - component: {fileID: 222454301999411624}
   - component: {fileID: 114944960765729640}
+  - component: {fileID: 114449116091537152}
   m_Layer: 5
   m_Name: FARMER
   m_TagString: Untagged
@@ -855,6 +856,7 @@ GameObject:
   - component: {fileID: 114944614188877756}
   - component: {fileID: 222291830695933522}
   - component: {fileID: 114746986855261166}
+  - component: {fileID: 114306583724664458}
   m_Layer: 5
   m_Name: WARRIOR
   m_TagString: Untagged
@@ -1150,6 +1152,7 @@ GameObject:
   - component: {fileID: 114588626196469804}
   - component: {fileID: 222153247154000546}
   - component: {fileID: 114634352525060302}
+  - component: {fileID: 114270008688168956}
   m_Layer: 5
   m_Name: CIVILIAN
   m_TagString: Untagged
@@ -1684,7 +1687,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1925362508639924
 GameObject:
   m_ObjectHideFlags: 1
@@ -2816,6 +2819,18 @@ MonoBehaviour:
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
   m_ChildControlHeight: 0
+--- !u!114 &114270008688168956
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1622414886469848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6e7bbe23d0834e4baab7b54745d426a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  associatedProfession: 2
 --- !u!114 &114271953069677492
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2910,6 +2925,18 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+--- !u!114 &114306583724664458
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1488728916972206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6e7bbe23d0834e4baab7b54745d426a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  associatedProfession: 1
 --- !u!114 &114312534231295542
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3323,6 +3350,18 @@ MonoBehaviour:
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
   m_ChildControlHeight: 1
+--- !u!114 &114449116091537152
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1055980058923218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6e7bbe23d0834e4baab7b54745d426a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  associatedProfession: 0
 --- !u!114 &114451842125142114
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6493,10 +6532,10 @@ RectTransform:
   m_Father: {fileID: 224496004431974384}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 60, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: -15}
+  m_SizeDelta: {x: 60, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224166442548074808
 RectTransform:
@@ -7077,7 +7116,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224509961054999414
 RectTransform:
@@ -7807,10 +7846,10 @@ RectTransform:
   m_Father: {fileID: 224496004431974384}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 60, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: -45}
+  m_SizeDelta: {x: 60, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224872602318554380
 RectTransform:

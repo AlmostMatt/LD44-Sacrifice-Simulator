@@ -14,6 +14,7 @@ public class UIManager : MonoBehaviour {
 	public GameObject uiOngoingObject;
 
 	private List<GameObject> mUiPeoplePool = new List<GameObject>();
+
     private List<GameObject> mUiDemandPool = new List<GameObject>();
     private List<GameObject> mUiDemandPool2 = new List<GameObject>();
     private List<GameObject> mUiNotificationPool = new List<GameObject>();
@@ -63,6 +64,7 @@ public class UIManager : MonoBehaviour {
 			if (i >= objectPool.Count) {
 				uiObject = Instantiate(newObject);
 				objectPool.Add(uiObject);
+                uiObject.transform.SetParent(uiContainer);
                 if (onCreateCallback != null)
                 {
                     onCreateCallback(uiObject);
@@ -70,7 +72,6 @@ public class UIManager : MonoBehaviour {
 			} else {
 				uiObject = objectPool[i];
 			}
-			uiObject.transform.SetParent(uiContainer);
 			// Update visibility
 			uiObject.transform.gameObject.SetActive(i < renderables.Count);
 			// Update text

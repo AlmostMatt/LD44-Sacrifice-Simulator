@@ -70,7 +70,12 @@ public static class Utilities {
 		return GameObject.FindGameObjectWithTag("SystemsAndManagers").GetComponent<God>();
 	}
 
-	public static UIManager GetUIManager()
+    public static Transform GetCanvas()
+    {
+        return GameObject.FindGameObjectWithTag("UIManager").transform;
+    }
+
+    public static UIManager GetUIManager()
 	{
 		// TODO: optimize this function for frequent calls by storing uiManager in a variable
 		// TODO: handle no-ui-manager edge case in all functions that call this
