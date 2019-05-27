@@ -19,7 +19,7 @@ public class Draggable : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
     {
         originalParent = transform.parent;
         originalPosition = transform.localPosition;
-        transform.parent = Utilities.GetCanvas();
+        transform.SetParent(Utilities.GetCanvas(), true);
         // Disable raycast blocking while being dragged so that other objects can receive mouseOver and onDrop events
         GetComponent<CanvasGroup>().blocksRaycasts = false;
     }
@@ -34,8 +34,8 @@ public class Draggable : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
         // If no OnDrop handler changed the parent of this object, put it where it was previously.
         if (transform.parent == Utilities.GetCanvas())
         {
-            transform.parent = originalParent;
             transform.localPosition = originalPosition;
+            transform.SetParent(originalParent, false);
         }
         GetComponent<CanvasGroup>().blocksRaycasts = true;
     }

@@ -11,7 +11,8 @@ public class ProfessionArea : MonoBehaviour, IDropHandler
         bool changeSuccessful = Utilities.GetUIManager().OnChangeProfession(eventData.pointerDrag, associatedProfession);
         if (changeSuccessful)
         {
-            eventData.pointerDrag.transform.parent = transform.Find("G");
+            eventData.pointerDrag.transform.localPosition = Vector3.zero;
+            eventData.pointerDrag.transform.SetParent(transform.Find("G"), false);
         }
     }
 }

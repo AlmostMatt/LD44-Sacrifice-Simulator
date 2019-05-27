@@ -263,7 +263,7 @@ public class UIManager : MonoBehaviour {
     private void InitializeUIPerson(GameObject uiPerson)
     {
         Person person = mUiPeopleMap.GetKey(uiPerson);
-        uiPerson.transform.parent = transform.Find("Center (H)/ProfessionGroups/V/" + person.Profession.ToString() + "/G");
+        uiPerson.transform.SetParent(transform.Find("Center (H)/ProfessionGroups/V/" + person.Profession.ToString() + "/G"), false);
     }
 
     private void InitializeUIDemand(GameObject uiDemand)
@@ -271,7 +271,7 @@ public class UIManager : MonoBehaviour {
         GodDemand demand = mUiDemandMap.GetKey(uiDemand);
         Transform fleetingDemandContainer = transform.Find("Center (H)/DemandGroups/V/Fleeting/G");
         Transform permanentDemandContainer = transform.Find("Center (H)/DemandGroups/V/Permanent/G");
-        uiDemand.transform.parent = demand.IsFleeting ? fleetingDemandContainer : permanentDemandContainer;
+        uiDemand.transform.SetParent(demand.IsFleeting ? fleetingDemandContainer : permanentDemandContainer, false);
     }
 
 	public void OnTabChanged(bool isTheActiveTab) {
