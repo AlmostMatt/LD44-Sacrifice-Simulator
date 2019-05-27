@@ -20,11 +20,12 @@ public class SpriteManager : MonoBehaviour {
 		}
 	}
 
-	public Sprite GetSprite(Person.Attribute profession) {
-		if (profession == Person.Attribute.NONE) {
+    // TODO: add an option to choose between 16px and 32px variants
+	public Sprite GetSprite(Person.Attribute attribute) {
+		if (attribute == Person.Attribute.NONE) {
 			return null;
 		}
-		return GetSprite(profession.ToString());
+		return GetSprite(attribute.ToString());
 	}
 
 	public Sprite GetSprite(string iconName) {

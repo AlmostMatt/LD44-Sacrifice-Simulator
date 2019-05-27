@@ -169,7 +169,7 @@ public class GodDemand : IRenderable
                         attrImage.enabled = k < attributes.Count;
                         if (k < attributes.Count)
                         {
-                            // TODO: custom image
+                            attrImage.sprite = Utilities.GetSpriteManager().GetSprite(attributes[k]);
                         }
                     }
                     demandSlotIndex++;

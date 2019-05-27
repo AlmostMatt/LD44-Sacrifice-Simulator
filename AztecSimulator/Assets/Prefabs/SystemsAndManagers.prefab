@@ -125,6 +125,13 @@ MonoBehaviour:
   - DroughtBackground
   - DROUGHT
   - ATTACK
+  - CARING
+  - SMART
+  - STUPID
+  - TALL
+  - SHORT
+  - STRONG
+  - WEAK
   sprites:
   - {fileID: 21300000, guid: c4e7e94388c49164385f90dd5d4e15f3, type: 3}
   - {fileID: 21300000, guid: 06375d4ea347b3641bfaef662d1039a7, type: 3}
@@ -132,6 +139,13 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 749015f3c2238514199f6c84781b85b0, type: 3}
   - {fileID: 21300000, guid: 85f3d33b35b8cf047a8e3f0c58ec2fac, type: 3}
   - {fileID: 21300000, guid: 8557d86868293c347a760152ebc63f9a, type: 3}
+  - {fileID: 21300000, guid: d750dc809a443614ca1ddf2a2fd09c99, type: 3}
+  - {fileID: 21300000, guid: d6c5fda253222e1438c7e9f77ea17e5a, type: 3}
+  - {fileID: 21300000, guid: ad8efd36aae813b4d8cc9e4a9f854fad, type: 3}
+  - {fileID: 21300000, guid: b0f9f3cef75c22746956f3b864cf0631, type: 3}
+  - {fileID: 21300000, guid: f9ebf230d4344c34a8451f44446b53de, type: 3}
+  - {fileID: 21300000, guid: a908f8c80379f314e999c722ca7e32d0, type: 3}
+  - {fileID: 21300000, guid: 0ea6d2bec7ba92141ad2ee820411e21b, type: 3}
 --- !u!114 &114983575028213916
 MonoBehaviour:
   m_ObjectHideFlags: 1

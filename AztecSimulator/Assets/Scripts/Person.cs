@@ -394,8 +394,7 @@ public class Person : MonoBehaviour, IRenderable {
             attrImage.enabled = (i < attributes.Length);
             if (i < attributes.Length)
             {
-                // TODO: make per-attribute images
-                //attrImage.sprite = Utilities.GetSpriteManager().GetSprite(attributes)[i];
+                attrImage.sprite = Utilities.GetSpriteManager().GetSprite(attributes[i]);
             }
         }
         // HP / XP bars

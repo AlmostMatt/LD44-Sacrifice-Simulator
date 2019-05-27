@@ -72,11 +72,7 @@ public class DemandGenerator {
 			int personCount = Mathf.Min((tier / 2) + 1, 4);
 			foreach(Criterion c in demand.mCriteria)
 			{
-				if(Random.value < 0.3)
-				{
-					c.mMinAge = Random.Range(10, 11 + (tier - 3) * 5);
-				}
-				else if(Random.value < 0.3)
+				if(Random.value < 0.5)
 				{
 					c.mMinLevel = tier + 1;
 				}
@@ -211,14 +207,7 @@ public class DemandGenerator {
 
 		Criterion c = new Criterion();
 
-		if(Random.value < 0.5)
-		{
-			c.mMinLevel = 10;
-		}
-		else
-		{
-			c.mMinAge = 30;
-		}
+		c.mMinLevel = 6;
 
 		c.mAttributes = GenerateRandomDemands(2);
 
