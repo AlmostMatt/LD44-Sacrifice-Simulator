@@ -152,13 +152,21 @@ public class GodDemand : IRenderable
                     }
                     Transform personSlot = uiPrefab.transform.Find("V/PersonSlots").GetChild(demandSlotIndex);
                     personSlot.gameObject.SetActive(true);
-
+                    // Level
                     personSlot.Find("H/Level").GetComponent<Text>().enabled = criteria[i].mMinLevel != -1;
                     personSlot.Find("H/Level").GetComponent<Text>().text = criteria[i].mMinLevel.ToString();
+                    // Profession
                     Sprite profession = Utilities.GetSpriteManager().GetSprite(criteria[i].GetProfession());
-                    personSlot.Find("H/Profession/Image").GetComponent<Image>().enabled = profession != null;
-                    personSlot.Find("H/Profession/Image").GetComponent<Image>().sprite = profession;
-                    //
+                    if (profession == null)
+                    {
+                        personSlot.Find("H/Profession/Image").GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.2f);
+                        personSlot.Find("H/Profession/Image").GetComponent<Image>().sprite = Utilities.GetSpriteManager().GetSprite("PERSON");
+                    } else
+                    {
+                        personSlot.Find("H/Profession/Image").GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.7f);
+                        personSlot.Find("H/Profession/Image").GetComponent<Image>().sprite = profession;
+                    }
+                    // Attributes
                     List<Person.Attribute> attributes = criteria[i].mAttributes.FindAll(attr => attr.GetAttrType() != Person.AttributeType.PROFESSION);
                     if (attributes.Count > 2)
                     {

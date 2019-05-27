@@ -428,7 +428,7 @@ Prefab:
     - target: {fileID: 224270909924289186, guid: 5708ba3743573e5438ed362deaa402b6,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -75.28573
+      value: -75.28571
       objectReference: {fileID: 0}
     - target: {fileID: 224086775414863402, guid: 5708ba3743573e5438ed362deaa402b6,
         type: 2}
@@ -443,12 +443,12 @@ Prefab:
     - target: {fileID: 224108437919133514, guid: 5708ba3743573e5438ed362deaa402b6,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -71.33334
+      value: -71.33333
       objectReference: {fileID: 0}
     - target: {fileID: 224351120682494132, guid: 5708ba3743573e5438ed362deaa402b6,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -71.33331
+      value: -71.33333
       objectReference: {fileID: 0}
     - target: {fileID: 224475024530453968, guid: 5708ba3743573e5438ed362deaa402b6,
         type: 2}
@@ -1335,6 +1335,16 @@ Prefab:
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 224270909924289186, guid: 5708ba3743573e5438ed362deaa402b6,
+        type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224936712103751266, guid: 5708ba3743573e5438ed362deaa402b6,
+        type: 2}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5708ba3743573e5438ed362deaa402b6, type: 2}
   m_IsPrefabParent: 0
@@ -1345,6 +1355,16 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114797501282310160, guid: e76847aa1c7bf254b9f00b2778de28f6,
+        type: 2}
+      propertyPath: sprites.Array.size
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 114797501282310160, guid: e76847aa1c7bf254b9f00b2778de28f6,
+        type: 2}
+      propertyPath: spriteNames.Array.size
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 4391487969033850, guid: e76847aa1c7bf254b9f00b2778de28f6, type: 2}
       propertyPath: m_LocalPosition.x
       value: 307.68506
@@ -1377,6 +1397,17 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 114797501282310160, guid: e76847aa1c7bf254b9f00b2778de28f6,
+        type: 2}
+      propertyPath: spriteNames.Array.data[13]
+      value: PERSON
+      objectReference: {fileID: 0}
+    - target: {fileID: 114797501282310160, guid: e76847aa1c7bf254b9f00b2778de28f6,
+        type: 2}
+      propertyPath: sprites.Array.data[13]
+      value: 
+      objectReference: {fileID: 21300000, guid: 49457c040e120684798d3679851309c6,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e76847aa1c7bf254b9f00b2778de28f6, type: 2}
   m_IsPrefabParent: 0
