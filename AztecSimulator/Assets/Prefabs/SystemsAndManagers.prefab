@@ -132,6 +132,7 @@ MonoBehaviour:
   - SHORT
   - STRONG
   - WEAK
+  - PERSON
   sprites:
   - {fileID: 21300000, guid: c4e7e94388c49164385f90dd5d4e15f3, type: 3}
   - {fileID: 21300000, guid: 06375d4ea347b3641bfaef662d1039a7, type: 3}
@@ -146,6 +147,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: f9ebf230d4344c34a8451f44446b53de, type: 3}
   - {fileID: 21300000, guid: a908f8c80379f314e999c722ca7e32d0, type: 3}
   - {fileID: 21300000, guid: 0ea6d2bec7ba92141ad2ee820411e21b, type: 3}
+  - {fileID: 21300000, guid: 49457c040e120684798d3679851309c6, type: 3}
 --- !u!114 &114983575028213916
 MonoBehaviour:
   m_ObjectHideFlags: 1
