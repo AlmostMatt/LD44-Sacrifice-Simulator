@@ -34,8 +34,8 @@ public class Draggable : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
         // If no OnDrop handler changed the parent of this object, put it where it was previously.
         if (transform.parent == Utilities.GetCanvas())
         {
-            transform.localPosition = originalPosition;
             transform.SetParent(originalParent, false);
+            transform.localPosition = originalPosition;
         }
         GetComponent<CanvasGroup>().blocksRaycasts = true;
     }

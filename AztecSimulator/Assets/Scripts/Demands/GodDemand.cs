@@ -64,6 +64,25 @@ public class GodDemand : IRenderable
         return ""; //  "ATTACK";
 	}
 
+    public List<int> GetRelevantSlots(Person person)
+    {
+        List<int> relevantSlots = new List<int>();
+        int demandSlotIndex = 0;
+        foreach (Criterion criterion in mDemand.mCriteria)
+        {
+            bool isSatisfied = criterion.CheckSatisfaction(person);
+            for (int j = 0; j < Mathf.Max(criterion.mCount, 1); j++)
+            {
+                if (isSatisfied)
+                {
+                    relevantSlots.Add(demandSlotIndex);
+                }
+                demandSlotIndex++;
+            }
+        }
+        return relevantSlots;
+    }
+
 	public void RenderTo(GameObject uiPrefab) {
         // TODO: associated dropped people on the demand
         List<Person> selectedPeople = new List<Person>();// Utilities.GetSelectedPeople();

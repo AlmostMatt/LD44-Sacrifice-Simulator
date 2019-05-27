@@ -10,38 +10,39 @@ public class Criterion {
 
 	public List<Person.Attribute> mAttributes = new List<Person.Attribute>();
 
-	public bool CheckSatisfaction(List<Person> people)
+    public bool CheckSatisfaction(Person p)
+    {
+        if (p.Age < mMinAge || p.Level < mMinLevel)
+        {
+            return false;
+        }
+        List<Person.Attribute> unsatisfiedAttrs = new List<Person.Attribute>(mAttributes);
+        foreach (Person.Attribute reqAttr in mAttributes)
+        {
+            if (p.Profession == reqAttr)
+            {
+                unsatisfiedAttrs.Remove(reqAttr);
+                break;
+            }
+            foreach (Person.Attribute attr in p.NonProfessionAttributes)
+            {
+                if (attr == reqAttr)
+                {
+                    unsatisfiedAttrs.Remove(reqAttr);
+                    break;
+                }
+            }
+        }
+        return unsatisfiedAttrs.Count == 0;
+    }
+
+    public bool CheckSatisfaction(List<Person> people)
 	{
 		int satCount = 0;
 		foreach(Person p in people)
 		{
-			if(p.Age >= mMinAge && p.Level >= mMinLevel)
-			{
-				List<Person.Attribute> unsatisfiedAttrs = new List<Person.Attribute>(mAttributes);
-                foreach (Person.Attribute reqAttr in unsatisfiedAttrs)
-                {
-                    if (p.Profession == reqAttr)
-                    {
-                        unsatisfiedAttrs.Remove(reqAttr);
-                        break;
-                    }
-				    foreach(Person.Attribute attr in p.NonProfessionAttributes)
-				    {
-						if(attr == reqAttr)
-						{
-							unsatisfiedAttrs.Remove(reqAttr);
-							break;
-						}
-				    }
-                }
-
-				if(unsatisfiedAttrs.Count == 0)
-				{
-					++satCount;
-				}
-			}
-		}
-
+            satCount += CheckSatisfaction(p) ? 1 : 0;
+        }
 		return(satCount >= mCount);
 	}
 

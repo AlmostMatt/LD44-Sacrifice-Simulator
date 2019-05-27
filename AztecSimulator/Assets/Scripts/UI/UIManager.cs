@@ -216,16 +216,28 @@ public class UIManager : MonoBehaviour {
 		}
 	}
 
-	// Called when a GameObject is dropped on a profession area
+    // Called when a GameObject is dropped on a profession area
     // Returns false if the dropped object is not a person.
-	public bool OnChangeProfession(GameObject uiObject, Person.Attribute newProfession) {
+    public bool OnChangeProfession(GameObject uiObject, Person.Attribute newProfession)
+    {
         if (!mUiPeopleMap.ContainsValue(uiObject))
         {
             return false;
         }
         mUiPeopleMap.GetKey(uiObject).ChangeProfession(newProfession);
         return true;
-	}
+    }
+
+    // Called when a GameObject is dropped on a profession area
+    // Returns the list of person slots that are relevant.
+    public List<int> OnDropPersonOnDemand(GameObject uiPerson, GameObject uiDemand)
+    {
+        if (!mUiPeopleMap.ContainsValue(uiPerson))
+        {
+            return new List<int>();
+        }
+        return mUiDemandMap.GetKey(uiDemand).GetRelevantSlots(mUiPeopleMap.GetKey(uiPerson));
+    }
 
     public void LogEvent(string message, float duration=2f, bool isGod=false) {
 		message = message.Trim();
