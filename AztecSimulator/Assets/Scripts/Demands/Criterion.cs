@@ -18,17 +18,22 @@ public class Criterion {
 			if(p.Age >= mMinAge && p.Level >= mMinLevel)
 			{
 				List<Person.Attribute> unsatisfiedAttrs = new List<Person.Attribute>(mAttributes);
-				foreach(Person.Attribute attr in p.Attributes)
-				{
-					foreach(Person.Attribute reqAttr in unsatisfiedAttrs)
-					{
+                foreach (Person.Attribute reqAttr in unsatisfiedAttrs)
+                {
+                    if (p.Profession == reqAttr)
+                    {
+                        unsatisfiedAttrs.Remove(reqAttr);
+                        break;
+                    }
+				    foreach(Person.Attribute attr in p.NonProfessionAttributes)
+				    {
 						if(attr == reqAttr)
 						{
 							unsatisfiedAttrs.Remove(reqAttr);
 							break;
 						}
-					}
-				}
+				    }
+                }
 
 				if(unsatisfiedAttrs.Count == 0)
 				{

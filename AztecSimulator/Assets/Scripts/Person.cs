@@ -91,8 +91,8 @@ public class Person : MonoBehaviour, IRenderable {
     {
         get { return (GetAttribute(AttributeType.PROFESSION)); }
     }
-	public Attribute[] Attributes {
-		get { return(mAttributes); }
+	public Attribute[] NonProfessionAttributes {
+		get { return(System.Array.FindAll(mAttributes, a => a.GetAttrType() != Person.AttributeType.PROFESSION)); }
 	}
 	public float Health
 	{
@@ -116,8 +116,8 @@ public class Person : MonoBehaviour, IRenderable {
 	}
 	public float Efficiency {
 		get { return(
-			EFFICIENCY_BASE[GetAttribute(AttributeType.PROFESSION)]
-			+ (EFFICIENCY_PER_LEVEL[GetAttribute(AttributeType.PROFESSION)]) * (mLevel - 1));
+			EFFICIENCY_BASE[Profession]
+			+ (EFFICIENCY_PER_LEVEL[Profession]) * (mLevel - 1));
 		}
 	}
 
@@ -226,7 +226,7 @@ public class Person : MonoBehaviour, IRenderable {
 
 		mAge += 0.2f * GameState.GameDeltaTime;
 
-		Attribute profession = GetAttribute(AttributeType.PROFESSION);
+		Attribute profession = Profession;
 		if(mLevel < GameState.GetLevelCap(profession))
 		{
 			if (profession != Attribute.NONE) {
@@ -303,12 +303,10 @@ public class Person : MonoBehaviour, IRenderable {
 	public string[] GetUIDescription(SacrificeDemand selectedDemand)
 	{
 		string attrString = "";
-		for(int i = 0; i < mAttributes.Length; ++i) {
-			if (mAttributes[i].GetAttrType() != AttributeType.PROFESSION) {
-				string attr = System.Enum.GetName(typeof(Attribute), (int)mAttributes[i]);
-				bool isRelevant = selectedDemand != null && selectedDemand.IsRelevantAttribute(mAttributes[i]);
-				attrString += Utilities.ColorString(attr, "green", isRelevant) + ", ";
-			}
+		for(int i = 0; i < NonProfessionAttributes.Length; ++i) {
+			string attr = System.Enum.GetName(typeof(Attribute), (int)NonProfessionAttributes[i]);
+			bool isRelevant = selectedDemand != null && selectedDemand.IsRelevantAttribute(NonProfessionAttributes[i]);
+			attrString += Utilities.ColorString(attr, "green", isRelevant) + ", ";
 		}
 		bool isLevelRelevant = selectedDemand != null && selectedDemand.IsRelevantLevel(mLevel);
 		string levelString = "Lvl " + Utilities.ColorString(GetLevelString(), "green", isLevelRelevant);
@@ -326,7 +324,7 @@ public class Person : MonoBehaviour, IRenderable {
 
 	private float GetXpToNextLevel()
 	{
-		int nextLevel = Mathf.Min(mLevel + 1, GameState.GetLevelCap(GetAttribute(AttributeType.PROFESSION)));
+		int nextLevel = Mathf.Min(mLevel + 1, GameState.GetLevelCap(Profession));
 		float requiredXpForLevel = GetTotalXpForLevel(nextLevel);
 		return(requiredXpForLevel - mXp);
 	}
@@ -338,10 +336,10 @@ public class Person : MonoBehaviour, IRenderable {
 
 	private string GetLevelString()
 	{
-		//if (mLevel == GameState.GetLevelCap(GetAttribute(AttributeType.PROFESSION))) {
+		//if (mLevel == GameState.GetLevelCap(Profession)) {
 		//	return mLevel + " (MAX)";
 		//} else {
-		return mLevel + "/" + GameState.GetLevelCap(GetAttribute(AttributeType.PROFESSION)).ToString() + " ";
+		return mLevel + "/" + GameState.GetLevelCap(Profession).ToString() + " ";
 		//}
 	}
 
@@ -383,22 +381,26 @@ public class Person : MonoBehaviour, IRenderable {
         // Level txt
         uiPrefab.transform.Find("H/Level").GetComponent<Text>().text = mLevel.ToString();
         // Profession
-        Person.Attribute profession = GetAttribute(Person.AttributeType.PROFESSION);
-        uiPrefab.transform.Find("H/Profession/Image").GetComponent<Image>().sprite = Utilities.GetSpriteManager().GetSprite(profession);
+        uiPrefab.transform.Find("H/Profession/Image").GetComponent<Image>().sprite = Utilities.GetSpriteManager().GetSprite(Profession);
         // Attributes
-        Person.Attribute[] attributes = System.Array.FindAll(mAttributes, a => a.GetAttrType() != Person.AttributeType.PROFESSION);
+        Person.Attribute[] attributes = NonProfessionAttributes;
+        if (attributes.Length > 2)
+        {
+            Debug.Log("WARNING: a person has >2 attributes!");
+        }
         for (int i = 0; i < 2; i++)
         {
             Image attrImage = uiPrefab.transform.Find("H/V/Attribute" + (i+1).ToString()).GetComponent<Image>();
             attrImage.enabled = (i < attributes.Length);
             if (i < attributes.Length)
             {
+                // TODO: make per-attribute images
                 //attrImage.sprite = Utilities.GetSpriteManager().GetSprite(attributes)[i];
             }
         }
         // HP / XP bars
         uiPrefab.transform.Find("H/HP/Bar").localScale = new Vector3(1f, mHealth / MaxHealth, 1f);
-        if (mLevel == GameState.GetLevelCap(GetAttribute(AttributeType.PROFESSION)))
+        if (mLevel == GameState.GetLevelCap(Profession))
         {
             uiPrefab.transform.Find("H/XP/Bar").localScale = new Vector3(1f, 1f, 1f);
             uiPrefab.transform.Find("H/XP/Bar").GetComponent<Image>().color = new Color(.7f, .7f, .7f);
