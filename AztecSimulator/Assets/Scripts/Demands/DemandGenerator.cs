@@ -236,7 +236,7 @@ public class DemandGenerator {
 			profC.mMinLevel = 7;
 			Person.Attribute[] attr = Person.RandomAttributes(1);
 			profC.mAttributes.Add(attr[attr.Length-1]);
-			profC.mCount = 5;
+			profC.mCount = 3;
 			professionDemand.mCriteria.Add(profC);
 			return(professionDemand);
 		}
