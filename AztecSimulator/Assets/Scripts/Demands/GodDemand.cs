@@ -146,7 +146,8 @@ public class GodDemand : IRenderable
                 {
                     if (demandSlotIndex >= 3)
                     {
-                        Debug.Log("WARNING: demand requires >3 sacrifices.");
+                        Debug.Log("WARNING: demand requires >3 sacrifices. Counts: "
+                            + Utilities.ConcatStrings(mDemand.mCriteria.ConvertAll(c => c.mCount.ToString())));
                         continue;
                     }
                     Transform personSlot = uiPrefab.transform.Find("V/PersonSlots").GetChild(demandSlotIndex);
