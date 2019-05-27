@@ -69,7 +69,7 @@ public class DemandGenerator {
 
 		if(tier >= 4)
 		{
-			int personCount = Mathf.Min((tier / 2) + 1, 4);
+			int personCount = Mathf.Min((tier / 2) + 1, 3);
 			foreach(Criterion c in demand.mCriteria)
 			{
 				if(Random.value < 0.5)
@@ -79,7 +79,7 @@ public class DemandGenerator {
 					
 				if(personCount > 0 && Random.value < 0.1 + (tier / 10))
 				{
-					c.mCount = Random.Range(1, personCount+1);
+					c.mCount = Mathf.Min(Random.Range(1, personCount+1), 3);
 					personCount -= c.mCount;
 				}
 			}
