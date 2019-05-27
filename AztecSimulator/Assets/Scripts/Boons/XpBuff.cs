@@ -6,10 +6,13 @@ public class XpBuff : SacrificeResult {
 
 	private Person.Attribute mProfession;
 
-	public XpBuff(Person.Attribute profession, string name, string description) : base(name, description)
+	public XpBuff(Person.Attribute profession, string professionString) : base("", "")
 	{
 		mProfession = profession;
-	}
+        mName = "Level " + (GameState.GetLevelCap(mProfession)+1) + " " + professionString;
+        mDescription = professionString + " gain xp faster. +1 max level.";
+
+    }
 
 	public override void DoEffect()
 	{

@@ -4,6 +4,5 @@ using UnityEngine;
 
 public class WarriorXpBuff : XpBuff {
 
-	public WarriorXpBuff() : base(Person.Attribute.WARRIOR, "Better Warriors", "Warriors gain xp faster. +1 max level.") {}
-
+    public WarriorXpBuff() : base(Person.Attribute.WARRIOR, "Warriors") { }
 }
