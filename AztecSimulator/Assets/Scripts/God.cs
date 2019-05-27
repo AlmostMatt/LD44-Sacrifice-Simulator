@@ -187,11 +187,7 @@ public class God : MonoBehaviour {
 
 	public List<SacrificeResult> MakeSacrifice(GodDemand demand, List<Person> people) {
 		List<SacrificeResult> results = new List<SacrificeResult>();
-        int demandId = mDemands.IndexOf(demand);
-        if (demandId == -1)
-        {
-            Debug.Log("WARNING: No demand with id " + demandId);
-        }
+        int demandId = demand.mId;
         if (demandId > 0) {
 			if(demand.mDemand.CheckSatisfaction(people))
 			{
