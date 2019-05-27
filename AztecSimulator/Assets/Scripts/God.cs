@@ -200,22 +200,6 @@ public class God : MonoBehaviour {
 
 				if(demand.mIsRenewable)
 				{
-					demand.mNumBuys++;
-					demand.mDemand = DemandGenerator.ScaledDemand(demand.mNumBuys);
-					/*
-					if(demand.mNumBuys <= 2)
-					{
-						demand.mDemand = DemandGenerator.SimpleDemand();
-					}
-					else if(demand.mNumBuys <= 4)
-					{
-						demand.mDemand = DemandGenerator.TierOneDemand();
-					}
-					else
-					{
-						demand.mDemand = DemandGenerator.TierTwoDemand();	
-					}
-					*/
 				}
 				else
 				{
@@ -238,13 +222,20 @@ public class God : MonoBehaviour {
 		PersonManager personMgr = Utilities.GetPersonManager();
 		personMgr.RemovePeople(people);
 
-		// for now just apply the results here, whatever...
+		// Apply results after the relevant people are sacrificed.
 		foreach(SacrificeResult r in results)
 		{
 			r.DoEffect();
-		}
+        }
+        // If a renewable demand was successful and did something, create a new result of the same type
+        // This is relevant if the text or any internal variables changed.
+        if (demand.mIsRenewable && results.Count > 0)
+        {
+            var resultType = demand.mSatisfiedResult.GetType();
+            demand.mSatisfiedResult = (SacrificeResult)System.Activator.CreateInstance(resultType);
+        }
 
-		if(GameState.HasBoon(BoonType.SACRIFICE_BONUS_XP))
+        if (GameState.HasBoon(BoonType.SACRIFICE_BONUS_XP))
 		{
 			List<Person> underleveled = personMgr.People.FindAll(x => x.Level < GameState.GetLevelCap(x.GetAttribute(Person.AttributeType.PROFESSION)));
 			if(underleveled != null && underleveled.Count > 0)
