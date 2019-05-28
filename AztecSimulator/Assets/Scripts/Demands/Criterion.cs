@@ -22,7 +22,7 @@ public class Criterion {
             if (p.Profession == reqAttr)
             {
                 unsatisfiedAttrs.Remove(reqAttr);
-                break;
+                continue;
             }
             foreach (Person.Attribute attr in p.NonProfessionAttributes)
             {

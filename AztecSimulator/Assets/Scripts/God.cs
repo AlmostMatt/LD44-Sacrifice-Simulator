@@ -198,10 +198,7 @@ public class God : MonoBehaviour {
 					results.Add(sr);
 				}
 
-				if(demand.mIsRenewable)
-				{
-				}
-				else
+				if(!demand.mIsRenewable)
 				{
 					RemoveDemand(demandId);
 				}
@@ -231,6 +228,8 @@ public class God : MonoBehaviour {
         // This is relevant if the text or any internal variables changed.
         if (demand.mIsRenewable && results.Count > 0)
         {
+            demand.mNumBuys++;
+            demand.mDemand = DemandGenerator.ScaledDemand(demand.mNumBuys);
             var resultType = demand.mSatisfiedResult.GetType();
             demand.mSatisfiedResult = (SacrificeResult)System.Activator.CreateInstance(resultType);
         }
