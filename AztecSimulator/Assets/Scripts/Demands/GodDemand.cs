@@ -90,7 +90,7 @@ public class GodDemand : IRenderable
         List<int> emptySlots = new List<int>();
         for (int j = 0; j < 3; j++)
         {
-            Transform personSlot = relevantUiDemand.Find("V/PersonSlots").GetChild(j);
+            Transform personSlot = relevantUiDemand.Find("V/PersonSlots").GetChild(j+1);
             // A slot is empty if the child if it is active and doesn't have a draggable child
             if (personSlot.gameObject.activeInHierarchy && personSlot.GetComponentInChildren<Draggable>() == null)
             {
