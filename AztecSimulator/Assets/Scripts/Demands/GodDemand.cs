@@ -150,7 +150,7 @@ public class GodDemand : IRenderable
                             + Utilities.ConcatStrings(mDemand.mCriteria.ConvertAll(c => c.mCount.ToString())));
                         continue;
                     }
-                    Transform personSlot = uiPrefab.transform.Find("V/PersonSlots").GetChild(demandSlotIndex);
+                    Transform personSlot = uiPrefab.transform.Find("V/PersonSlots").GetChild(demandSlotIndex+1);
                     personSlot.gameObject.SetActive(true);
                     // Level
                     personSlot.Find("H/Level").GetComponent<Text>().enabled = criteria[i].mMinLevel != -1;
@@ -185,10 +185,14 @@ public class GodDemand : IRenderable
                 }
             }
         }
+        // Disable the remaining slots
         for (int i = demandSlotIndex; i < 3; i++)
         {
-            Transform personSlot = uiPrefab.transform.Find("V/PersonSlots").GetChild(i);
+            Transform personSlot = uiPrefab.transform.Find("V/PersonSlots").GetChild(i+1);
             personSlot.gameObject.SetActive(false);
         }
+        // Show the filler if < 3 slots were used.
+        uiPrefab.transform.Find("V/PersonSlots").GetChild(0).gameObject.SetActive(demandSlotIndex < 3);
+        uiPrefab.transform.Find("V/PersonSlots").GetChild(4).gameObject.SetActive(demandSlotIndex < 3);
     }
 }
