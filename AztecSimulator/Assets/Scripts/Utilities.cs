@@ -168,4 +168,24 @@ public static class Utilities {
 	public static string ColorString(string text, string color, bool shouldApply) {
 		return shouldApply ? "<color=" + color + ">" + text + "</color>" : text;
 	}
+
+    public static int GetIndexOfClosestChild(Transform t, Vector2 position)
+    {
+        Debug.Log("position: " + position);
+        int closestIndex = 0; // or t.childCount - 1;
+        float minDD = Mathf.Infinity;
+        for (int i = 0; i < t.childCount; i++)
+        {
+            // WARNING: when something is just added as the child of a layout, the position and localPosition are bogus
+            Vector2 childPos = t.GetChild(i).position;
+            float DD = (position - childPos).sqrMagnitude;
+            if (DD < minDD)
+            {
+                minDD = DD;
+                closestIndex = i;
+            }
+        }
+        Debug.Log("closest index is: " + closestIndex + " / " + t.childCount);
+        return closestIndex;
+    }
 }
