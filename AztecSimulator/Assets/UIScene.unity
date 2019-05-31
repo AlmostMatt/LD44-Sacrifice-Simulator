@@ -1206,39 +1206,6 @@ Prefab:
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 224475024530453968, guid: 5708ba3743573e5438ed362deaa402b6,
-        type: 2}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114306583724664458, guid: 5708ba3743573e5438ed362deaa402b6,
-        type: 2}
-      propertyPath: placeholderObject
-      value: 
-      objectReference: {fileID: 1196735206358786, guid: 43e3a2fe1d39c944bb145b780e450976,
-        type: 2}
-    - target: {fileID: 114270008688168956, guid: 5708ba3743573e5438ed362deaa402b6,
-        type: 2}
-      propertyPath: placeholderObject
-      value: 
-      objectReference: {fileID: 1196735206358786, guid: 43e3a2fe1d39c944bb145b780e450976,
-        type: 2}
-    - target: {fileID: 114449116091537152, guid: 5708ba3743573e5438ed362deaa402b6,
-        type: 2}
-      propertyPath: placeholderObject
-      value: 
-      objectReference: {fileID: 1196735206358786, guid: 43e3a2fe1d39c944bb145b780e450976,
-        type: 2}
-    - target: {fileID: 224371475619743880, guid: 5708ba3743573e5438ed362deaa402b6,
-        type: 2}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224553838539478290, guid: 5708ba3743573e5438ed362deaa402b6,
-        type: 2}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5708ba3743573e5438ed362deaa402b6, type: 2}
   m_IsPrefabParent: 0

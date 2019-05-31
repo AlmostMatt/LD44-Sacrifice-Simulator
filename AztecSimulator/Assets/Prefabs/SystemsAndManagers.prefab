@@ -133,6 +133,11 @@ MonoBehaviour:
   - STRONG
   - WEAK
   - PERSON
+  - +XP
+  - HEALING
+  - STAR
+  - PERSON_BOOST
+  - FOOD
   sprites:
   - {fileID: 21300000, guid: c4e7e94388c49164385f90dd5d4e15f3, type: 3}
   - {fileID: 21300000, guid: 06375d4ea347b3641bfaef662d1039a7, type: 3}
@@ -148,6 +153,11 @@ MonoBehaviour:
   - {fileID: 21300000, guid: a908f8c80379f314e999c722ca7e32d0, type: 3}
   - {fileID: 21300000, guid: 0ea6d2bec7ba92141ad2ee820411e21b, type: 3}
   - {fileID: 21300000, guid: 49457c040e120684798d3679851309c6, type: 3}
+  - {fileID: 21300000, guid: c85f1e14b7f2cc741aa5f43096727dc9, type: 3}
+  - {fileID: 21300000, guid: 5958bdee4db5edf43965eb7afece5772, type: 3}
+  - {fileID: 21300000, guid: d750dc809a443614ca1ddf2a2fd09c99, type: 3}
+  - {fileID: 21300000, guid: aa39438d32551a34ab8f8356333a01ef, type: 3}
+  - {fileID: 21300000, guid: 09e8b72235da74441b612ab04734c76a, type: 3}
 --- !u!114 &114983575028213916
 MonoBehaviour:
   m_ObjectHideFlags: 1
