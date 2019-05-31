@@ -71,11 +71,11 @@ public class GodDemand : IRenderable
 
     public List<GameObject> GetAssociatedPeople()
     {
-        Transform relevantUiDemand = Utilities.GetUIManager().GetUiDemand(this).transform;
+        GameObject relevantUiDemand = Utilities.GetUIManager().GetUiDemand(this);
         List<GameObject> associatedPeople = new List<GameObject>();
         for (int j = 0; j < 3; j++)
         {
-            Draggable draggable = relevantUiDemand.Find("V/PersonSlots").GetChild(j).GetComponentInChildren<Draggable>();
+            Draggable draggable = GetSlot(relevantUiDemand, j).GetComponentInChildren<Draggable>();
             if (draggable != null)
             {
                 associatedPeople.Add(draggable.gameObject);
@@ -86,11 +86,11 @@ public class GodDemand : IRenderable
 
     public List<int> GetEmptySlots()
     {
-        Transform relevantUiDemand = Utilities.GetUIManager().GetUiDemand(this).transform;
+        GameObject relevantUiDemand = Utilities.GetUIManager().GetUiDemand(this);
         List<int> emptySlots = new List<int>();
         for (int j = 0; j < 3; j++)
         {
-            Transform personSlot = relevantUiDemand.Find("V/PersonSlots").GetChild(j+1);
+            Transform personSlot = GetSlot(relevantUiDemand, j);
             // A slot is empty if the child if it is active and doesn't have a draggable child
             if (personSlot.gameObject.activeInHierarchy && personSlot.GetComponentInChildren<Draggable>() == null)
             {
@@ -150,7 +150,7 @@ public class GodDemand : IRenderable
                             + Utilities.ConcatStrings(mDemand.mCriteria.ConvertAll(c => c.mCount.ToString())));
                         continue;
                     }
-                    Transform personSlot = uiPrefab.transform.Find("V/PersonSlots").GetChild(demandSlotIndex+1);
+                    Transform personSlot = GetSlot(uiPrefab, demandSlotIndex);
                     personSlot.gameObject.SetActive(true);
                     // Level
                     personSlot.Find("H/Level").GetComponent<Text>().enabled = criteria[i].mMinLevel != -1;
@@ -188,11 +188,16 @@ public class GodDemand : IRenderable
         // Disable the remaining slots
         for (int i = demandSlotIndex; i < 3; i++)
         {
-            Transform personSlot = uiPrefab.transform.Find("V/PersonSlots").GetChild(i+1);
+            Transform personSlot = GetSlot(uiPrefab, i);
             personSlot.gameObject.SetActive(false);
         }
         // Show the filler if < 3 slots were used.
-        uiPrefab.transform.Find("V/PersonSlots").GetChild(0).gameObject.SetActive(demandSlotIndex < 3);
-        uiPrefab.transform.Find("V/PersonSlots").GetChild(4).gameObject.SetActive(demandSlotIndex < 3);
+        GetSlot(uiPrefab, -1).gameObject.SetActive(demandSlotIndex < 3);
+        GetSlot(uiPrefab, 3).gameObject.SetActive(demandSlotIndex < 3);
+    }
+
+    private Transform GetSlot(GameObject uiPrefab, int i)
+    {
+        return uiPrefab.transform.Find("V/PersonSlots").GetChild(i + 1);
     }
 }
