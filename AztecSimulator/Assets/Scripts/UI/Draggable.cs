@@ -36,13 +36,12 @@ public class Draggable : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
         // Unattach this object. If the parent was a profession area, add a placeholder.
         originalParent = transform.parent;
         originalPosition = transform.localPosition;
+        transform.SetParent(canvas, true);
         GridLayoutGroup grid = originalParent.GetComponent<GridLayoutGroup>();
         if (grid != null)
         {
-            int desiredIndex = transform.GetSiblingIndex();
-            AddRelevantGrid(grid, eventData, desiredIndex);
+            AddRelevantGrid(grid, eventData);
         }
-        transform.SetParent(canvas, true);
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -63,13 +62,12 @@ public class Draggable : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
         GetComponent<CanvasGroup>().blocksRaycasts = true;
     }
 
-    public void AddRelevantGrid(GridLayoutGroup grid, PointerEventData eventData, int desiredIndex=-1)
+    public void AddRelevantGrid(GridLayoutGroup grid, PointerEventData eventData)
     {
         relevantGrid = grid;
         placeholder.SetParent(relevantGrid.transform, false);
-        // Explicitly set local position after set parent so that it is correct for UpdateIndex calculations
         placeholder.localPosition = (Vector3)eventData.position - grid.transform.position;
-        UpdatePlaceholderIndex(eventData, desiredIndex);
+        UpdatePlaceholderIndex(eventData);
     }
 
     public void RemoveRelevantGrid(GridLayoutGroup grid)
@@ -81,11 +79,11 @@ public class Draggable : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
         }
     }
 
-    public void UpdatePlaceholderIndex(PointerEventData eventData, int desiredIndex=-1)
+    public void UpdatePlaceholderIndex(PointerEventData eventData)
     {
         if (relevantGrid != null)
         {
-            int index = desiredIndex != -1 ? desiredIndex : Utilities.GetIndexOfClosestChild(relevantGrid.transform, eventData.position);
+            int index = Utilities.GetIndexOfClosestChild(relevantGrid.transform, eventData.position);
             placeholder.SetSiblingIndex(index);
         }
     }

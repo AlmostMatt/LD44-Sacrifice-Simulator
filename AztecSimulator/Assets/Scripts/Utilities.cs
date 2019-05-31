@@ -171,13 +171,24 @@ public static class Utilities {
 
     public static int GetIndexOfClosestChild(Transform t, Vector2 position)
     {
-        Debug.Log("position: " + position);
         int closestIndex = 0; // or t.childCount - 1;
         float minDD = Mathf.Infinity;
+        // Ideally this would just look at t.GetChild(i).position, but with layouts position can be incorrect for just-added elements
+        // So I assume a grid layout and do math based on the number of children.
+        // Assumptions: children are centered, top left first, and flexible num columns
+        GridLayoutGroup g = t.GetComponent<GridLayoutGroup>();
+        float cellW = g.cellSize.x + g.spacing.x;
+        float cellH = g.cellSize.y + g.spacing.y;
+        // Unity centers the row when it is the only row, and left aligns the row when there are multiple rows.
+        int numPerRow = Mathf.Min(t.childCount, Mathf.FloorToInt(t.GetComponent<RectTransform>().rect.width / cellW));
+        int numRows = Mathf.FloorToInt((t.childCount + numPerRow - 1) / numPerRow);
         for (int i = 0; i < t.childCount; i++)
         {
-            // WARNING: when something is just added as the child of a layout, the position and localPosition are bogus
-            Vector2 childPos = t.GetChild(i).position;
+            int row = Mathf.FloorToInt(i / numPerRow);
+            // 0 of 4 -> -1.5;  1 of 4 -> -0.5;  2 of 4 -> 0.5;  3 or 4 -> 1.5
+            float xOffset = cellW * ((i%numPerRow) - ((numPerRow - 1)/2f));
+            float yOffset = - cellH * (row - ((numRows - 1) / 2f));
+            Vector2 childPos = (Vector2)t.position + new Vector2(xOffset, yOffset);
             float DD = (position - childPos).sqrMagnitude;
             if (DD < minDD)
             {
@@ -185,7 +196,6 @@ public static class Utilities {
                 closestIndex = i;
             }
         }
-        Debug.Log("closest index is: " + closestIndex + " / " + t.childCount);
         return closestIndex;
     }
 }

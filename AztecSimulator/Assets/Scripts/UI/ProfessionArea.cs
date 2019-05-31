@@ -21,18 +21,17 @@ public class ProfessionArea : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         DetachPlaceholder(eventData);
     }
 
-    // When dropping an object here, attempt to place them in the grid at the index of the placeholder.
-    // Also detach the corresponding placeholder.
+    // When dropping an object here, detach the placeholder and place the person at the index closest to the mouse.
     public void OnDrop(PointerEventData eventData)
     {
         Transform contentGrid = transform.Find("Scrollable/Viewport/Content (G)");
-        int index = Utilities.GetIndexOfClosestChild(contentGrid, eventData.position);
         DetachPlaceholder(eventData);
         bool changeSuccessful = Utilities.GetUIManager().OnChangeProfession(eventData.pointerDrag, associatedProfession);
         if (changeSuccessful)
         {
             eventData.pointerDrag.transform.localPosition = Vector3.zero;
             eventData.pointerDrag.transform.SetParent(contentGrid, false);
+            int index = Utilities.GetIndexOfClosestChild(contentGrid, eventData.position);
             eventData.pointerDrag.transform.SetSiblingIndex(index);
         }
     }
