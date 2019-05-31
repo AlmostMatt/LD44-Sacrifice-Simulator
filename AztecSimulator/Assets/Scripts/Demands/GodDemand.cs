@@ -39,7 +39,7 @@ public class GodDemand : IRenderable
 	}
 
 	// Returns a list of two strings. one before the icon, and one after the icon.
-	public string[] GetUIDescriptionStrings(List<Person> selectedPeople) {
+	public string[] GetUIDescriptionStrings() {
 		if(mLongDescOverride != null) {
 			return(mLongDescOverride);
 		}
@@ -48,20 +48,20 @@ public class GodDemand : IRenderable
 		string[] result = new string[2];
 		if(IsFleeting)
 		{
-			result[0] = isOffer ? "OFFER: " + mSatisfiedResult.mName : "THREAT: " + mIgnoredResult.mName;
-			result[1] = mTimeLeft >= 0 ? string.Format("({0:0.0})", mTimeLeft) : "";
+			result[0] = "";
+            string description = (isOffer ? "OFFER: " + mSatisfiedResult.mName : "THREAT: " + mIgnoredResult.mName);
+            result[1] = description + (mTimeLeft >= 0 ? string.Format(" ({0:0.0})", mTimeLeft) : "");
 		}
         else
         {
-            result[0] = mSatisfiedResult.mName;
-            result[1] = "";
+            result[0] = "";
+            result[1] = mSatisfiedResult.mName;
         }
 		return result;
 	}
 
 	public string GetUIDescriptionIconName() {
-        // TODO: have relevant icons
-        return ""; //  "ATTACK";
+        return mSatisfiedResult != null ? mSatisfiedResult.mIcon : mIgnoredResult.mIcon;
     }
 
     public bool IsSatisfied()
@@ -122,13 +122,12 @@ public class GodDemand : IRenderable
 
 	public void RenderTo(GameObject uiPrefab) {
         // TODO: associated dropped people on the demand
-        List<Person> selectedPeople = new List<Person>();// Utilities.GetSelectedPeople();
 		uiPrefab.GetComponent<HoverInfo>().SetText(GetResultDescription());
         // Text
-        string[] demandStrings = GetUIDescriptionStrings(selectedPeople);
-        uiPrefab.transform.Find("V/TextRow/Text1").GetComponent<Text>().text = demandStrings[0];
-        uiPrefab.transform.Find("V/TextRow/Text2").GetComponent<Text>().text = demandStrings[1];
+        string[] demandStrings = GetUIDescriptionStrings();
         Sprite icon = Utilities.GetSpriteManager().GetSprite(GetUIDescriptionIconName());
+        uiPrefab.transform.Find("V/TextRow/Text1").GetComponent<Text>().text = demandStrings[0] + (icon == null ? "" : " ");
+        uiPrefab.transform.Find("V/TextRow/Text2").GetComponent<Text>().text = (icon == null ? "" : " ") + demandStrings[1];
         uiPrefab.transform.Find("V/TextRow/Icon").gameObject.SetActive(icon != null);
         uiPrefab.transform.Find("V/TextRow/Icon").GetComponent<Image>().sprite = (icon);
         // Criteria

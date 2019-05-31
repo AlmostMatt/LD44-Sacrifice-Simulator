@@ -11,7 +11,7 @@ public class XpBuff : SacrificeResult {
 		mProfession = profession;
         mName = "Level " + (GameState.GetLevelCap(mProfession)+1) + " " + professionString;
         mDescription = professionString + " gain xp faster. +1 max level.";
-
+        mIcon = profession.ToString();
     }
 
 	public override void DoEffect()

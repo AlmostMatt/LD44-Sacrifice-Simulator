@@ -14,7 +14,7 @@ public class HealthXpBonus : SacrificeResult {
 	private int mThreshold;
 	private int mBonus;
 
-	private HealthXpBonus(int tier, int luck) : base("", "") {
+	private HealthXpBonus(int tier, int luck) : base("", "", "+XP") {
 		mHealthy = Random.value < 0.7;
 		mBonus = 2 * (1 + tier);
 		if(mHealthy)

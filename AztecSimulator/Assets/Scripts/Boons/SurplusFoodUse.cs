@@ -20,6 +20,7 @@ public class SurplusFoodUse : SacrificeResult {
 		mName = mToBirthrate ? "Baby Food" : "Comfort Food";
 		mDescription = mToBirthrate ? string.Format("Surplus food increases birthrate by {0:0.00}", (mBoost/100f)) : string.Format("Surplus food restores {0:0.00} lifeforce per second", (mBoost/100f));
 		mMsg = mToBirthrate ? "Your surplus food is increasing birthrate" : "Your surplus food is restoring lifeforce";
+        mIcon = mToBirthrate ? "PERSON_BOOST" : "+XP";
 	}
 
 	public override void DoEffect()

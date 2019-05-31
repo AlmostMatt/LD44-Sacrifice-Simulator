@@ -12,7 +12,7 @@ public class WarriorChildProtect : SacrificeResult {
 
 	private int mEffectiveness;
 	private int mAge;
-	private WarriorChildProtect(int tier, int luck) : base("Youngling Protection", "") {
+	private WarriorChildProtect(int tier, int luck) : base("Youngling Protection", "", "WARRIOR") {
 		mAge = Random.Range(5, Mathf.Max(11 - luck));
 		mEffectiveness = 20 * (tier * 2 + luck);
 		mDescription = "Each warrior gets +" + (mEffectiveness / 100f) + " army size for each person of age " + mAge + " or lower";

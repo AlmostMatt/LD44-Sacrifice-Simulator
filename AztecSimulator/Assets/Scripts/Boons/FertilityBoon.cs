@@ -42,7 +42,7 @@ public class FertilityBoon : SacrificeResult {
 
 	private int mBoost;
 	private int mDuration;
-	private FertilityBoon(int tier, int luck) : base(sName, "") {
+	private FertilityBoon(int tier, int luck) : base(sName, "", "PERSON_BOOST") {
 		mBoost = 80 + (20 * (tier + luck));
 		mDuration = 15;
         mDescription = "+" + mBoost + "% birth rate for " + mDuration + " seconds";

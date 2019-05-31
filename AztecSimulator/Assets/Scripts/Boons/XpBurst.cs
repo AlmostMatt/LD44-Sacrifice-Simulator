@@ -12,7 +12,7 @@ public class XpBurst : SacrificeResult {
 
 	private int mAmount;
 
-	private XpBurst(int tier, int luck) : base("Divine Inspiration", "") {
+	private XpBurst(int tier, int luck) : base("Divine Inspiration", "", "+XP") {
 		mAmount = 5 * (1 + tier + luck);
 		mDescription = "Instantly gives your people +" + mAmount + "xp";
 	}

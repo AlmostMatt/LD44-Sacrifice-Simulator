@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class VictoryResult : SacrificeResult {
 
-	public VictoryResult() : base("VICTORY", "Win the game") {
+	public VictoryResult() : base("VICTORY", "Win the game", "STAR") {
 	}
 
 	public override void DoEffect()

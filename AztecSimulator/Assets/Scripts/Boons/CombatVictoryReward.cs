@@ -21,12 +21,14 @@ public class CombatVictoryReward : SacrificeResult {
 			mAmount = Mathf.Min(100, 10 * (tier * 2) + Random.Range(1, 3) * luck);
 			mName += "Lifeforce";
 			mDescription = "Combat victories restore " + mAmount + " lifeforce to a random person";
-			mBoon = BoonType.COMBAT_VICTORY_BONUS_HEALING;
+            mIcon = "HEALING";
+            mBoon = BoonType.COMBAT_VICTORY_BONUS_HEALING;
 			break;
 		case 1: 
 			mAmount = 10 * (tier + luck);
 			mName += "Experience";
 			mDescription = "Combat victories give a random person +" + mAmount + "xp";
+            mIcon = "+XP";
 			mBoon = BoonType.COMBAT_VICTORY_BONUS_XP;
 			break;
 		}

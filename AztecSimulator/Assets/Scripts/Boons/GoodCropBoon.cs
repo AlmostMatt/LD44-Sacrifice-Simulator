@@ -39,7 +39,7 @@ public class GoodCropBoon : SacrificeResult {
 
 	private int mBoost;
 	private float mDuration;
-	private GoodCropBoon(int tier, int luck) : base("Blessed Crops", "")
+	private GoodCropBoon(int tier, int luck) : base("Blessed Crops", "", "FOOD")
 	{
 		mBoost = 25 + (25 * (tier + luck));
 		mDuration = 30f;
