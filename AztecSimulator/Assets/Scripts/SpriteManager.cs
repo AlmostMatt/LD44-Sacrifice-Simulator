@@ -3,8 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SpriteManager : MonoBehaviour {
-	public string[] spriteNames;
-	public Sprite[] sprites;
+    [System.Serializable]
+    public struct NamedSprite
+    {
+        public string name;
+        public Sprite sprite;
+    }
+    // These fields are functionally equivalent, but they logically group icons
+    public NamedSprite[] namedAttributes;
+    public NamedSprite[] namedIcons;
+    public NamedSprite[] namedOther;
 
 	private Dictionary<string, Sprite> stringToSpriteMap = new Dictionary<string, Sprite>();
 
@@ -15,13 +23,22 @@ public class SpriteManager : MonoBehaviour {
 	}
 
 	private void Setup() {
-		for (int i=0; i<Mathf.Min(spriteNames.Length, sprites.Length); i++) {
-			stringToSpriteMap.Add(spriteNames[i], sprites[i]);
-		}
-	}
+        foreach (NamedSprite namedSprite in namedAttributes)
+        {
+            stringToSpriteMap.Add(namedSprite.name, namedSprite.sprite);
+        }
+        foreach (NamedSprite namedSprite in namedIcons)
+        {
+            stringToSpriteMap.Add(namedSprite.name, namedSprite.sprite);
+        }
+        foreach (NamedSprite namedSprite in namedOther)
+        {
+            stringToSpriteMap.Add(namedSprite.name, namedSprite.sprite);
+        }
+    }
 
     // TODO: add an option to choose between 16px and 32px variants
-	public Sprite GetSprite(Person.Attribute attribute) {
+    public Sprite GetSprite(Person.Attribute attribute) {
 		if (attribute == Person.Attribute.NONE) {
 			return null;
 		}
