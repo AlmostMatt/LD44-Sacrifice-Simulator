@@ -181,8 +181,8 @@ public class DemandGenerator {
 			Criterion c = new Criterion();
 			c.mMinLevel = p.Level;
 			c.mAttributes.Add(p.Profession);
-            Person.Attribute[] personAttributes = p.NonProfessionAttributes;
-            c.mAttributes.Add(personAttributes[Random.Range(0, personAttributes.Length)]);
+            List<Person.Attribute> personAttributes = p.NonProfessionAttributes;
+            c.mAttributes.Add(personAttributes[Random.Range(0, personAttributes.Count)]);
 			d.mCriteria.Add(c);
 		}
 
@@ -262,7 +262,7 @@ public class DemandGenerator {
 		{
 			Person p = people[Random.Range(0, people.Count)];
 
-            Person.Attribute attribute = p.NonProfessionAttributes[Random.Range(0, p.NonProfessionAttributes.Length)];
+            Person.Attribute attribute = p.NonProfessionAttributes[Random.Range(0, p.NonProfessionAttributes.Count)];
 			if(!demands.Contains(attribute))
 				demands.Add(attribute);
 		}

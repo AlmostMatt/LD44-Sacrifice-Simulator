@@ -72,7 +72,7 @@ public class Person : MonoBehaviour, IRenderable {
 	private float startingHealth = 100;
 
 	private string mName;
-	private Attribute[] mAttributes;
+	private Dictionary<AttributeType, Attribute> mAttributes = new Dictionary<AttributeType, Attribute>();
 	private int mLevel;
 	private float mAge;
 	private float mXp = 0f;
@@ -89,11 +89,25 @@ public class Person : MonoBehaviour, IRenderable {
 	}
     public Attribute Profession
     {
-        get { return (GetAttribute(AttributeType.PROFESSION)); }
+        get {
+            return GetAttribute(AttributeType.PROFESSION);
+        }
     }
-	public Attribute[] NonProfessionAttributes {
-		get { return(System.Array.FindAll(mAttributes, a => a.GetAttrType() != Person.AttributeType.PROFESSION)); }
-	}
+	public List<Attribute> NonProfessionAttributes
+    {
+        get
+        {
+            List<Attribute> attributes = new List<Attribute>();
+            foreach (KeyValuePair<AttributeType, Attribute> kvp in mAttributes)
+            {
+                if (kvp.Key != AttributeType.PROFESSION)
+                {
+                    attributes.Add(kvp.Value);
+                }
+            }
+            return attributes;
+        }
+    }
 	public float Health
 	{
 		get { return(mHealth); }
@@ -123,35 +137,25 @@ public class Person : MonoBehaviour, IRenderable {
 
 	public void ChangeProfession(Attribute newProfession)
 	{
-		// note: this could rely on the fact that profession happens to be the last attribute
-		for (int i =0; i < mAttributes.Length; i++) {
-			if (mAttributes[i].GetAttrType() == Person.AttributeType.PROFESSION) {
-                // No XP loss when selecting the current profession
-                if (mAttributes[i] == newProfession)
-                {
-                    return;
-                }
-				mAttributes[i] = newProfession;
-			}
-		}
-
+		if (Profession == newProfession)
+        {
+            return;
+        }
+        // note: this could rely on the fact that profession happens to be the last attribute
+        mAttributes[AttributeType.PROFESSION] = newProfession;
 		int xpRetention = GameState.GetBoonValue(BoonType.PROFESSION_CHANGE_RETAIN_XP);
 		if(xpRetention > 0)
 			mXp = (xpRetention / 100f) * mXp;
 		else
 			mXp = 0;
-		
 		mLevel = GetLevelForXp(mXp);
 	}
 
 	// This should be called after the person has already been created and Awake completed.
-	public void OverrideRandomValues(Attribute profession = Attribute.NONE, int level = -1) {
-		if (profession != Attribute.NONE) {
-			for (int i=0; i< mAttributes.Length; i++) {
-				if (mAttributes[i].GetAttrType() == AttributeType.PROFESSION) {
-					mAttributes[i] = profession;
-				}
-			}
+	public void OverrideRandomValues(Attribute newProfession = Attribute.NONE, int level = -1) {
+		if (newProfession != Attribute.NONE)
+        {
+            mAttributes[AttributeType.PROFESSION] = newProfession;
 		}
 		if (level != -1) {
 			mLevel = level;
@@ -171,12 +175,8 @@ public class Person : MonoBehaviour, IRenderable {
 	}
 
 	public Attribute GetAttribute(Person.AttributeType attrType) {
-		foreach (Attribute attr in mAttributes) {
-			if (attr.GetAttrType() == attrType) {
-				return attr;
-			}
-		}
-		return Attribute.NONE;
+        Attribute attr;
+        return mAttributes.TryGetValue(attrType, out attr) ? attr : Attribute.NONE;
 	}
 
 	public void AddXp(float amount)
@@ -208,13 +208,15 @@ public class Person : MonoBehaviour, IRenderable {
 		mLevel = 1;
 		mAge = 0;
 
-		int numRandomAttributes = Random.Range(2,3);
-		mAttributes = RandomAttributes(numRandomAttributes);
+        int numRandomAttributes = 2; //  Random.Range(1,3);
+        Attribute[] randomAttrs = RandomAttributes(numRandomAttributes, false);
+        foreach (Attribute attr in randomAttrs)
+        {
+            mAttributes[attr.GetAttrType()] = attr;
+        }
+        mAttributes[AttributeType.PROFESSION] = Attribute.NONE; // Start without a profession
 
-		// for now: always start as farmer
-		mAttributes[mAttributes.Length-1] = Attribute.FARMER;
-
-		mIsHungry = false;
+        mIsHungry = false;
 		mMaxHealth = mHealth = startingHealth;
 		//mBaseHealthDecayRate = Random.Range(0.45f, 0.55f);
 		mBaseHealthDecayRate = 0;
@@ -302,10 +304,11 @@ public class Person : MonoBehaviour, IRenderable {
 	// Icons (profession and health) are added by the UI Manager
 	public string[] GetUIDescription(SacrificeDemand selectedDemand)
 	{
-		string attrString = "";
-		for(int i = 0; i < NonProfessionAttributes.Length; ++i) {
-			string attr = System.Enum.GetName(typeof(Attribute), (int)NonProfessionAttributes[i]);
-			bool isRelevant = selectedDemand != null && selectedDemand.IsRelevantAttribute(NonProfessionAttributes[i]);
+        List<Attribute> nonProfAttributes = NonProfessionAttributes;
+        string attrString = "";
+		for(int i = 0; i < nonProfAttributes.Count; ++i) {
+			string attr = System.Enum.GetName(typeof(Attribute), (int)nonProfAttributes[i]);
+			bool isRelevant = selectedDemand != null && selectedDemand.IsRelevantAttribute(nonProfAttributes[i]);
 			attrString += Utilities.ColorString(attr, "green", isRelevant) + ", ";
 		}
 		bool isLevelRelevant = selectedDemand != null && selectedDemand.IsRelevantLevel(mLevel);
@@ -344,14 +347,14 @@ public class Person : MonoBehaviour, IRenderable {
 	}
 
 	public void DebugPrint() {
-		
-		Debug.Log(mName + " has: ");
-		for(int i = 0; i < mAttributes.Length; ++i) {
-			Debug.Log(System.Enum.GetName(typeof(Attribute), (int)mAttributes[i]));
+        List<Attribute> nonProfAttributes = NonProfessionAttributes;
+        Debug.Log(mName + " has: ");
+		for(int i = 0; i < nonProfAttributes.Count; ++i) {
+			Debug.Log(System.Enum.GetName(typeof(Attribute), (int)nonProfAttributes[i]));
 		}
 	}
 
-	public static Attribute[] RandomAttributes(int howMany)
+	public static Attribute[] RandomAttributes(int howMany, bool alsoRandomProfession = true)
 	{
 		AttributeType[] attrTypes = {
 			AttributeType.PERSONALITY,
@@ -363,8 +366,11 @@ public class Person : MonoBehaviour, IRenderable {
 		howMany = Mathf.Min(attrTypes.Length, howMany);
 		AttributeType[] randomAttributes = Utilities.RandomSubset(attrTypes, howMany);
 
-		Attribute[] attributes = new Attribute[howMany + 1];
-		attributes[howMany] = Utilities.GetRandomAttr(AttributeType.PROFESSION);
+		Attribute[] attributes = new Attribute[howMany + (alsoRandomProfession ? 1 : 0)];
+        if (alsoRandomProfession)
+        {
+            attributes[howMany] = Utilities.GetRandomAttr(AttributeType.PROFESSION);
+        }
 		for(int i = 0; i < howMany; ++i)
 		{
 			attributes[i] = Utilities.GetRandomAttr(randomAttributes[i]);
@@ -381,18 +387,19 @@ public class Person : MonoBehaviour, IRenderable {
         // Level txt
         uiPrefab.transform.Find("H/Level").GetComponent<Text>().text = mLevel.ToString();
         // Profession
-        uiPrefab.transform.Find("H/Profession/Image").GetComponent<Image>().sprite = Utilities.GetSpriteManager().GetSprite(Profession);
+        Sprite professionSprite = Utilities.GetSpriteManager().GetSprite(Profession == Attribute.NONE ? "NO_PROFESSION" : Profession.ToString());
+        uiPrefab.transform.Find("H/Profession/Image").GetComponent<Image>().sprite = professionSprite;
         // Attributes
-        Person.Attribute[] attributes = NonProfessionAttributes;
-        if (attributes.Length > 2)
+        List<Attribute> attributes = NonProfessionAttributes;
+        if (attributes.Count > 2)
         {
             Debug.Log("WARNING: a person has >2 attributes!");
         }
         for (int i = 0; i < 2; i++)
         {
             Image attrImage = uiPrefab.transform.Find("H/V/Attribute" + (i+1).ToString()).GetComponent<Image>();
-            attrImage.enabled = (i < attributes.Length);
-            if (i < attributes.Length)
+            attrImage.enabled = (i < attributes.Count);
+            if (i < attributes.Count)
             {
                 attrImage.sprite = Utilities.GetSpriteManager().GetSprite(attributes[i]);
             }
