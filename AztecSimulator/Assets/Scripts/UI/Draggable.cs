@@ -15,6 +15,7 @@ public class Draggable : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
 
     private Transform originalParent;
     private Vector3 originalPosition;
+    private Vector3 originalScale;
     private GridLayoutGroup relevantGrid = null;
     private Transform placeholder;
     private Transform canvas;
@@ -36,6 +37,7 @@ public class Draggable : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
         // Unattach this object. If the parent was a profession area, add a placeholder.
         originalParent = transform.parent;
         originalPosition = transform.localPosition;
+        originalScale = transform.localScale;
         transform.SetParent(canvas, true);
         GridLayoutGroup grid = originalParent.GetComponent<GridLayoutGroup>();
         if (grid != null)
@@ -58,6 +60,7 @@ public class Draggable : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
         {
             transform.SetParent(originalParent, false);
             transform.localPosition = originalPosition;
+            transform.localScale = originalScale;
         }
         GetComponent<CanvasGroup>().blocksRaycasts = true;
     }

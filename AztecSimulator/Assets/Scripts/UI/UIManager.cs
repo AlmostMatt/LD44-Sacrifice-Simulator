@@ -81,7 +81,7 @@ public class UIManager : MonoBehaviour {
                 {
                     uiObject = Instantiate(newObject);
                 }
-                uiObject.transform.SetParent(uiContainer);
+                uiObject.transform.SetParent(uiContainer, false);
                 renderableObjectMap.Add(renderable, uiObject);
                 if (onCreateCallback != null)
                 {
@@ -125,7 +125,7 @@ public class UIManager : MonoBehaviour {
 			if (i >= mUiNotificationPool.Count) {
 				uiNotification = Instantiate(uiNotificationObject);
 				mUiNotificationPool.Add(uiNotification);
-				uiNotification.transform.SetParent(notificationContainer);
+				uiNotification.transform.SetParent(notificationContainer, false);
 			} else {
 				uiNotification = mUiNotificationPool[i];
 			}
@@ -134,12 +134,12 @@ public class UIManager : MonoBehaviour {
 			{
 				if(mNotificationIsGod[i])
 				{
-					uiNotification.transform.SetParent(godContainer);
+					uiNotification.transform.SetParent(godContainer, false);
 					uiNotification.GetComponent<Image>().color = Color.gray;
 				}
 				else
 				{
-					uiNotification.transform.SetParent(notificationContainer);
+					uiNotification.transform.SetParent(notificationContainer, false);
 					uiNotification.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.8f);
 				}
 			}
