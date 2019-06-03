@@ -24,6 +24,6 @@ public class FoodSystem : MonoBehaviour {
         totalFoodProduction *= (100f + bonusFoodPercent) / 100f;
 
 		GameState.FoodSurplus = Mathf.Max(0, totalFoodProduction - mPersonMgr.People.Count);
-		GameState.FoodSupply = (int)Mathf.Floor(totalFoodProduction);
+		GameState.FoodSupply = totalFoodProduction;
 	}
 }

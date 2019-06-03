@@ -18,7 +18,7 @@ public class HungerSystem : MonoBehaviour {
 			else fedPeople.Add(p);
 		}
 
-		int foodSupply = GameState.FoodSupply;
+		int foodSupply = (int) GameState.FoodSupply;
 		if(fedPeople.Count > foodSupply)
 		{
 			// randomly select people to go hungry

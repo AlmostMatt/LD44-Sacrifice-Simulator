@@ -88,7 +88,7 @@ public class PersonManager : MonoBehaviour {
 			}
 		}
 
-		GameState.ArmyStrength = (int)Mathf.Floor(armyStrength);
+		GameState.ArmyStrength = armyStrength;
 	}
 
 	private Person SpawnPerson(SpawnPersonRecord record = null)

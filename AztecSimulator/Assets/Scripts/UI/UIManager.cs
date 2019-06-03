@@ -170,14 +170,14 @@ public class UIManager : MonoBehaviour {
 		Transform ongoingContainer = transform.Find("TRCorner/OngoingGroup");
 		UpdateRenderables(GameState.Ongoings, uiOngoingObject, mUiOngoingPool, mUiOngoingMap, ongoingContainer);
 
-		// Update the top UI bar
-		string foodString = Utilities.ColorString("Food: " + GameState.FoodSupply + "/" + people.Count, "red", people.Count > GameState.FoodSupply);
-		transform.Find("Top/Left/Item1/Text").GetComponent<Text>().text = foodString;
+        // Update the top UI bar
+        string foodString = string.Format("Food: {0:0.#} / {1}", GameState.FoodSupply, people.Count);
+		transform.Find("Top/Left/Item1/Text").GetComponent<Text>().text = Utilities.ColorString(foodString, "red", people.Count > GameState.FoodSupply);
 		string armyString = GameState.InvaderSize == 0
-			? "Army: " + GameState.ArmyStrength
-			: Utilities.ColorString("Army: " + GameState.ArmyStrength + "/" + GameState.InvaderSize, "red", GameState.InvaderSize > GameState.ArmyStrength);
+			? string.Format("Army: {0:0.#}", GameState.ArmyStrength)
+			: Utilities.ColorString(string.Format("Army: {0:0.#} / {1}", GameState.ArmyStrength, GameState.InvaderSize), "red", GameState.InvaderSize > GameState.ArmyStrength);
 		transform.Find("Top/Left/Item2/Text").GetComponent<Text>().text = armyString;
-		string birthString1 = float.IsInfinity(GameState.TimeBetweenBirths) ? "Birth rate is 0" : string.Format("Birth every {0:0.0}s", GameState.TimeBetweenBirths);
+		string birthString1 = float.IsInfinity(GameState.TimeBetweenBirths) ? "Birth rate is 0" : string.Format("Birth every {0:0.#}s", GameState.TimeBetweenBirths);
 		string birthString2 = mPersonManager.People.Count == PersonManager.MAX_POPULATION
 			? "(max population)"
 			: (float.IsInfinity(GameState.TimeUntilBirth)

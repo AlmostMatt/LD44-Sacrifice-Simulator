@@ -28,9 +28,7 @@ public class Ongoing : IRenderable
 			uiOngoing.transform.Find("Icon").gameObject.SetActive(false);
 		}
 		uiOngoing.transform.Find("VGroup/Text1").GetComponent<Text>().text = mTitle;
-		int minutes = (int)Mathf.Floor(mDuration/60);
-		int seconds = (int)Mathf.Floor(mDuration % 60);
-		uiOngoing.transform.Find("VGroup/Text2").GetComponent<Text>().text = string.Format("{0}:{1}", minutes, seconds);
+		uiOngoing.transform.Find("VGroup/Text2").GetComponent<Text>().text = string.Format("{0:0.0}s", mDuration);
 		uiOngoing.GetComponent<HoverInfo>().SetText(mDescription.ToString());
 		// trying lighter and lighter shades, because its a multiplied by a gray image
 		//uiOngoing.GetComponent<Image>().color = mIsGood ? new Color(77f/255f, 158f/255f, 115/255f) : new Color(158f/255f,53f/255f,64f/255f);

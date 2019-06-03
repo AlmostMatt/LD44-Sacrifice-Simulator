@@ -34,8 +34,8 @@ public class GameState {
 		set { sGameState.mGameSpeed = value; }
 	}
 
-	private int mFoodSupply = 0;
-	public static int FoodSupply // wow I didn't think this would actually work
+	private float mFoodSupply = 0;
+	public static float FoodSupply
 	{
 		get { return(sGameState.mFoodSupply); }
 		set { sGameState.mFoodSupply = value; }
@@ -48,8 +48,8 @@ public class GameState {
 		set { sGameState.mFoodSurplus = value; }
 	}
 
-	private int mArmyStrength = 0;
-	public static int ArmyStrength
+	private float mArmyStrength = 0;
+	public static float ArmyStrength
 	{
 		get { return(sGameState.mArmyStrength); }
 		set { sGameState.mArmyStrength = value; }

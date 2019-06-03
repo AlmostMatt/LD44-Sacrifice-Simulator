@@ -60,7 +60,7 @@ public class InvaderAttack : RandomEventSystem.RandomEvent {
 		{
 			PersonManager personMgr = Utilities.GetPersonManager();
 
-			int warriorStrength = GameState.ArmyStrength;
+			int warriorStrength = Mathf.FloorToInt(GameState.ArmyStrength);
 			int warriorDiff = mRequiredWarriors - warriorStrength;
 			if(warriorDiff <= 0) {
 				Utilities.LogEvent("Your warriors fended off the invaders and your people took no casualties.");
