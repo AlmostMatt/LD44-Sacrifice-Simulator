@@ -212,7 +212,7 @@ public class UIManager : MonoBehaviour {
 
     // Called when a GameObject is dropped on a profession area
     // Returns false if the dropped object is not a person.
-    public bool OnChangeProfession(GameObject uiObject, Person.Attribute newProfession)
+    public bool OnChangeProfession(GameObject uiObject, PersonAttribute newProfession)
     {
         if (!mUiPeopleMap.ContainsValue(uiObject))
         {

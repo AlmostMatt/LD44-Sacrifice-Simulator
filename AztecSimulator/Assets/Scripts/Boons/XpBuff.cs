@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class XpBuff : SacrificeResult {
 
-	private Person.Attribute mProfession;
+	private PersonAttribute mProfession;
 
-	public XpBuff(Person.Attribute profession, string professionString) : base("", "")
+	public XpBuff(PersonAttribute profession, string professionString) : base("", "")
 	{
 		mProfession = profession;
         mName = "Level " + (GameState.GetLevelCap(mProfession)+1) + " " + professionString;

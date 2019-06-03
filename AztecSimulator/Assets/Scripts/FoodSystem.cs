@@ -15,7 +15,7 @@ public class FoodSystem : MonoBehaviour {
 	void Update () {
 
 		float totalFoodProduction = 0;
-		List<Person> farmers = mPersonMgr.FindPeople(Person.AttributeType.PROFESSION, Person.Attribute.FARMER);
+		List<Person> farmers = mPersonMgr.FindPeople(PersonAttributeType.PROFESSION, PersonAttribute.FARMER);
 		foreach (Person person in farmers) {
 			totalFoodProduction += person.Efficiency;
 		}

@@ -171,7 +171,7 @@ public class GodDemand : IRenderable
                         personSlot.Find("H/Profession/Image").GetComponent<Image>().sprite = profession;
                     }
                     // Attributes
-                    List<Person.Attribute> attributes = criteria[i].mAttributes.FindAll(attr => attr.GetAttrType() != Person.AttributeType.PROFESSION);
+                    List<PersonAttribute> attributes = criteria[i].mAttributes.FindAll(attr => attr.GetAttrType() != PersonAttributeType.PROFESSION);
                     if (attributes.Count > 2)
                     {
                         Debug.Log("WARNING: requiring 3 attributes: " + attributes.ToString());

@@ -54,8 +54,8 @@ public class TutorialScript : MonoBehaviour, IDialogCallback {
 				List<Person> people = Utilities.GetPersonManager().People;
 				if
 				(
-						people[0].GetAttribute(Person.AttributeType.PROFESSION) == Person.Attribute.FARMER
-					&&  people[1].GetAttribute(Person.AttributeType.PROFESSION) == Person.Attribute.CIVILIAN
+						people[0].GetAttribute(PersonAttributeType.PROFESSION) == PersonAttribute.FARMER
+					&&  people[1].GetAttribute(PersonAttributeType.PROFESSION) == PersonAttribute.CIVILIAN
 				)
 				{
 					mUI.ShowMessage("Civilians increase the birthrate of your tribe.", this);

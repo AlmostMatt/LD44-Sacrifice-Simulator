@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CivilianXpBuff : XpBuff {
 
-	public CivilianXpBuff() : base(Person.Attribute.CIVILIAN, "Civilians") {
+	public CivilianXpBuff() : base(PersonAttribute.CIVILIAN, "Civilians") {
 	}
 
 }

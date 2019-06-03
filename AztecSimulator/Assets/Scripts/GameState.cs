@@ -84,8 +84,8 @@ public class GameState {
 		set { sGameState.mImprovedLifespan1 = value; }
 	}
 
-	private Dictionary<Person.Attribute, int> mXpBuffs = new Dictionary<Person.Attribute, int>();
-	public static void AddXpBuff(Person.Attribute profession, int xpMultiplierIncrease)
+	private Dictionary<PersonAttribute, int> mXpBuffs = new Dictionary<PersonAttribute, int>();
+	public static void AddXpBuff(PersonAttribute profession, int xpMultiplierIncrease)
 	{
         if (!sGameState.mXpBuffs.ContainsKey(profession))
         {
@@ -96,7 +96,7 @@ public class GameState {
             sGameState.mXpBuffs[profession] = sGameState.mXpBuffs[profession] + xpMultiplierIncrease;
         }
 	}
-	public static int GetBuffedXp(Person.Attribute profession, int baseValue)
+	public static int GetBuffedXp(PersonAttribute profession, int baseValue)
 	{
 		if(!sGameState.mXpBuffs.ContainsKey(profession))
 			return(baseValue);
@@ -104,15 +104,15 @@ public class GameState {
         return baseValue * sGameState.mXpBuffs[profession];
 	}
 
-	private Dictionary<Person.Attribute, int> mLevelCapIncreases = new Dictionary<Person.Attribute, int>();
-	public static void IncreaseLevelCap(Person.Attribute profession)
+	private Dictionary<PersonAttribute, int> mLevelCapIncreases = new Dictionary<PersonAttribute, int>();
+	public static void IncreaseLevelCap(PersonAttribute profession)
 	{
 		if(!sGameState.mLevelCapIncreases.ContainsKey(profession))
 			sGameState.mLevelCapIncreases.Add(profession, 0);
 
 		sGameState.mLevelCapIncreases[profession]++;
 	}
-	public static int GetLevelCap(Person.Attribute profession)
+	public static int GetLevelCap(PersonAttribute profession)
 	{
 		int initialLevelCap = 3;
 		if(!sGameState.mLevelCapIncreases.ContainsKey(profession))

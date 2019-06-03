@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FarmerXpBuff : XpBuff {
 
-	public FarmerXpBuff() : base(Person.Attribute.FARMER, "Farmers") {
+	public FarmerXpBuff() : base(PersonAttribute.FARMER, "Farmers") {
 	}
 
 }

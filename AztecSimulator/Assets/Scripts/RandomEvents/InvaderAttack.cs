@@ -78,7 +78,7 @@ public class InvaderAttack : RandomEventSystem.RandomEvent {
 
 				int bonusXp = GameState.GetBoonValue(BoonType.COMBAT_VICTORY_BONUS_XP);
 				if(bonusXp > 0) {
-					List<Person> peopleToGetXp = personMgr.People.FindAll(x => x.Level < GameState.GetLevelCap(x.GetAttribute(Person.AttributeType.PROFESSION)));
+					List<Person> peopleToGetXp = personMgr.People.FindAll(x => x.Level < GameState.GetLevelCap(x.GetAttribute(PersonAttributeType.PROFESSION)));
 					if(peopleToGetXp.Count > 0)
 					{
 						Person p = Utilities.RandomSelection<Person>(peopleToGetXp.ToArray());

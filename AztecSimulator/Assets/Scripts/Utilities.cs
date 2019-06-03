@@ -5,55 +5,6 @@ using UnityEngine.UI;
 
 public static class Utilities {
 
-	// Extenstion method. called with attr.GetAttrType()
-	public static Person.AttributeType GetAttrType(this Person.Attribute attr)
-	{
-		switch(attr){
-		case Person.Attribute.FARMER:
-		case Person.Attribute.WARRIOR:
-		case Person.Attribute.CIVILIAN:
-			return Person.AttributeType.PROFESSION;
-		case Person.Attribute.TALL:
-		case Person.Attribute.SHORT:
-			return Person.AttributeType.HEIGHT;
-		case Person.Attribute.BLUE_EYES:
-		case Person.Attribute.GREEN_EYES:
-		case Person.Attribute.BROWN_EYES:
-			return Person.AttributeType.EYE_COLOR;
-		case Person.Attribute.STRONG:
-		case Person.Attribute.WEAK:
-			return Person.AttributeType.STRENGTH;
-		case Person.Attribute.SMART:
-		case Person.Attribute.CARING:
-		case Person.Attribute.STUPID:
-			return Person.AttributeType.PERSONALITY;
-		default:
-			return Person.AttributeType.NONE;
-		}
-	}
-
-	public static string GetDescription(this Person.Attribute attr) {
-		switch(attr){
-		case Person.Attribute.FARMER:
-			return "Provides enough food to feed 1 person, and 0.5 more per level.";
-		case Person.Attribute.WARRIOR:
-			return "Increases army strength by 1, and 0.5 more per level.";
-		case Person.Attribute.CIVILIAN:
-			return "Raises children, increasing the birth rate, and 1/3 more per level.";
-		default:
-			return "<profession description>";
-		}
-	}
-
-	public static Person.Attribute[] GetAttrValues(Person.AttributeType attrType) {
-		return System.Array.FindAll<Person.Attribute>((Person.Attribute[])System.Enum.GetValues(typeof(Person.Attribute)), attr => GetAttrType(attr) == attrType);
-	}
-
-	public static Person.Attribute GetRandomAttr(Person.AttributeType attrType) {
-		Person.Attribute[] possibleValues = GetAttrValues(attrType);
-		return possibleValues[Random.Range(0, possibleValues.Length)];
-	}
-
 	public static SpriteManager GetSpriteManager()
 	{
 		// TODO: optimize this function for frequent calls by storing spriteManager in a variable

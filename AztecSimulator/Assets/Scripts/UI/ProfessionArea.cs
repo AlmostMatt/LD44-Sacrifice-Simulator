@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class ProfessionArea : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IDropHandler
 {
-    public Person.Attribute associatedProfession;
+    public PersonAttribute associatedProfession;
     public GameObject placeholderObject;
 
     // When mousing over an area while dragging, attach a placeholder.

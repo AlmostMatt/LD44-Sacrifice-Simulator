@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class WarriorXpBuff : XpBuff {
 
-    public WarriorXpBuff() : base(Person.Attribute.WARRIOR, "Warriors") { }
+    public WarriorXpBuff() : base(PersonAttribute.WARRIOR, "Warriors") { }
 }

@@ -235,7 +235,7 @@ public class God : MonoBehaviour {
 
         if (GameState.HasBoon(BoonType.SACRIFICE_BONUS_XP))
 		{
-			List<Person> underleveled = personMgr.People.FindAll(x => x.Level < GameState.GetLevelCap(x.GetAttribute(Person.AttributeType.PROFESSION)));
+			List<Person> underleveled = personMgr.People.FindAll(x => x.Level < GameState.GetLevelCap(x.GetAttribute(PersonAttributeType.PROFESSION)));
 			if(underleveled != null && underleveled.Count > 0)
 			{
 				int xpBonus = GameState.GetBoonValue(BoonType.SACRIFICE_BONUS_XP);

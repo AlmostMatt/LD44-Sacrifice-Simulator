@@ -16,16 +16,16 @@ public class DefaultScenario : IScenario {
 		// having to look up the definition of the constructor to figure out what param is what 
 		// (especially annoying when the record ends up with a lot of fields).
 		PersonManager.SpawnPersonRecord p1 = new PersonManager.SpawnPersonRecord();
-		p1.attr = Person.Attribute.FARMER;
+		p1.attr = PersonAttribute.FARMER;
         p1.level = 3;
 		mStartingPeople.Add(p1);
 
 		PersonManager.SpawnPersonRecord p2 = new PersonManager.SpawnPersonRecord();
-		p2.attr = Person.Attribute.CIVILIAN;
+		p2.attr = PersonAttribute.CIVILIAN;
 		mStartingPeople.Add(p2);
 
 		PersonManager.SpawnPersonRecord p3 = new PersonManager.SpawnPersonRecord();
-		p3.attr = Person.Attribute.CIVILIAN;
+		p3.attr = PersonAttribute.CIVILIAN;
 		mStartingPeople.Add(p3);
 
 		return(mStartingPeople);
