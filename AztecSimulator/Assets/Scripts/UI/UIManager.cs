@@ -296,7 +296,15 @@ public class UIManager : MonoBehaviour {
     private void InitializeUIDemand(GameObject uiDemand)
     {
         GodDemand demand = mUiDemandMap.GetKey(uiDemand);
-        string groupName = demand.IsFleeting ? "Fleeting" : "Permanent";
+        string groupName = "Permanent";
+        if (demand.GroupId != -1)
+        {
+            groupName = "Featured";
+        }
+        else if (demand.IsTemporary)
+        {
+            groupName = "Fleeting";
+        }
         uiDemand.transform.SetParent(transform.Find("Center (H)/DemandGroups/V/" + groupName + "/Viewport/Content (G)"), false);
     }
 
