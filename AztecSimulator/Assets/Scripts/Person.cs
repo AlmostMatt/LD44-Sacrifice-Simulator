@@ -29,7 +29,9 @@ public class Person : MonoBehaviour, IRenderable
 		"Manko",
 		"Atik"
 	};
-		
+
+    // At level N, XP to next level is 40 * N 
+    private const int xpPerLevelFactor = 40;
 	private float startingHealth = 100;
 
 	private string mName;
@@ -145,7 +147,8 @@ public class Person : MonoBehaviour, IRenderable
 	{
 		// maybe this wants to be smarter about caps, idk
 		mXp += amount;
-	}
+        mLevel = GetLevelForXp(mXp);
+    }
 
 	public void Heal(float amount)
 	{
@@ -190,40 +193,6 @@ public class Person : MonoBehaviour, IRenderable
 
 		mAge += 0.2f * GameState.GameDeltaTime;
 
-        PersonAttribute profession = Profession;
-		if(mLevel < GameState.GetLevelCap(profession))
-		{
-			if (profession != PersonAttribute.NONE) {
-				int xpGain = 1;
-				xpGain = GameState.GetBuffedXp(profession, xpGain);
-
-				if(GameState.HasBoon(BoonType.SAME_PROFESSION_XP_BONUS))
-				{
-					List<Person> sameProfession = Utilities.GetPersonManager().FindPeople(PersonAttributeType.PROFESSION, profession);
-					if(sameProfession.Count >= GameState.GetBoonValue(BoonType.SAME_PROFESSION_XP_REQ))
-					{
-						xpGain += GameState.GetBoonValue(BoonType.SAME_PROFESSION_XP_BONUS);
-					}
-				}
-
-				int bonusXpHealthThreshold = GameState.GetBoonValue(BoonType.HEALTHY_BONUS_XP_THRESHOLD);
-				if(bonusXpHealthThreshold > 0 && mHealth >= bonusXpHealthThreshold)
-				{
-					xpGain += GameState.GetBoonValue(BoonType.HEALTHY_BONUS_XP);
-				}
-
-				int bonusXpUnhealthyThreshold = GameState.GetBoonValue(BoonType.UNHEALTHY_BONUS_XP_THRESHOLD);
-				if(bonusXpUnhealthyThreshold > 0 && mHealth <= bonusXpUnhealthyThreshold)
-				{
-					xpGain += GameState.GetBoonValue(BoonType.UNHEALTHY_BONUS_XP);
-				}
-
-				mXp += xpGain * 0.25f * GameState.GameDeltaTime;
-			}
-
-			mLevel = GetLevelForXp(mXp);
-		}
-
 		float healthDecayRate = mBaseHealthDecayRate; // 0.
 		if(mIsHungry)
 		{
@@ -267,7 +236,7 @@ public class Person : MonoBehaviour, IRenderable
 		while(xp >= 0)
 		{
 			++level;
-			float xpToLevelUp = level * 10;
+			float xpToLevelUp = level * xpPerLevelFactor;
 			xp -= xpToLevelUp;
 		}
 		return(level);
@@ -307,8 +276,8 @@ public class Person : MonoBehaviour, IRenderable
 
 	private float GetTotalXpForLevel(int level)
 	{
-		return level * (level - 1) * 5; // based on required xp to level L = L * 10
-	}
+		return xpPerLevelFactor * level * (level - 1)  / 2; // based on required xp to level L = L * xpPerLevelFactor
+    }
 
 	private string GetLevelString()
 	{

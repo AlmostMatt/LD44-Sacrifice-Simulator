@@ -229,8 +229,12 @@ public class God : MonoBehaviour {
         {
             demand.mNumBuys++;
             demand.mDemand = DemandGenerator.ScaledDemand(demand.mNumBuys);
-            var resultType = demand.mSatisfiedResult.GetType();
-            demand.mSatisfiedResult = (SacrificeResult)System.Activator.CreateInstance(resultType);
+            // TODO: find a way to generalize this for renewable demands with arguments
+            // var resultType = demand.mSatisfiedResult.GetType();
+            // demand.mSatisfiedResult = (SacrificeResult)System.Activator.CreateInstance(resultType);
+            // HACK: Assume XPBuff
+            XpBuff currentBoon = (XpBuff)demand.mSatisfiedResult;
+            demand.mSatisfiedResult = new XpBuff(currentBoon.mProfession);
         }
 
         if (GameState.HasBoon(BoonType.SACRIFICE_BONUS_XP))

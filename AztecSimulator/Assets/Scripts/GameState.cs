@@ -96,7 +96,7 @@ public class GameState {
             sGameState.mXpBuffs[profession] = sGameState.mXpBuffs[profession] + xpMultiplierIncrease;
         }
 	}
-	public static int GetBuffedXp(PersonAttribute profession, int baseValue)
+	public static float GetBuffedXp(PersonAttribute profession, float baseValue)
 	{
 		if(!sGameState.mXpBuffs.ContainsKey(profession))
 			return(baseValue);
@@ -114,6 +114,10 @@ public class GameState {
 	}
 	public static int GetLevelCap(PersonAttribute profession)
 	{
+        if (profession == PersonAttribute.NONE)
+        {
+            return 1;
+        }
 		int initialLevelCap = 3;
 		if(!sGameState.mLevelCapIncreases.ContainsKey(profession))
 			return(initialLevelCap);

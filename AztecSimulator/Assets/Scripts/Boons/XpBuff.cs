@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class XpBuff : SacrificeResult {
 
-	private PersonAttribute mProfession;
+	public PersonAttribute mProfession;
 
 	public XpBuff(PersonAttribute profession) : base("", "")
 	{
 		mProfession = profession;
         string professionString = profession.CapitalizedString();
         mName = string.Format("Level {0} {1}s", GameState.GetLevelCap(mProfession)+1, professionString);
-        mDescription = professionString + "s gain xp faster. +1 max level.";
+        mDescription = professionString + "s gain +1 xp/s. +1 max level.";
         mIcon = profession.ToString();
     }
 

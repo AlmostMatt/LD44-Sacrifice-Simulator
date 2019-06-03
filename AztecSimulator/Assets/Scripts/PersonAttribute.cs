@@ -84,8 +84,9 @@ public static class PersonAttributeExtensions
             case PersonAttribute.WARRIOR:
                 return "Warriors increase army";
             case PersonAttribute.CIVILIAN:
-                return "Civilians have children";
+                return "Civilians increase birthrate"; // TODO: explain this more
             case PersonAttribute.SCRIBE:
+                return "Scribes produce XP"; // TODO: explain this more
             default:
                 return attr.CapitalizedString() + " <GetDescription>";
         }
@@ -102,6 +103,7 @@ public static class PersonAttributeExtensions
             case PersonAttribute.CIVILIAN:
                 return 0.5f;
             case PersonAttribute.SCRIBE:
+                return 6f;
             default:
                 return 1f;
         }
