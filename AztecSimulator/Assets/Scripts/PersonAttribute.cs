@@ -7,8 +7,8 @@ public enum PersonAttribute
      *  - update the attrType map
      *  - update the SpriteManager prefab
      * When adding a new profession:
-     *  - update the Efficiency maps in Person.cs
-     *  - add a new ProfessionGroup to the UI canvas prefab and set the profession
+     *  - update Description / EfficiencyBase / EfficiencyPerLevel / Color extension functions
+     *  - add a new ProfessionGroup to the UI canvas prefab and set the associateProfession
      *  
      *  TODO: have the UICanvas instatiate ProfessionGroups dynamically
      *  Note: VictoryDemand isn't generalized to any profession
@@ -46,27 +46,6 @@ public enum PersonAttributeType
 // Extenstion methods can be called with attr.method(). For example, PersonAttribute.CARING.GetAttrType()
 public static class PersonAttributeExtensions
 {
-    public static float GetEfficiencyBase(this PersonAttribute attr)
-    {
-        switch (attr)
-        {
-            case PersonAttribute.FARMER:
-                return 1.5f;
-            case PersonAttribute.WARRIOR:
-                return 1f;
-            case PersonAttribute.CIVILIAN:
-                return 0.5f;
-            case PersonAttribute.SCRIBE:
-            default:
-                return 1f;
-        }
-    }
-
-    public static float GetEfficiencyPerLevel(this PersonAttribute attr)
-    {
-        // For now all professions get 50% more effective per level.
-        return attr.GetEfficiencyBase() / 2f;
-    }
 
     public static PersonAttributeType GetAttrType(this PersonAttribute attr)
     {
@@ -107,9 +86,51 @@ public static class PersonAttributeExtensions
             case PersonAttribute.CIVILIAN:
                 return "Civilians have children";
             case PersonAttribute.SCRIBE:
-                return "Scribe"; // Scribes give XP to other units
             default:
-                return attr.ToString() + " <GetDescription>";
+                return attr.CapitalizedString() + " <GetDescription>";
+        }
+    }
+
+    public static float GetEfficiencyBase(this PersonAttribute attr)
+    {
+        switch (attr)
+        {
+            case PersonAttribute.FARMER:
+                return 1.5f;
+            case PersonAttribute.WARRIOR:
+                return 1f;
+            case PersonAttribute.CIVILIAN:
+                return 0.5f;
+            case PersonAttribute.SCRIBE:
+            default:
+                return 1f;
+        }
+    }
+
+    public static float GetEfficiencyPerLevel(this PersonAttribute attr)
+    {
+        // For now all professions get 50% more effective per level.
+        return attr.GetEfficiencyBase() / 2f;
+    }
+
+    // TODO: use profession.GetColor() to color profession in GodDemand description/cost, and Person
+    public static Color32 GetColor(this PersonAttribute attr)
+    {
+        switch (attr)
+        {
+            case PersonAttribute.FARMER:
+                return new Color32(60, 99, 60, 255);
+            case PersonAttribute.WARRIOR:
+                return new Color32(225, 0, 0, 255);
+            case PersonAttribute.CIVILIAN:
+                return new Color32(23, 19, 102, 255);
+            case PersonAttribute.SCRIBE:
+                return new Color32(166,0,226,255);
+            case PersonAttribute.NONE:
+                return new Color32(29, 29, 29, 255);
+            default:
+                Debug.Log("WARNING: " + attr.ToString() + " has no associated color");
+                return Color.white;
         }
     }
 
