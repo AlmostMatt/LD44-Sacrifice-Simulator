@@ -8,6 +8,10 @@ public enum PersonAttribute
      *  - update the SpriteManager prefab
      * When adding a new profession:
      *  - update the Efficiency maps in Person.cs
+     *  - add a new ProfessionGroup to the UI canvas prefab and set the profession
+     *  
+     *  TODO: have the UICanvas instatiate ProfessionGroups dynamically
+     *  Note: VictoryDemand isn't generalized to any profession
      **/
 
     FARMER = 0,
@@ -42,6 +46,27 @@ public enum PersonAttributeType
 // Extenstion methods can be called with attr.method(). For example, PersonAttribute.CARING.GetAttrType()
 public static class PersonAttributeExtensions
 {
+    public static float GetEfficiencyBase(this PersonAttribute attr)
+    {
+        switch (attr)
+        {
+            case PersonAttribute.FARMER:
+                return 1.5f;
+            case PersonAttribute.WARRIOR:
+                return 1f;
+            case PersonAttribute.CIVILIAN:
+                return 0.5f;
+            case PersonAttribute.SCRIBE:
+            default:
+                return 1f;
+        }
+    }
+
+    public static float GetEfficiencyPerLevel(this PersonAttribute attr)
+    {
+        // For now all professions get 50% more effective per level.
+        return attr.GetEfficiencyBase() / 2f;
+    }
 
     public static PersonAttributeType GetAttrType(this PersonAttribute attr)
     {
@@ -86,6 +111,12 @@ public static class PersonAttributeExtensions
             default:
                 return attr.ToString() + " <GetDescription>";
         }
+    }
+
+    public static string CapitalizedString(this PersonAttribute attr)
+    {
+        string str = attr.ToString();
+        return char.ToUpper(str[0]) + str.Substring(1).ToLower();
     }
 
     public static PersonAttribute[] GetAllValues(this PersonAttributeType attrType)

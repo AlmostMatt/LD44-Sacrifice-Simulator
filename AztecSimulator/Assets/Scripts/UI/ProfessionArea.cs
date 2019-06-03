@@ -9,6 +9,19 @@ public class ProfessionArea : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     public PersonAttribute associatedProfession;
     public GameObject placeholderObject;
 
+    public void Awake()
+    {
+        this.name = associatedProfession.ToString();
+        // Update visuals
+        transform.Find("Top bar/Icon").GetComponent<Image>().sprite = Utilities.GetSpriteManager().GetSprite(associatedProfession);
+        string labelString = string.Format(
+            "{0} ({1} + {2}/lvl)",
+            associatedProfession.GetDescription(),
+            associatedProfession.GetEfficiencyBase(),
+            associatedProfession.GetEfficiencyPerLevel());
+        transform.Find("Top bar/Text").GetComponent<Text>().text = labelString;
+    }
+
     // When mousing over an area while dragging, attach a placeholder.
     public void OnPointerEnter(PointerEventData eventData)
     {

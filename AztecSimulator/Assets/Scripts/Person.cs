@@ -5,22 +5,6 @@ using UnityEngine.UI;
 
 public class Person : MonoBehaviour, IRenderable
 {
-    private static Dictionary<PersonAttribute, float> EFFICIENCY_BASE = new Dictionary<PersonAttribute, float> {
-        {PersonAttribute.FARMER, 1.5f},
-        {PersonAttribute.WARRIOR, 1f},
-        {PersonAttribute.CIVILIAN, 0.5f},
-        {PersonAttribute.SCRIBE, 1f},
-        {PersonAttribute.NONE, 0f}
-    };
-    // This is currently half of the base efficiency
-    private static Dictionary<PersonAttribute, float> EFFICIENCY_PER_LEVEL = new Dictionary<PersonAttribute, float> {
-        {PersonAttribute.FARMER, 0.75f},
-        {PersonAttribute.WARRIOR, 0.5f},
-        {PersonAttribute.CIVILIAN, 0.25f},
-        {PersonAttribute.SCRIBE, 0.5f},
-        {PersonAttribute.NONE, 0f}
-    };
-
     // TODO: group names by gender
     private static string[] NAMES = {
 		"Nathan",
@@ -107,8 +91,8 @@ public class Person : MonoBehaviour, IRenderable
 	}
 	public float Efficiency {
 		get { return(
-			EFFICIENCY_BASE[Profession]
-			+ (EFFICIENCY_PER_LEVEL[Profession]) * (mLevel - 1));
+			Profession.GetEfficiencyBase()
+			+ (Profession.GetEfficiencyPerLevel() * (mLevel - 1)));
 		}
 	}
 
