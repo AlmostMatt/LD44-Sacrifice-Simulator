@@ -65,34 +65,48 @@ public class HoverInfo :  MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         // HACK
         // The size of this is 0,0 until it is enabled. So place it offscreen until it is enabled
         // and once it has a size do the math to make it not go off the edge of the screen
-		Rect uiTextRect = mUiInfo.GetComponent<RectTransform>().rect;
-		if (uiTextRect.width == 0) {
+        RectTransform uiTextRect = mUiInfo.GetComponent<RectTransform>();
+		if (uiTextRect.rect.width == 0) {
 			//Debug.Log("info text is temporarily offscreen");
-			mUiInfo.transform.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, mCanvasTransform.rect.height);
+			uiTextRect.anchoredPosition = new Vector2(0, mCanvasTransform.rect.height);
 			return;
 		}
-        Rect mainRect = LocalRectToScreenRect(gameObject.GetComponent<RectTransform>());
-        Vector2 desiredPosition = new Vector2(mainRect.x + mainRect.width / 2, mainRect.y + mainRect.height + uiTextRect.height / 2);
-        if (desiredPosition.y + uiTextRect.height / 2 > mCanvasTransform.rect.height)
+        // The canvas might be scaled and this is a child of the canvas. Do math in screen coordinates.
+        Rect hoverTextRect = LocalRectToScreenRect(uiTextRect);
+        Rect objRect = LocalRectToScreenRect(gameObject.GetComponent<RectTransform>());
+        // Place the uiText immediately above the relevant object
+        Vector2 desiredPosition = new Vector2(
+            objRect.x + objRect.width / 2,
+            objRect.y + objRect.height + hoverTextRect.height / 2);
+        // If this would push it off the top of the screen, put it below the object instead.
+        if (desiredPosition.y + hoverTextRect.height / 2 > Screen.height)
         {
-            desiredPosition.y = mainRect.y - uiTextRect.height / 2;
-        } 
+            desiredPosition.y = objRect.y - hoverTextRect.height / 2;
+        }
+        // Adjust X and Y in order to not go offscreen.
         Vector2 actualPosition = new Vector2(
 			Mathf.Min(Mathf.Max(
-                desiredPosition.x, 
-				uiTextRect.width/2),
-			mCanvasTransform.rect.width - (uiTextRect.width/2)),
+                desiredPosition.x,
+                hoverTextRect.width/2),
+			Screen.width - (hoverTextRect.width/2)),
 			Mathf.Min(Mathf.Max(
                 desiredPosition.y,
-				uiTextRect.height/2),
-				mCanvasTransform.rect.height- (uiTextRect.height/2)));
-		mUiInfo.transform.GetComponent<RectTransform>().anchoredPosition = actualPosition - mCanvasTransform.anchoredPosition;
-		// set global position relative to mouse
-	}
+                hoverTextRect.height/2),
+				Screen.height- (hoverTextRect.height/2)));
+        mUiInfo.transform.GetComponent<RectTransform>().anchoredPosition = ScreenPosToLocalPos(actualPosition, mCanvasTransform);
+    }
 
     public static Rect LocalRectToScreenRect(RectTransform transform)
     {
         Vector2 worldSize = Vector2.Scale(transform.rect.size, transform.lossyScale);
         return new Rect((Vector2)transform.position - (worldSize * 0.5f), worldSize);
+    }
+
+    public static Vector2 ScreenPosToLocalPos(Vector2 screenPos, RectTransform parentTransform)
+    {
+        // Invert the parent's offset and scale to convert to local coordinates.
+        Vector2 relativePosition = screenPos - parentTransform.anchoredPosition;
+        relativePosition.Scale(new Vector2(1f / parentTransform.localScale.x, 1f / parentTransform.localScale.y));
+        return relativePosition;
     }
 }
