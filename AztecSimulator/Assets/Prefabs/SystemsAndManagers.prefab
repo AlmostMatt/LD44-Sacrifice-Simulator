@@ -139,6 +139,8 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: f9ebf230d4344c34a8451f44446b53de, type: 3}
   - name: STRONG
     sprite: {fileID: 21300000, guid: a908f8c80379f314e999c722ca7e32d0, type: 3}
+  - name: SCRIBE
+    sprite: {fileID: 21300000, guid: 2bb21c146cf96f54c8ddcbc4143abaa3, type: 3}
   - name: WEAK
     sprite: {fileID: 21300000, guid: 0ea6d2bec7ba92141ad2ee820411e21b, type: 3}
   namedIcons:

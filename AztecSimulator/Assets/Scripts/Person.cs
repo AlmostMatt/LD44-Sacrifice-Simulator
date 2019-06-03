@@ -9,6 +9,7 @@ public class Person : MonoBehaviour, IRenderable
         {PersonAttribute.FARMER, 1.5f},
         {PersonAttribute.WARRIOR, 1f},
         {PersonAttribute.CIVILIAN, 0.5f},
+        {PersonAttribute.SCRIBE, 1f},
         {PersonAttribute.NONE, 0f}
     };
     // This is currently half of the base efficiency
@@ -16,6 +17,7 @@ public class Person : MonoBehaviour, IRenderable
         {PersonAttribute.FARMER, 0.75f},
         {PersonAttribute.WARRIOR, 0.5f},
         {PersonAttribute.CIVILIAN, 0.25f},
+        {PersonAttribute.SCRIBE, 0.5f},
         {PersonAttribute.NONE, 0f}
     };
 
@@ -190,7 +192,7 @@ public class Person : MonoBehaviour, IRenderable
         {
             mAttributes[attr.GetAttrType()] = attr;
         }
-        mAttributes[PersonAttributeType.PROFESSION] = PersonAttribute.NONE; // Start without a profession
+        mAttributes[PersonAttributeType.PROFESSION] = PersonAttribute.FARMER; // Default to a food-producing profession
 
         mIsHungry = false;
 		mMaxHealth = mHealth = startingHealth;

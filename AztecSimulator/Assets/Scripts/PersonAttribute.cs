@@ -2,10 +2,18 @@
 
 public enum PersonAttribute
 {
-    // When adding new professions, update the Utilities maps from attr to type and prof to description. Update the UIManager sprites.
+    /**
+     * When adding a new attribute
+     *  - update the attrType map
+     *  - update the SpriteManager prefab
+     * When adding a new profession:
+     *  - update the Efficiency maps in Person.cs
+     **/
+
     FARMER = 0,
     WARRIOR,
     CIVILIAN,
+    SCRIBE,
     TALL,
     SHORT,
     BLUE_EYES,
@@ -42,6 +50,7 @@ public static class PersonAttributeExtensions
             case PersonAttribute.FARMER:
             case PersonAttribute.WARRIOR:
             case PersonAttribute.CIVILIAN:
+            case PersonAttribute.SCRIBE:
                 return PersonAttributeType.PROFESSION;
             case PersonAttribute.TALL:
             case PersonAttribute.SHORT:
@@ -67,13 +76,15 @@ public static class PersonAttributeExtensions
         switch (attr)
         {
             case PersonAttribute.FARMER:
-                return "Provides enough food to feed 1 person, and 0.5 more per level.";
+                return "Farmers produce food";
             case PersonAttribute.WARRIOR:
-                return "Increases army strength by 1, and 0.5 more per level.";
+                return "Warriors increase army";
             case PersonAttribute.CIVILIAN:
-                return "Raises children, increasing the birth rate, and 1/3 more per level.";
+                return "Civilians have children";
+            case PersonAttribute.SCRIBE:
+                return "Scribe"; // Scribes give XP to other units
             default:
-                return "<profession description>";
+                return attr.ToString() + " <GetDescription>";
         }
     }
 

@@ -23,11 +23,14 @@ public class EditedObjectFinder {
         Debug.LogWarning(string.Format("EditedObjectFinder:  {0} objects were edited automatically.", propertyModifications.Length));
         for (int i = 0; i < propertyModifications.Length; i++)
         {
+            if (!(propertyModifications[i].currentValue.target is Transform))
+            {
+                continue;
+            }
+            Transform obj = (Transform)propertyModifications[i].currentValue.target;
             string propertyName = propertyModifications[i].currentValue.propertyPath;
             string oldValue = propertyModifications[i].previousValue.value;
             string newValue = propertyModifications[i].currentValue.value;
-            // propertyModifications[i].currentValue.target.GetType().ToString();
-            Transform obj = (Transform)propertyModifications[i].currentValue.target;
             string objectName = obj.name;
             while (obj.parent != null)
             {
