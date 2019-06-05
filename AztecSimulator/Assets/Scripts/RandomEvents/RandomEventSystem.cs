@@ -86,6 +86,8 @@ public class RandomEventSystem : MonoBehaviour {
 	void Start () {
 		mEvents = new List<TimedEvent>();
 
+		GameState.Scenario.SeedRandomEvents();
+
 		// hack in events for now
 		ScheduleEvent(new InvaderAttack(), initialEventDelay);
 		ScheduleEvent(new Drought(), initialEventDelay + Random.Range(30, 60));

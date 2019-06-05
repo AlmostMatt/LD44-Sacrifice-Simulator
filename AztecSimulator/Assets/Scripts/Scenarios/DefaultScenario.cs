@@ -30,4 +30,10 @@ public class DefaultScenario : IScenario {
 
 		return(mStartingPeople);
 	}
+
+	public void SeedRandomEvents(RandomEventSystem s)
+	{
+		s.ScheduleEvent(new Drought());
+		s.ScheduleEvent(new InvaderAttack(), 60);
+	}
 }
