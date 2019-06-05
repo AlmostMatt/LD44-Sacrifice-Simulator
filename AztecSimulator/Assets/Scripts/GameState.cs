@@ -34,8 +34,8 @@ public class GameState {
 		set { sGameState.mGameSpeed = value; }
 	}
 
-	private int mFoodSupply = 0;
-	public static int FoodSupply // wow I didn't think this would actually work
+	private float mFoodSupply = 0;
+	public static float FoodSupply
 	{
 		get { return(sGameState.mFoodSupply); }
 		set { sGameState.mFoodSupply = value; }
@@ -48,8 +48,8 @@ public class GameState {
 		set { sGameState.mFoodSurplus = value; }
 	}
 
-	private int mArmyStrength = 0;
-	public static int ArmyStrength
+	private float mArmyStrength = 0;
+	public static float ArmyStrength
 	{
 		get { return(sGameState.mArmyStrength); }
 		set { sGameState.mArmyStrength = value; }
@@ -84,8 +84,8 @@ public class GameState {
 		set { sGameState.mImprovedLifespan1 = value; }
 	}
 
-	private Dictionary<Person.Attribute, int> mXpBuffs = new Dictionary<Person.Attribute, int>();
-	public static void AddXpBuff(Person.Attribute profession, int xpMultiplierIncrease)
+	private Dictionary<PersonAttribute, int> mXpBuffs = new Dictionary<PersonAttribute, int>();
+	public static void AddXpBuff(PersonAttribute profession, int xpMultiplierIncrease)
 	{
         if (!sGameState.mXpBuffs.ContainsKey(profession))
         {
@@ -96,7 +96,7 @@ public class GameState {
             sGameState.mXpBuffs[profession] = sGameState.mXpBuffs[profession] + xpMultiplierIncrease;
         }
 	}
-	public static int GetBuffedXp(Person.Attribute profession, int baseValue)
+	public static float GetBuffedXp(PersonAttribute profession, float baseValue)
 	{
 		if(!sGameState.mXpBuffs.ContainsKey(profession))
 			return(baseValue);
@@ -104,16 +104,20 @@ public class GameState {
         return baseValue * sGameState.mXpBuffs[profession];
 	}
 
-	private Dictionary<Person.Attribute, int> mLevelCapIncreases = new Dictionary<Person.Attribute, int>();
-	public static void IncreaseLevelCap(Person.Attribute profession)
+	private Dictionary<PersonAttribute, int> mLevelCapIncreases = new Dictionary<PersonAttribute, int>();
+	public static void IncreaseLevelCap(PersonAttribute profession)
 	{
 		if(!sGameState.mLevelCapIncreases.ContainsKey(profession))
 			sGameState.mLevelCapIncreases.Add(profession, 0);
 
 		sGameState.mLevelCapIncreases[profession]++;
 	}
-	public static int GetLevelCap(Person.Attribute profession)
+	public static int GetLevelCap(PersonAttribute profession)
 	{
+        if (profession == PersonAttribute.NONE)
+        {
+            return 1;
+        }
 		int initialLevelCap = 3;
 		if(!sGameState.mLevelCapIncreases.ContainsKey(profession))
 			return(initialLevelCap);

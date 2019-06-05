@@ -8,7 +8,7 @@ public class Criterion {
 	public int mMinLevel = -1;
 	public int mCount = 1;
 
-	public List<Person.Attribute> mAttributes = new List<Person.Attribute>();
+	public List<PersonAttribute> mAttributes = new List<PersonAttribute>();
 
     public bool CheckSatisfaction(Person p)
     {
@@ -16,15 +16,15 @@ public class Criterion {
         {
             return false;
         }
-        List<Person.Attribute> unsatisfiedAttrs = new List<Person.Attribute>(mAttributes);
-        foreach (Person.Attribute reqAttr in mAttributes)
+        List<PersonAttribute> unsatisfiedAttrs = new List<PersonAttribute>(mAttributes);
+        foreach (PersonAttribute reqAttr in mAttributes)
         {
             if (p.Profession == reqAttr)
             {
                 unsatisfiedAttrs.Remove(reqAttr);
                 continue;
             }
-            foreach (Person.Attribute attr in p.NonProfessionAttributes)
+            foreach (PersonAttribute attr in p.NonProfessionAttributes)
             {
                 if (attr == reqAttr)
                 {
@@ -46,7 +46,7 @@ public class Criterion {
 		return(satCount >= mCount);
 	}
 
-	public bool IsRelevantAttribute(Person.Attribute attribute)
+	public bool IsRelevantAttribute(PersonAttribute attribute)
 	{
 		return(mAttributes.Contains(attribute));
 	}
@@ -74,13 +74,13 @@ public class Criterion {
 		return(s);
 	}
 
-	public Person.Attribute GetProfession() {
-		foreach (Person.Attribute attr in mAttributes) {
-			if (attr.GetAttrType() == Person.AttributeType.PROFESSION) {
+	public PersonAttribute GetProfession() {
+		foreach (PersonAttribute attr in mAttributes) {
+			if (attr.GetAttrType() == PersonAttributeType.PROFESSION) {
 				return attr;
 			}
 		}
-		return Person.Attribute.NONE;
+		return PersonAttribute.NONE;
 	}
 
 	//  Returns a string to be shown after the profession
@@ -92,10 +92,10 @@ public class Criterion {
 			s += "Age " + mMinAge + " ";
 		}
 		s += Utilities.ConcatStrings(
-			mAttributes.FindAll(attr =>attr.GetAttrType() != Person.AttributeType.PROFESSION)
+			mAttributes.FindAll(attr =>attr.GetAttrType() != PersonAttributeType.PROFESSION)
 			.ConvertAll(attr => attr.ToString()), false);
 		// put a space before the suffix string if there is a suffix and also profession
-		if (s!="" && GetProfession() != Person.Attribute.NONE) { s = " " + s; }
+		if (s!="" && GetProfession() != PersonAttribute.NONE) { s = " " + s; }
 		return(s);
 	}
 }

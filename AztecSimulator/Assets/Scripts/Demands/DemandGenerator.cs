@@ -92,8 +92,8 @@ public class DemandGenerator {
 	{
 		// guaranteed to be satisfiable now
 		SacrificeDemand d = new SacrificeDemand();
-		List<Person.Attribute> attributes = GenerateSatisfiableDemands(1);
-		foreach(Person.Attribute attr in attributes)
+		List<PersonAttribute> attributes = GenerateSatisfiableDemands(1);
+		foreach(PersonAttribute attr in attributes)
 		{
 			Criterion c = new Criterion();
 			c.mAttributes.Add(attr);
@@ -111,23 +111,23 @@ public class DemandGenerator {
 		if(numPerCriterion == 2)
 		{
 			Criterion doubleCrit = new Criterion();
-			Person.Attribute[] doubleAttrs = Person.RandomAttributes(1);
-			doubleCrit.mAttributes = new List<Person.Attribute>(doubleAttrs);
+			PersonAttribute[] doubleAttrs = Person.RandomAttributes(1);
+			doubleCrit.mAttributes = new List<PersonAttribute>(doubleAttrs);
 			d.mCriteria.Add(doubleCrit);
 			return d;
 		}
 
-		List<Person.Attribute> attributes = GenerateSatisfiableDemands(numGuaranteed);
-		List<Person.Attribute> anyAttrs = GenerateRandomDemandsDumb(numAny);
+		List<PersonAttribute> attributes = GenerateSatisfiableDemands(numGuaranteed);
+		List<PersonAttribute> anyAttrs = GenerateRandomDemandsDumb(numAny);
 
-		List<Person.Attribute> allAttrs = new List<Person.Attribute>();
+		List<PersonAttribute> allAttrs = new List<PersonAttribute>();
 		for(int i = 0; i < anyAttrs.Count; ++i)
 		{
 			allAttrs.Add(anyAttrs[i]);
 		}
 		for(int i = 0; i < attributes.Count; ++i)
 		{
-			Person.Attribute attr = attributes[i];
+			PersonAttribute attr = attributes[i];
 			if(!allAttrs.Contains(attr))
 			{
 				allAttrs.Add(attr);
@@ -156,10 +156,10 @@ public class DemandGenerator {
 		int minAttr = Mathf.Min(2, 1+tier);
 		int maxAttr = Mathf.Min(3, 2+tier);
 		int numAttributes = Random.Range(minAttr,maxAttr + 1);
-		List<Person.Attribute> attributes = GenerateSatisfiableDemands(numAttributes);
+		List<PersonAttribute> attributes = GenerateSatisfiableDemands(numAttributes);
 
 		// add them as separate criteria so that they're easier to satisfy
-		foreach(Person.Attribute attr in attributes)
+		foreach(PersonAttribute attr in attributes)
 		{
 			Criterion c = new Criterion();
 			c.mAttributes.Add(attr);
@@ -181,7 +181,7 @@ public class DemandGenerator {
 			Criterion c = new Criterion();
 			c.mMinLevel = p.Level;
 			c.mAttributes.Add(p.Profession);
-            List<Person.Attribute> personAttributes = p.NonProfessionAttributes;
+            List<PersonAttribute> personAttributes = p.NonProfessionAttributes;
             c.mAttributes.Add(personAttributes[Random.Range(0, personAttributes.Count)]);
 			d.mCriteria.Add(c);
 		}
@@ -224,7 +224,7 @@ public class DemandGenerator {
 			SacrificeDemand professionDemand = new SacrificeDemand();
 			Criterion profC = new Criterion();
 			profC.mMinLevel = 7;
-			Person.Attribute[] attr = Person.RandomAttributes(1);
+			PersonAttribute[] attr = Person.RandomAttributes(1);
 			profC.mAttributes.Add(attr[attr.Length-1]);
 			profC.mCount = 3;
 			professionDemand.mCriteria.Add(profC);
@@ -234,24 +234,24 @@ public class DemandGenerator {
 		SacrificeDemand experienceDemand = new SacrificeDemand();
 		Criterion farmC = new Criterion();
 		farmC.mMinLevel = 6;
-		farmC.mAttributes.Add(Person.Attribute.FARMER);
+		farmC.mAttributes.Add(PersonAttribute.FARMER);
 		experienceDemand.mCriteria.Add(farmC);
 
 		Criterion warC = new Criterion();
 		warC.mMinLevel = 6;
-		warC.mAttributes.Add(Person.Attribute.WARRIOR);
+		warC.mAttributes.Add(PersonAttribute.WARRIOR);
 		experienceDemand.mCriteria.Add(warC);
 
 		Criterion civC = new Criterion();
 		civC.mMinLevel = 6;
-		civC.mAttributes.Add(Person.Attribute.CIVILIAN);
+		civC.mAttributes.Add(PersonAttribute.CIVILIAN);
 		experienceDemand.mCriteria.Add(civC);
 		return(experienceDemand);
 	}
 
-	public static List<Person.Attribute> GenerateSatisfiableDemands(int preferredNum)
+	public static List<PersonAttribute> GenerateSatisfiableDemands(int preferredNum)
 	{
-		List<Person.Attribute> demands = new List<Person.Attribute>(); 
+		List<PersonAttribute> demands = new List<PersonAttribute>(); 
 
 		// naive (or clever?): if we just pick a person at random and an attribute at random,
 		// then we're guaranted to be able to satisfy it. The bonus is that 
@@ -262,7 +262,7 @@ public class DemandGenerator {
 		{
 			Person p = people[Random.Range(0, people.Count)];
 
-            Person.Attribute attribute = p.NonProfessionAttributes[Random.Range(0, p.NonProfessionAttributes.Count)];
+            PersonAttribute attribute = p.NonProfessionAttributes[Random.Range(0, p.NonProfessionAttributes.Count)];
 			if(!demands.Contains(attribute))
 				demands.Add(attribute);
 		}
@@ -270,16 +270,16 @@ public class DemandGenerator {
 		return(demands);
 	}
 
-	public static List<Person.Attribute> GenerateRandomDemandsDumb(int howMany)
+	public static List<PersonAttribute> GenerateRandomDemandsDumb(int howMany)
 	{
-		Person.Attribute[] attributesAndProfession = Person.RandomAttributes(howMany); // gives howMany + 1, because it tacks profession onto the end
-		return new List<Person.Attribute>(Utilities.RandomSubset(attributesAndProfession, howMany));
+		PersonAttribute[] attributesAndProfession = Person.RandomAttributes(howMany); // gives howMany + 1, because it tacks profession onto the end
+		return new List<PersonAttribute>(Utilities.RandomSubset(attributesAndProfession, howMany));
 	}
 
-	public static List<Person.Attribute> GenerateRandomDemands(int tier)
+	public static List<PersonAttribute> GenerateRandomDemands(int tier)
 	{
-		List<Person.Attribute> attrs = new List<Person.Attribute>();
-		Person.Attribute[] attributeAndProfession = Person.RandomAttributes(tier);
+		List<PersonAttribute> attrs = new List<PersonAttribute>();
+		PersonAttribute[] attributeAndProfession = Person.RandomAttributes(tier);
 		if(tier == 1)
 		{
 			attrs.Add(attributeAndProfession[Random.Range(0, attributeAndProfession.Length)]);
@@ -293,12 +293,12 @@ public class DemandGenerator {
 		}
 		return(attrs);
 		/*
-		List<Person.Attribute> demands = new List<Person.Attribute>();
-		var numAttrs = System.Enum.GetValues(typeof(Person.Attribute)).Length-1;
+		List<PersonAttribute> demands = new List<PersonAttribute>();
+		var numAttrs = System.Enum.GetValues(typeof(PersonAttribute)).Length-1;
 		int[] attributes = Utilities.RandomList(numAttrs, preferredNum);
 		for(int i = 0; i < preferredNum; ++i)
 		{
-			demands.Add((Person.Attribute)attributes[i]);
+			demands.Add((PersonAttribute)attributes[i]);
 		}
 		return(demands);
 		*/

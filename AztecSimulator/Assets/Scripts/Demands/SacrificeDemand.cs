@@ -28,7 +28,7 @@ public class SacrificeDemand
 		return(true);
 	}
 
-	public bool IsRelevantAttribute(Person.Attribute attribute)
+	public bool IsRelevantAttribute(PersonAttribute attribute)
 	{
 		foreach(Criterion c in mCriteria)
 		{
@@ -65,7 +65,7 @@ public class SacrificeDemand
 		string costString = "";
 		foreach(Criterion c in mCriteria)
 		{
-			string profString = c.GetProfession() == Person.Attribute.NONE ? "" : c.GetProfession().ToString();
+			string profString = c.GetProfession() == PersonAttribute.NONE ? "" : c.GetProfession().ToString();
 			costString += c.GetPrefixString() + profString + c.GetSuffixString() + "\r\n";
 		};
 		return(costString);
@@ -73,8 +73,8 @@ public class SacrificeDemand
 
 	// Returns a list of attributes. Corresponding icons will be used in the demand info rows.
 	// TODO: support images other than profession icons
-	public Person.Attribute[] GetUIDescriptionIcons() {
-		Person.Attribute[] attributes = new Person.Attribute[mCriteria.Count];
+	public PersonAttribute[] GetUIDescriptionIcons() {
+		PersonAttribute[] attributes = new PersonAttribute[mCriteria.Count];
 		for (int i=0; i< mCriteria.Count; i++) {
 			attributes[i] = mCriteria[i].GetProfession();
 		}

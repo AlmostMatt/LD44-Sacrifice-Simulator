@@ -3,49 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Person : MonoBehaviour, IRenderable {
-	private static Dictionary<Person.Attribute, float> EFFICIENCY_BASE = new Dictionary<Person.Attribute, float> {
-		{Person.Attribute.FARMER, 1.5f},
-		{Person.Attribute.WARRIOR, 1f},
-		{Person.Attribute.CIVILIAN, 0.5f},
-		{Person.Attribute.NONE, 0f}
-	};
-	private static Dictionary<Person.Attribute, float> EFFICIENCY_PER_LEVEL = new Dictionary<Person.Attribute, float> {
-		{Person.Attribute.FARMER, 0.75f},
-		{Person.Attribute.WARRIOR, 0.5f},
-		{Person.Attribute.CIVILIAN, 0.25f},
-		{Person.Attribute.NONE, 0f}
-	};
-
-	// Utility functions to go from attr > type are in Utilities
-	public enum AttributeType {
-		PROFESSION = 0,
-		HEIGHT,
-		EYE_COLOR,
-		STRENGTH,
-		PERSONALITY,
-		NONE
-	}
-	public enum Attribute {
-		// When adding new professions, update the Utilities maps from attr to type and prof to description. Update the UIManager sprites.
-		FARMER = 0,
-		WARRIOR,
-		CIVILIAN,
-		TALL,
-		SHORT,
-		BLUE_EYES,
-		GREEN_EYES,
-		BROWN_EYES,
-		STRONG,
-		WEAK,
-		SMART,
-		CARING,
-		STUPID,
-		// When picking a random attr, subtract max value by 1 to not select the following
-		NONE
-	}
-	// TODO: group names by gender
-	private static string[] NAMES = {
+public class Person : MonoBehaviour, IRenderable
+{
+    // TODO: group names by gender
+    private static string[] NAMES = {
 		"Nathan",
 		"Matt",
 		"Brendan",
@@ -68,11 +29,13 @@ public class Person : MonoBehaviour, IRenderable {
 		"Manko",
 		"Atik"
 	};
-		
+
+    // At level N, XP to next level is 40 * N 
+    private const int xpPerLevelFactor = 40;
 	private float startingHealth = 100;
 
 	private string mName;
-	private Dictionary<AttributeType, Attribute> mAttributes = new Dictionary<AttributeType, Attribute>();
+	private Dictionary<PersonAttributeType, PersonAttribute> mAttributes = new Dictionary<PersonAttributeType, PersonAttribute>();
 	private int mLevel;
 	private float mAge;
 	private float mXp = 0f;
@@ -87,20 +50,20 @@ public class Person : MonoBehaviour, IRenderable {
 	public string Name {
 		get { return(mName); } 
 	}
-    public Attribute Profession
+    public PersonAttribute Profession
     {
         get {
-            return GetAttribute(AttributeType.PROFESSION);
+            return GetAttribute(PersonAttributeType.PROFESSION);
         }
     }
-	public List<Attribute> NonProfessionAttributes
+	public List<PersonAttribute> NonProfessionAttributes
     {
         get
         {
-            List<Attribute> attributes = new List<Attribute>();
-            foreach (KeyValuePair<AttributeType, Attribute> kvp in mAttributes)
+            List<PersonAttribute> attributes = new List<PersonAttribute>();
+            foreach (KeyValuePair<PersonAttributeType, PersonAttribute> kvp in mAttributes)
             {
-                if (kvp.Key != AttributeType.PROFESSION)
+                if (kvp.Key != PersonAttributeType.PROFESSION)
                 {
                     attributes.Add(kvp.Value);
                 }
@@ -130,19 +93,19 @@ public class Person : MonoBehaviour, IRenderable {
 	}
 	public float Efficiency {
 		get { return(
-			EFFICIENCY_BASE[Profession]
-			+ (EFFICIENCY_PER_LEVEL[Profession]) * (mLevel - 1));
+			Profession.GetEfficiencyBase()
+			+ (Profession.GetEfficiencyPerLevel() * (mLevel - 1)));
 		}
 	}
 
-	public void ChangeProfession(Attribute newProfession)
+	public void ChangeProfession(PersonAttribute newProfession)
 	{
 		if (Profession == newProfession)
         {
             return;
         }
         // note: this could rely on the fact that profession happens to be the last attribute
-        mAttributes[AttributeType.PROFESSION] = newProfession;
+        mAttributes[PersonAttributeType.PROFESSION] = newProfession;
 		int xpRetention = GameState.GetBoonValue(BoonType.PROFESSION_CHANGE_RETAIN_XP);
 		if(xpRetention > 0)
 			mXp = (xpRetention / 100f) * mXp;
@@ -152,10 +115,10 @@ public class Person : MonoBehaviour, IRenderable {
 	}
 
 	// This should be called after the person has already been created and Awake completed.
-	public void OverrideRandomValues(Attribute newProfession = Attribute.NONE, int level = -1) {
-		if (newProfession != Attribute.NONE)
+	public void OverrideRandomValues(PersonAttribute newProfession = PersonAttribute.NONE, int level = -1) {
+		if (newProfession != PersonAttribute.NONE)
         {
-            mAttributes[AttributeType.PROFESSION] = newProfession;
+            mAttributes[PersonAttributeType.PROFESSION] = newProfession;
 		}
 		if (level != -1) {
 			mLevel = level;
@@ -167,6 +130,7 @@ public class Person : MonoBehaviour, IRenderable {
 		get { return((int)Mathf.Floor(mAge)); }
 	}
 
+    private float mHungryBuffer=0f;
 	private bool mIsHungry;
 	public bool Hungry
 	{
@@ -174,16 +138,17 @@ public class Person : MonoBehaviour, IRenderable {
 		set { mIsHungry = value; }
 	}
 
-	public Attribute GetAttribute(Person.AttributeType attrType) {
-        Attribute attr;
-        return mAttributes.TryGetValue(attrType, out attr) ? attr : Attribute.NONE;
+	public PersonAttribute GetAttribute(PersonAttributeType attrType) {
+        PersonAttribute attr;
+        return mAttributes.TryGetValue(attrType, out attr) ? attr : PersonAttribute.NONE;
 	}
 
 	public void AddXp(float amount)
 	{
 		// maybe this wants to be smarter about caps, idk
 		mXp += amount;
-	}
+        mLevel = GetLevelForXp(mXp);
+    }
 
 	public void Heal(float amount)
 	{
@@ -209,12 +174,12 @@ public class Person : MonoBehaviour, IRenderable {
 		mAge = 0;
 
         int numRandomAttributes = 2; //  Random.Range(1,3);
-        Attribute[] randomAttrs = RandomAttributes(numRandomAttributes, false);
-        foreach (Attribute attr in randomAttrs)
+        PersonAttribute[] randomAttrs = RandomAttributes(numRandomAttributes, false);
+        foreach (PersonAttribute attr in randomAttrs)
         {
             mAttributes[attr.GetAttrType()] = attr;
         }
-        mAttributes[AttributeType.PROFESSION] = Attribute.NONE; // Start without a profession
+        mAttributes[PersonAttributeType.PROFESSION] = PersonAttribute.FARMER; // Default to a food-producing profession
 
         mIsHungry = false;
 		mMaxHealth = mHealth = startingHealth;
@@ -228,52 +193,29 @@ public class Person : MonoBehaviour, IRenderable {
 
 		mAge += 0.2f * GameState.GameDeltaTime;
 
-		Attribute profession = Profession;
-		if(mLevel < GameState.GetLevelCap(profession))
-		{
-			if (profession != Attribute.NONE) {
-				int xpGain = 1;
-				xpGain = GameState.GetBuffedXp(profession, xpGain);
-
-				if(GameState.HasBoon(BoonType.SAME_PROFESSION_XP_BONUS))
-				{
-					List<Person> sameProfession = Utilities.GetPersonManager().FindPeople(AttributeType.PROFESSION, profession);
-					if(sameProfession.Count >= GameState.GetBoonValue(BoonType.SAME_PROFESSION_XP_REQ))
-					{
-						xpGain += GameState.GetBoonValue(BoonType.SAME_PROFESSION_XP_BONUS);
-					}
-				}
-
-				int bonusXpHealthThreshold = GameState.GetBoonValue(BoonType.HEALTHY_BONUS_XP_THRESHOLD);
-				if(bonusXpHealthThreshold > 0 && mHealth >= bonusXpHealthThreshold)
-				{
-					xpGain += GameState.GetBoonValue(BoonType.HEALTHY_BONUS_XP);
-				}
-
-				int bonusXpUnhealthyThreshold = GameState.GetBoonValue(BoonType.UNHEALTHY_BONUS_XP_THRESHOLD);
-				if(bonusXpUnhealthyThreshold > 0 && mHealth <= bonusXpUnhealthyThreshold)
-				{
-					xpGain += GameState.GetBoonValue(BoonType.UNHEALTHY_BONUS_XP);
-				}
-
-				mXp += xpGain * 0.25f * GameState.GameDeltaTime;
-			}
-
-			mLevel = GetLevelForXp(mXp);
-		}
-
 		float healthDecayRate = mBaseHealthDecayRate; // 0.
 		if(mIsHungry)
 		{
-			// healthDecayRate *= 5;
-			healthDecayRate = 3f;
-		}
-		else if(GameState.HasBoon(BoonType.SURPLUS_FOOD_TO_HEALING))
-		{
-			float healAmount = GameState.GetBoonValue(BoonType.SURPLUS_FOOD_TO_HEALING) / 100f;
-			healthDecayRate -=  healAmount * GameState.FoodSurplus;
-		}
-		Damage(healthDecayRate * GameState.GameDeltaTime);
+            if (mHungryBuffer > 0f)
+            {
+                mHungryBuffer -= GameState.GameDeltaTime;
+            }
+            else
+            {
+                healthDecayRate = 3f;
+            }
+        }
+        else
+        {
+            // Allow 2 seconds before starvation will cause damage.
+            mHungryBuffer = 2f;
+            if(GameState.HasBoon(BoonType.SURPLUS_FOOD_TO_HEALING))
+		    {
+			    float healAmount = GameState.GetBoonValue(BoonType.SURPLUS_FOOD_TO_HEALING) / 100f;
+			    healthDecayRate -=  healAmount * GameState.FoodSurplus;
+		    }
+        }
+        Damage(healthDecayRate * GameState.GameDeltaTime);
 		// Time since health changed is strictly for UI purposes, so it does not use game-time.
 		mTimeSinceHealthChanged += Time.deltaTime;
 		if (mTimeSinceHealthChanged >= 1f) {
@@ -294,7 +236,7 @@ public class Person : MonoBehaviour, IRenderable {
 		while(xp >= 0)
 		{
 			++level;
-			float xpToLevelUp = level * 10;
+			float xpToLevelUp = level * xpPerLevelFactor;
 			xp -= xpToLevelUp;
 		}
 		return(level);
@@ -304,10 +246,10 @@ public class Person : MonoBehaviour, IRenderable {
 	// Icons (profession and health) are added by the UI Manager
 	public string[] GetUIDescription(SacrificeDemand selectedDemand)
 	{
-        List<Attribute> nonProfAttributes = NonProfessionAttributes;
+        List<PersonAttribute> nonProfAttributes = NonProfessionAttributes;
         string attrString = "";
 		for(int i = 0; i < nonProfAttributes.Count; ++i) {
-			string attr = System.Enum.GetName(typeof(Attribute), (int)nonProfAttributes[i]);
+			string attr = System.Enum.GetName(typeof(PersonAttribute), (int)nonProfAttributes[i]);
 			bool isRelevant = selectedDemand != null && selectedDemand.IsRelevantAttribute(nonProfAttributes[i]);
 			attrString += Utilities.ColorString(attr, "green", isRelevant) + ", ";
 		}
@@ -334,8 +276,8 @@ public class Person : MonoBehaviour, IRenderable {
 
 	private float GetTotalXpForLevel(int level)
 	{
-		return level * (level - 1) * 5; // based on required xp to level L = L * 10
-	}
+		return xpPerLevelFactor * level * (level - 1)  / 2; // based on required xp to level L = L * xpPerLevelFactor
+    }
 
 	private string GetLevelString()
 	{
@@ -347,33 +289,33 @@ public class Person : MonoBehaviour, IRenderable {
 	}
 
 	public void DebugPrint() {
-        List<Attribute> nonProfAttributes = NonProfessionAttributes;
+        List<PersonAttribute> nonProfAttributes = NonProfessionAttributes;
         Debug.Log(mName + " has: ");
 		for(int i = 0; i < nonProfAttributes.Count; ++i) {
-			Debug.Log(System.Enum.GetName(typeof(Attribute), (int)nonProfAttributes[i]));
+			Debug.Log(System.Enum.GetName(typeof(PersonAttribute), (int)nonProfAttributes[i]));
 		}
 	}
 
-	public static Attribute[] RandomAttributes(int howMany, bool alsoRandomProfession = true)
+	public static PersonAttribute[] RandomAttributes(int howMany, bool alsoRandomProfession = true)
 	{
-		AttributeType[] attrTypes = {
-			AttributeType.PERSONALITY,
-			AttributeType.HEIGHT,
-			AttributeType.STRENGTH,
-			// AttributeType.EYE_COLOR,
+        PersonAttributeType[] attrTypes = {
+            PersonAttributeType.PERSONALITY,
+            PersonAttributeType.HEIGHT,
+            PersonAttributeType.STRENGTH,
+			// PersonAttributeType.EYE_COLOR,
 		};
 
 		howMany = Mathf.Min(attrTypes.Length, howMany);
-		AttributeType[] randomAttributes = Utilities.RandomSubset(attrTypes, howMany);
+        PersonAttributeType[] randomAttributes = Utilities.RandomSubset(attrTypes, howMany);
 
-		Attribute[] attributes = new Attribute[howMany + (alsoRandomProfession ? 1 : 0)];
+        PersonAttribute[] attributes = new PersonAttribute[howMany + (alsoRandomProfession ? 1 : 0)];
         if (alsoRandomProfession)
         {
-            attributes[howMany] = Utilities.GetRandomAttr(AttributeType.PROFESSION);
+            attributes[howMany] = PersonAttributeType.PROFESSION.GetRandomValue();
         }
 		for(int i = 0; i < howMany; ++i)
 		{
-			attributes[i] = Utilities.GetRandomAttr(randomAttributes[i]);
+			attributes[i] = randomAttributes[i].GetRandomValue();
 		}
 
 		return(attributes);
@@ -387,10 +329,10 @@ public class Person : MonoBehaviour, IRenderable {
         // Level txt
         uiPrefab.transform.Find("H/Level").GetComponent<Text>().text = mLevel.ToString();
         // Profession
-        Sprite professionSprite = Utilities.GetSpriteManager().GetSprite(Profession == Attribute.NONE ? "NO_PROFESSION" : Profession.ToString());
+        Sprite professionSprite = Utilities.GetSpriteManager().GetSprite(Profession == PersonAttribute.NONE ? "NO_PROFESSION" : Profession.ToString());
         uiPrefab.transform.Find("H/Profession/Image").GetComponent<Image>().sprite = professionSprite;
         // Attributes
-        List<Attribute> attributes = NonProfessionAttributes;
+        List<PersonAttribute> attributes = NonProfessionAttributes;
         if (attributes.Count > 2)
         {
             Debug.Log("WARNING: a person has >2 attributes!");

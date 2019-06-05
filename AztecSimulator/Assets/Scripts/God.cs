@@ -13,6 +13,7 @@ public class God : MonoBehaviour {
 	private string mName;
 	private float mFleetingDemandTimer;
 	private int mNumFleetingDemands;
+    private int mNextDemandGroupId = 0;
 
 	public string Name { get { return mName;}}
 	public List<GodDemand> Demands
@@ -21,11 +22,11 @@ public class God : MonoBehaviour {
 	}
 	public List<GodDemand> PermanentDemands
 	{
-		get { return(mDemands.FindAll(x => !x.IsFleeting)); }
+		get { return(mDemands.FindAll(x => !x.IsTemporary)); }
 	}
 	public List<GodDemand> FleetingDemands
 	{
-		get { return(mDemands.FindAll(x => x.IsFleeting)); }
+		get { return(mDemands.FindAll(x => x.IsTemporary)); }
 	}
 
 	void Start () {
@@ -34,63 +35,7 @@ public class God : MonoBehaviour {
 		mFleetingDemandTimer = fleetingDemandTimer;
 		mNumFleetingDemands = 0;
 
-		foreach(SacrificeResult sr in BoonLibrary.sGuaranteedRenewableBoons)
-		{
-			GodDemand renewableDemand = new GodDemand(
-				                            DemandGenerator.ScaledDemand(0),
-				                            sr,
-				                            null
-			                            );
-			renewableDemand.mIsRenewable = true;
-			mDemands.Add(renewableDemand);
-		}
-
-		int numTierOneDemands = 2;
-		int numTierTwoDemands = 2;
-		int numTierThreeDemands = 2;
-		SacrificeResultFactory[] boons = BoonLibrary.RandomBoonFactories(6);
-		for(int i = 0; i < numTierOneDemands; ++i)
-		{
-			GodDemand demand = new GodDemand(
-				DemandGenerator.ScaledDemand(1),
-				boons[i].Make(1, GameState.Favour),
-				null
-			);
-			mDemands.Add(demand);
-		}
-		for(int i = 0; i < numTierTwoDemands; ++i)
-		{
-			GodDemand demand = new GodDemand(
-				DemandGenerator.ScaledDemand(3),
-				boons[numTierOneDemands+i].Make(3, GameState.Favour),
-				null
-            );
-			mDemands.Add(demand);
-		}
-		for(int i = 0; i < numTierThreeDemands; ++i)
-		{
-			GodDemand demand = new GodDemand(
-				DemandGenerator.ScaledDemand(5),
-				boons[numTierOneDemands+numTierTwoDemands+i].Make(5, GameState.Favour),
-				null
-			);
-			mDemands.Add(demand);
-		}
-
-		GodDemand victoryDemand = new GodDemand(
-			                          DemandGenerator.VictoryDemand(),
-			                          new VictoryResult(),
-			                          null
-		                          );
-		mDemands.Add(victoryDemand);
-
-		if(logDemandsOnStart)
-		{
-			foreach(GodDemand gd in mDemands)
-			{
-				Utilities.LogEvent("YOUR GOD DEMANDS " + gd.GetShortDescription(), 2f, true);
-			}
-		}
+        GenerateInitialDemands();
 	}
 	
 	// Update is called once per frame
@@ -157,7 +102,54 @@ public class God : MonoBehaviour {
 		}
 	}
 
-	public int AddFleetingDemand(int tier, SacrificeResult satisfiedResult, SacrificeResult ignoredResult, float time, string msg)
+    private void GenerateInitialDemands()
+    {
+        foreach (SacrificeResult sr in BoonLibrary.sGuaranteedRenewableBoons)
+        {
+            GodDemand renewableDemand = new GodDemand(
+                                            DemandGenerator.ScaledDemand(0),
+                                            sr,
+                                            null
+                                        );
+            renewableDemand.mIsRenewable = true;
+            mDemands.Add(renewableDemand);
+        }
+        GenerateDemandGroup(3);
+        GodDemand victoryDemand = new GodDemand(
+                                      DemandGenerator.VictoryDemand(),
+                                      new VictoryResult(),
+                                      null
+                                  );
+        mDemands.Add(victoryDemand);
+        if (logDemandsOnStart)
+        {
+            foreach (GodDemand gd in mDemands)
+            {
+                Utilities.LogEvent("YOUR GOD DEMANDS " + gd.GetShortDescription(), 2f, true);
+            }
+        }
+    }
+
+    private void GenerateDemandGroup(int groupSize)
+    {
+        // The first group ID will be 0.
+        int groupId = mNextDemandGroupId++;
+        // 3 groups at each tier, starting with tier 0.
+        int tier = Mathf.FloorToInt(groupId / 3f);
+        SacrificeResultFactory[] boons = BoonLibrary.RandomBoonFactories(groupSize);
+        foreach (SacrificeResultFactory boonFactory in boons)
+        {
+            GodDemand demand = new GodDemand(
+                DemandGenerator.ScaledDemand(tier),
+                boonFactory.Make(tier, GameState.Favour),
+                null
+            );
+            demand.GroupId = groupId;
+            mDemands.Add(demand);
+        }
+    }
+
+    public int AddFleetingDemand(int tier, SacrificeResult satisfiedResult, SacrificeResult ignoredResult, float time, string msg)
 	{
 		GodDemand demand = new GodDemand(
 			DemandGenerator.ScaledDemand(tier, true),
@@ -172,18 +164,18 @@ public class God : MonoBehaviour {
 		}
 
 		return(demand.mId);
-	}
+    }
 
-	public void RemoveDemand(int demandId)
-	{		
-		foreach(GodDemand d in mDemands)
-		{
-			if(d.mId == demandId) {
-				mDemands.Remove(d);
-				return;
-			}
-		}
-	}
+    // Removes all demands from a group. Returns the size of the group.
+    public int RemoveDemandGroup(int groupId)
+    {
+        return mDemands.RemoveAll(demand => demand.GroupId == groupId);
+    }
+
+    public void RemoveDemand(int demandId)
+    {
+        mDemands.RemoveAll(demand => demand.mId == demandId);
+    }
 
 	public List<SacrificeResult> MakeSacrifice(GodDemand demand, List<Person> people) {
 		List<SacrificeResult> results = new List<SacrificeResult>();
@@ -200,8 +192,15 @@ public class God : MonoBehaviour {
 
 				if(!demand.mIsRenewable)
 				{
-					RemoveDemand(demandId);
-				}
+                    if (demand.GroupId != -1)
+                    {
+                        int groupSize = RemoveDemandGroup(demand.GroupId);
+                        GenerateDemandGroup(groupSize);
+                    } else
+                    {
+                        RemoveDemand(demandId);
+                    }
+                }
 			}
 			else
 			{
@@ -230,13 +229,17 @@ public class God : MonoBehaviour {
         {
             demand.mNumBuys++;
             demand.mDemand = DemandGenerator.ScaledDemand(demand.mNumBuys);
-            var resultType = demand.mSatisfiedResult.GetType();
-            demand.mSatisfiedResult = (SacrificeResult)System.Activator.CreateInstance(resultType);
+            // TODO: find a way to generalize this for renewable demands with arguments
+            // var resultType = demand.mSatisfiedResult.GetType();
+            // demand.mSatisfiedResult = (SacrificeResult)System.Activator.CreateInstance(resultType);
+            // HACK: Assume XPBuff
+            XpBuff currentBoon = (XpBuff)demand.mSatisfiedResult;
+            demand.mSatisfiedResult = new XpBuff(currentBoon.mProfession);
         }
 
         if (GameState.HasBoon(BoonType.SACRIFICE_BONUS_XP))
 		{
-			List<Person> underleveled = personMgr.People.FindAll(x => x.Level < GameState.GetLevelCap(x.GetAttribute(Person.AttributeType.PROFESSION)));
+			List<Person> underleveled = personMgr.People.FindAll(x => x.Level < GameState.GetLevelCap(x.GetAttribute(PersonAttributeType.PROFESSION)));
 			if(underleveled != null && underleveled.Count > 0)
 			{
 				int xpBonus = GameState.GetBoonValue(BoonType.SACRIFICE_BONUS_XP);

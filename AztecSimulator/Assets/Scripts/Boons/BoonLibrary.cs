@@ -16,11 +16,14 @@ public class BoonLibrary {
 		new PlagueCurse()
 	};
 
-	public static SacrificeResult[] sGuaranteedRenewableBoons = {
-		new FarmerXpBuff(),
-		new WarriorXpBuff(),
-		new CivilianXpBuff(),
-	};
+    public static SacrificeResult[] sGuaranteedRenewableBoons
+    {
+        get {
+            return System.Array.ConvertAll<PersonAttribute, SacrificeResult>(
+                PersonAttributeType.PROFESSION.GetAllValues(),
+                attr => new XpBuff(attr));
+        }
+    }
 
 	private static SacrificeResultFactory[] sRandomizedBoons = {
 		new Favour.Factory(),

@@ -11,13 +11,13 @@ public class WarriorDemand : SacrificeDemand {
 
 		Criterion c = new Criterion();
 		c.mMinLevel = 20;
-		c.mAttributes.Add(Person.Attribute.WARRIOR);
+		c.mAttributes.Add(PersonAttribute.WARRIOR);
 		c.mCount = mNumWarriors;
 		mCriteria.Add(c);
 	}
 
-	public override bool IsRelevantAttribute(Person.Attribute attribute) {
-		return attribute == Person.Attribute.WARRIOR;
+	public override bool IsRelevantAttribute(PersonAttribute attribute) {
+		return attribute == PersonAttribute.WARRIOR;
 	}
 
 	public override bool IsRelevantLevel(int level) {
@@ -52,7 +52,7 @@ public class WarriorDemand : SacrificeDemand {
 	private bool checkPerson(Person p)
 	{
 		return(
-			(p.GetAttribute(Person.AttributeType.PROFESSION) == Person.Attribute.WARRIOR)
+			(p.GetAttribute(PersonAttributeType.PROFESSION) == PersonAttribute.WARRIOR)
 			&&	(p.Level >= 20)
 		);
 	}

@@ -60,7 +60,7 @@ public class InvaderAttack : RandomEventSystem.RandomEvent {
 		{
 			PersonManager personMgr = Utilities.GetPersonManager();
 
-			int warriorStrength = GameState.ArmyStrength;
+			int warriorStrength = Mathf.FloorToInt(GameState.ArmyStrength);
 			int warriorDiff = mRequiredWarriors - warriorStrength;
 			if(warriorDiff <= 0) {
 				Utilities.LogEvent("Your warriors fended off the invaders and your people took no casualties.");
@@ -78,7 +78,7 @@ public class InvaderAttack : RandomEventSystem.RandomEvent {
 
 				int bonusXp = GameState.GetBoonValue(BoonType.COMBAT_VICTORY_BONUS_XP);
 				if(bonusXp > 0) {
-					List<Person> peopleToGetXp = personMgr.People.FindAll(x => x.Level < GameState.GetLevelCap(x.GetAttribute(Person.AttributeType.PROFESSION)));
+					List<Person> peopleToGetXp = personMgr.People.FindAll(x => x.Level < GameState.GetLevelCap(x.GetAttribute(PersonAttributeType.PROFESSION)));
 					if(peopleToGetXp.Count > 0)
 					{
 						Person p = Utilities.RandomSelection<Person>(peopleToGetXp.ToArray());

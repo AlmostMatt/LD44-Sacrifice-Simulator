@@ -6,8 +6,26 @@ using UnityEngine.UI;
 
 public class ProfessionArea : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IDropHandler
 {
-    public Person.Attribute associatedProfession;
+    public PersonAttribute associatedProfession;
     public GameObject placeholderObject;
+
+    public void Awake()
+    {
+        this.name = associatedProfession.ToString();
+        // Update visuals
+        transform.Find("Top bar/Icon").GetComponent<Image>().sprite = Utilities.GetSpriteManager().GetSprite(associatedProfession);
+        Color32 profColor = associatedProfession.GetColor();
+        // Color the background based on the profession's associated color
+        GetComponent<Image>().color = new Color32(profColor.r, profColor.g, profColor.b, 30);
+        // TODO: use the associated profession's color for icon color once the icons are white
+        //transform.Find("Top bar/Icon").GetComponent<Image>().color = ;
+        string labelString = string.Format(
+            "{0} ({1} + {2}/lvl)",
+            associatedProfession.GetDescription(),
+            associatedProfession.GetEfficiencyBase(),
+            associatedProfession.GetEfficiencyPerLevel());
+        transform.Find("Top bar/Text").GetComponent<Text>().text = labelString;
+    }
 
     // When mousing over an area while dragging, attach a placeholder.
     public void OnPointerEnter(PointerEventData eventData)

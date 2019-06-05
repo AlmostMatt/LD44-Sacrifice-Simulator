@@ -15,7 +15,7 @@ public class FoodSystem : MonoBehaviour {
 	void Update () {
 
 		float totalFoodProduction = 0;
-		List<Person> farmers = mPersonMgr.FindPeople(Person.AttributeType.PROFESSION, Person.Attribute.FARMER);
+		List<Person> farmers = mPersonMgr.FindPeople(PersonAttributeType.PROFESSION, PersonAttribute.FARMER);
 		foreach (Person person in farmers) {
 			totalFoodProduction += person.Efficiency;
 		}
@@ -24,6 +24,6 @@ public class FoodSystem : MonoBehaviour {
         totalFoodProduction *= (100f + bonusFoodPercent) / 100f;
 
 		GameState.FoodSurplus = Mathf.Max(0, totalFoodProduction - mPersonMgr.People.Count);
-		GameState.FoodSupply = (int)Mathf.Floor(totalFoodProduction);
+		GameState.FoodSupply = totalFoodProduction;
 	}
 }

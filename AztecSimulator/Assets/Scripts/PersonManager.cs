@@ -6,7 +6,7 @@ public class PersonManager : MonoBehaviour {
 
 	public class SpawnPersonRecord
 	{
-		public Person.Attribute attr = Person.Attribute.NONE;
+		public PersonAttribute attr = PersonAttribute.NONE;
 		public int level = -1;
 	}
 
@@ -42,7 +42,7 @@ public class PersonManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		List<Person> civilians = FindPeople(Person.AttributeType.PROFESSION, Person.Attribute.CIVILIAN);
+		List<Person> civilians = FindPeople(PersonAttributeType.PROFESSION, PersonAttribute.CIVILIAN);
 		float birthRate = 0f;
 		foreach (Person person in civilians) {
 			birthRate += person.Efficiency;
@@ -72,7 +72,7 @@ public class PersonManager : MonoBehaviour {
 
 		// Update ArmySize
 		float armyStrength = 0;
-		List<Person> warriors = FindPeople(Person.AttributeType.PROFESSION, Person.Attribute.WARRIOR);
+		List<Person> warriors = FindPeople(PersonAttributeType.PROFESSION, PersonAttribute.WARRIOR);
 		foreach(Person p in warriors) {
 			armyStrength += p.Efficiency;
 		}
@@ -88,7 +88,7 @@ public class PersonManager : MonoBehaviour {
 			}
 		}
 
-		GameState.ArmyStrength = (int)Mathf.Floor(armyStrength);
+		GameState.ArmyStrength = armyStrength;
 	}
 
 	private Person SpawnPerson(SpawnPersonRecord record = null)
@@ -124,7 +124,7 @@ public class PersonManager : MonoBehaviour {
 		PeopleChanged();
 	}
 
-	public List<Person> FindPeople(Person.AttributeType attrType, Person.Attribute attrValue)
+	public List<Person> FindPeople(PersonAttributeType attrType, PersonAttribute attrValue)
 	{
 		List<Person> results = new List<Person>();
 		foreach(Person p in mPeople) {

@@ -81,7 +81,7 @@ public class UIManager : MonoBehaviour {
                 {
                     uiObject = Instantiate(newObject);
                 }
-                uiObject.transform.SetParent(uiContainer);
+                uiObject.transform.SetParent(uiContainer, false);
                 renderableObjectMap.Add(renderable, uiObject);
                 if (onCreateCallback != null)
                 {
@@ -125,7 +125,7 @@ public class UIManager : MonoBehaviour {
 			if (i >= mUiNotificationPool.Count) {
 				uiNotification = Instantiate(uiNotificationObject);
 				mUiNotificationPool.Add(uiNotification);
-				uiNotification.transform.SetParent(notificationContainer);
+				uiNotification.transform.SetParent(notificationContainer, false);
 			} else {
 				uiNotification = mUiNotificationPool[i];
 			}
@@ -134,12 +134,12 @@ public class UIManager : MonoBehaviour {
 			{
 				if(mNotificationIsGod[i])
 				{
-					uiNotification.transform.SetParent(godContainer);
+					uiNotification.transform.SetParent(godContainer, false);
 					uiNotification.GetComponent<Image>().color = Color.gray;
 				}
 				else
 				{
-					uiNotification.transform.SetParent(notificationContainer);
+					uiNotification.transform.SetParent(notificationContainer, false);
 					uiNotification.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.8f);
 				}
 			}
@@ -170,14 +170,14 @@ public class UIManager : MonoBehaviour {
 		Transform ongoingContainer = transform.Find("TRCorner/OngoingGroup");
 		UpdateRenderables(GameState.Ongoings, uiOngoingObject, mUiOngoingPool, mUiOngoingMap, ongoingContainer);
 
-		// Update the top UI bar
-		string foodString = Utilities.ColorString("Food: " + GameState.FoodSupply + "/" + people.Count, "red", people.Count > GameState.FoodSupply);
-		transform.Find("Top/Left/Item1/Text").GetComponent<Text>().text = foodString;
+        // Update the top UI bar
+        string foodString = string.Format("Food: {0:0.#} / {1}", GameState.FoodSupply, people.Count);
+		transform.Find("Top/Left/Item1/Text").GetComponent<Text>().text = Utilities.ColorString(foodString, "red", people.Count > GameState.FoodSupply);
 		string armyString = GameState.InvaderSize == 0
-			? "Army: " + GameState.ArmyStrength
-			: Utilities.ColorString("Army: " + GameState.ArmyStrength + "/" + GameState.InvaderSize, "red", GameState.InvaderSize > GameState.ArmyStrength);
+			? string.Format("Army: {0:0.#}", GameState.ArmyStrength)
+			: Utilities.ColorString(string.Format("Army: {0:0.#} / {1}", GameState.ArmyStrength, GameState.InvaderSize), "red", GameState.InvaderSize > GameState.ArmyStrength);
 		transform.Find("Top/Left/Item2/Text").GetComponent<Text>().text = armyString;
-		string birthString1 = float.IsInfinity(GameState.TimeBetweenBirths) ? "Birth rate is 0" : string.Format("Birth every {0:0.0}s", GameState.TimeBetweenBirths);
+		string birthString1 = float.IsInfinity(GameState.TimeBetweenBirths) ? "Birth rate is 0" : string.Format("Birth every {0:0.#}s", GameState.TimeBetweenBirths);
 		string birthString2 = mPersonManager.People.Count == PersonManager.MAX_POPULATION
 			? "(max population)"
 			: (float.IsInfinity(GameState.TimeUntilBirth)
@@ -212,7 +212,7 @@ public class UIManager : MonoBehaviour {
 
     // Called when a GameObject is dropped on a profession area
     // Returns false if the dropped object is not a person.
-    public bool OnChangeProfession(GameObject uiObject, Person.Attribute newProfession)
+    public bool OnChangeProfession(GameObject uiObject, PersonAttribute newProfession)
     {
         if (!mUiPeopleMap.ContainsValue(uiObject))
         {
@@ -296,7 +296,15 @@ public class UIManager : MonoBehaviour {
     private void InitializeUIDemand(GameObject uiDemand)
     {
         GodDemand demand = mUiDemandMap.GetKey(uiDemand);
-        string groupName = demand.IsFleeting ? "Fleeting" : "Permanent";
+        string groupName = "Permanent";
+        if (demand.GroupId != -1)
+        {
+            groupName = "Featured";
+        }
+        else if (demand.IsTemporary)
+        {
+            groupName = "Fleeting";
+        }
         uiDemand.transform.SetParent(transform.Find("Center (H)/DemandGroups/V/" + groupName + "/Viewport/Content (G)"), false);
     }
 

@@ -5,19 +5,24 @@ using UnityEngine.UI;
 
 public class GodDemand : IRenderable
 {
-	private static int sId = 0;
+    private static int sId = 0;
 
-	public int mId;
-	public SacrificeDemand mDemand;
-	public SacrificeResult mSatisfiedResult;
-	public SacrificeResult mIgnoredResult;
+    public int mId;
+    public SacrificeDemand mDemand;
+    public SacrificeResult mSatisfiedResult;
+    public SacrificeResult mIgnoredResult;
 
-	public float mTimeLeft = -1f;
-	public bool mIsRenewable = false;
-	public int mNumBuys = 0;
+    private int mGroupId = -1;
+    public float mTimeLeft = -1f;
+    public bool mIsRenewable = false;
+    public int mNumBuys = 0;
 
-	public string[] mLongDescOverride;
-    public bool IsFleeting { get { return mTimeLeft != -1f; } }
+    public string[] mLongDescOverride;
+    public int GroupId {
+        get { return mGroupId; }
+        set { mGroupId = value; }
+    }
+    public bool IsTemporary { get { return mTimeLeft != -1f; } }
 
     public GodDemand(SacrificeDemand demand, SacrificeResult satisfiedResult, SacrificeResult ignoredResult)
 	{
@@ -46,7 +51,7 @@ public class GodDemand : IRenderable
 
 		bool isOffer = mSatisfiedResult != null;
 		string[] result = new string[2];
-		if(IsFleeting)
+		if(IsTemporary)
 		{
 			result[0] = "";
             string description = (isOffer ? "OFFER: " + mSatisfiedResult.mName : "THREAT: " + mIgnoredResult.mName);
@@ -166,7 +171,7 @@ public class GodDemand : IRenderable
                         personSlot.Find("H/Profession/Image").GetComponent<Image>().sprite = profession;
                     }
                     // Attributes
-                    List<Person.Attribute> attributes = criteria[i].mAttributes.FindAll(attr => attr.GetAttrType() != Person.AttributeType.PROFESSION);
+                    List<PersonAttribute> attributes = criteria[i].mAttributes.FindAll(attr => attr.GetAttrType() != PersonAttributeType.PROFESSION);
                     if (attributes.Count > 2)
                     {
                         Debug.Log("WARNING: requiring 3 attributes: " + attributes.ToString());

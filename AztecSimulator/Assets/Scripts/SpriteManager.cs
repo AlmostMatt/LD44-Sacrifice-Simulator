@@ -38,8 +38,8 @@ public class SpriteManager : MonoBehaviour {
     }
 
     // TODO: add an option to choose between 16px and 32px variants
-    public Sprite GetSprite(Person.Attribute attribute) {
-		if (attribute == Person.Attribute.NONE) {
+    public Sprite GetSprite(PersonAttribute attribute) {
+		if (attribute == PersonAttribute.NONE) {
 			return null;
 		}
 		return GetSprite(attribute.ToString());
