@@ -9,10 +9,6 @@ public enum PersonAttribute
      *  - update the SpriteManager prefab
      * When adding a new profession:
      *  - update Description / EfficiencyBase / EfficiencyPerLevel / Color extension functions
-     *  - add a new ProfessionGroup to the UI canvas prefab and set the associateProfession
-     *  
-     *  TODO: have the UICanvas instatiate ProfessionGroups dynamically
-     *  Note: VictoryDemand isn't generalized to any profession
      **/
 
     FARMER = 0,

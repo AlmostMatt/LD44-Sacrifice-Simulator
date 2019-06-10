@@ -4,18 +4,16 @@ using UnityEngine;
 
 public class ScenarioLibrary {
 
-	private static Dictionary<string, IScenario> sScenarios;
+	private static List<IScenario> sScenarios;
 
 	static ScenarioLibrary()
 	{
 		// TODO: is there some reflection thing that could be used to only store the type and then instantiate on-demand?
-		sScenarios = new Dictionary<string, IScenario>();
-		sScenarios.Add("Default", new DefaultScenario());
-		sScenarios.Add("Tutorial", new TutorialScenario());
-	}
+		sScenarios = new List<IScenario>();
+        sScenarios.Add(new TutorialScenario());
+        sScenarios.Add(new DefaultScenario());
+        sScenarios.Add(new DefaultScenario());
+    }
 
-	public static IScenario Get(string scenarioName)
-	{
-		return(sScenarios[scenarioName]);
-	}
+    public static List<IScenario> Scenarios { get { return sScenarios; } }
 }

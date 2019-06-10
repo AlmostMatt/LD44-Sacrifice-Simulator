@@ -116,7 +116,7 @@ public class God : MonoBehaviour {
         }
         GenerateDemandGroup(3);
         GodDemand victoryDemand = new GodDemand(
-                                      DemandGenerator.VictoryDemand(),
+                                      GameState.Scenario.VictoryDemand,
                                       new VictoryResult(),
                                       null
                                   );

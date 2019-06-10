@@ -158,7 +158,8 @@ public class GameState {
 		get { return(sGameState.mOngoings); }
 	}
 
-	private IScenario mScenario;
+    // default to a DefaultScenario in case the game scene was loaded directly
+	private IScenario mScenario = new DefaultScenario();
 	public static IScenario Scenario
 	{
 		get { return(sGameState.mScenario); }

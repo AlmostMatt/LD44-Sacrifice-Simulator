@@ -12,8 +12,10 @@ public class UIManager : MonoBehaviour {
 	public GameObject uiDemandObject;
 	public GameObject uiProfessionObject;
 	public GameObject uiOngoingObject;
+    public GameObject uiDividerObject;
+    public GameObject uiProfessionAreaObject;
 
-	private List<GameObject> mUiPeoplePool = new List<GameObject>();
+    private List<GameObject> mUiPeoplePool = new List<GameObject>();
     private BidirectionalMap<Person, GameObject> mUiPeopleMap = new BidirectionalMap<Person, GameObject>();
     private List<GameObject> mUiDemandPool = new List<GameObject>();
     private BidirectionalMap<GodDemand, GameObject> mUiDemandMap = new BidirectionalMap<GodDemand, GameObject>();
@@ -54,6 +56,19 @@ public class UIManager : MonoBehaviour {
 		mGod = Utilities.GetGod();
 		mPersonManager = Utilities.GetPersonManager();
 		mSpriteManager = Utilities.GetSpriteManager();
+
+        Transform professionAreaHolder = transform.Find("Center (H)/ProfessionGroups/V");
+        bool isFirstArea = true;
+        foreach (PersonAttribute profession in GameState.Scenario.AvailableProfessions)
+        {
+            if (!isFirstArea)
+            {
+                Instantiate(uiDividerObject, professionAreaHolder);
+            }
+            GameObject professionArea = Instantiate(uiProfessionAreaObject, professionAreaHolder);
+            professionArea.GetComponent<ProfessionArea>().SetProfession(profession);
+            isFirstArea = false;
+        }
     }
 
     void UpdateRenderables<T>(
