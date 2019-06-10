@@ -209,11 +209,6 @@ public class Person : MonoBehaviour, IRenderable
         {
             // Allow 2 seconds before starvation will cause damage.
             mHungryBuffer = 2f;
-            if(GameState.HasBoon(BoonType.SURPLUS_FOOD_TO_HEALING))
-		    {
-			    float healAmount = GameState.GetBoonValue(BoonType.SURPLUS_FOOD_TO_HEALING) / 100f;
-			    healthDecayRate -=  healAmount * GameState.FoodSurplus;
-		    }
         }
         Damage(healthDecayRate * GameState.GameDeltaTime);
 		// Time since health changed is strictly for UI purposes, so it does not use game-time.
