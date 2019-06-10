@@ -39,24 +39,16 @@ public class TutorialScript : MonoBehaviour, IDialogCallback {
 		{
 		case TutorialStage.SELECT_PEOPLE:
 			{
-				int selectedTab = mUI.GetSelectedTabIndex();
-				if(selectedTab == 2)
-				{
-					transform.Find("PeopleHighlight").gameObject.SetActive(false);
-					mUI.ShowMessage("This is where you can see the people in your tribe.\n" +
-					"You can select people from the left list and see their details on the right.", this);
-					mStage = TutorialStage.HEALTH_INFO;
-				}
+				transform.Find("PeopleHighlight").gameObject.SetActive(false);
+				mUI.ShowMessage("This is where you can see the people in your tribe.\n" +
+				"You can select people from the left list and see their details on the right.", this);
+				mStage = TutorialStage.HEALTH_INFO;
 				break;
 			}
 		case TutorialStage.CHANGE_TO_CIVILIAN_WAIT:
 			{
 				List<Person> people = Utilities.GetPersonManager().People;
-				if
-				(
-						people[0].GetAttribute(PersonAttributeType.PROFESSION) == PersonAttribute.FARMER
-					&&  people[1].GetAttribute(PersonAttributeType.PROFESSION) == PersonAttribute.CIVILIAN
-				)
+				if (people.FindAll(p => p.Profession == PersonAttribute.CIVILIAN).Count == 0)
 				{
 					mUI.ShowMessage("Civilians increase the birthrate of your tribe.", this);
 					mStage = TutorialStage.CIVILIAN_INFO;

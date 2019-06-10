@@ -22,8 +22,7 @@ public class ScenarioButton : MonoBehaviour {
             {
                 Debug.Log("Tutorial!!");
                 // TODO: Consider having the Scene name be a property of the scenario
-                // TODO: Use the tutorial scenario
-                SceneManager.LoadScene("UIScene", LoadSceneMode.Single);
+                SceneManager.LoadScene("Tutorial", LoadSceneMode.Single);
             }
             else
             {
