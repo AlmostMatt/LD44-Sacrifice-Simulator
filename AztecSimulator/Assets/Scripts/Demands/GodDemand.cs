@@ -78,6 +78,10 @@ public class GodDemand : IRenderable
     {
         GameObject relevantUiDemand = Utilities.GetUIManager().GetUiDemand(this);
         List<GameObject> associatedPeople = new List<GameObject>();
+        if (relevantUiDemand == null)
+        {
+            return associatedPeople;
+        }
         for (int j = 0; j < 3; j++)
         {
             Draggable draggable = GetSlot(relevantUiDemand, j).GetComponentInChildren<Draggable>();
@@ -93,6 +97,11 @@ public class GodDemand : IRenderable
     {
         GameObject relevantUiDemand = Utilities.GetUIManager().GetUiDemand(this);
         List<int> emptySlots = new List<int>();
+        if (relevantUiDemand == null)
+        {
+            emptySlots.Add(0);
+            return emptySlots;
+        }
         for (int j = 0; j < 3; j++)
         {
             Transform personSlot = GetSlot(relevantUiDemand, j);
@@ -125,8 +134,26 @@ public class GodDemand : IRenderable
         return relevantSlots;
     }
 
+    private bool IsHighlighted()
+    {
+        // If partially completed, highlight
+        if (GetAssociatedPeople().Count > 0)
+        {
+            return true;
+        }
+        // If any person being dragged matches an unfilled slot, highlight
+        foreach (Person person in Utilities.GetUIManager().GetPeopleBeingDragged())
+        {
+            if (GetRelevantSlots(person).Count > 0)
+            {
+                return true;
+            }
+        }
+        // TODO: highlight the relevant slots as well
+        return false;
+    }
+
 	public void RenderTo(GameObject uiPrefab) {
-        // TODO: associated dropped people on the demand
 		uiPrefab.GetComponent<HoverInfo>().SetText(GetResultDescription());
         // Text
         string[] demandStrings = GetUIDescriptionStrings();
@@ -200,8 +227,7 @@ public class GodDemand : IRenderable
         GetSlot(uiPrefab, 3).gameObject.SetActive(demandSlotIndex < 3);
 
         // Highlight
-        bool isHighlighted = false;
-        uiPrefab.transform.Find("Background").GetComponent<Outline>().enabled = isHighlighted;
+        uiPrefab.transform.Find("Background").GetComponent<Outline>().enabled = IsHighlighted();
     }
 
     private Transform GetSlot(GameObject uiPrefab, int i)

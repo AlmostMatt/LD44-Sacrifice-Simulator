@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Linq;
 
 public enum PersonAttribute
 {
@@ -146,8 +147,9 @@ public static class PersonAttributeExtensions
 
     public static string CapitalizedString(this PersonAttribute attr)
     {
-        string str = attr.ToString();
-        return char.ToUpper(str[0]) + str.Substring(1).ToLower();
+        string[] words = attr.ToString().Split(new [] { '-', '_' }, System.StringSplitOptions.RemoveEmptyEntries);
+        var capitalizedWords = words.Select(word => char.ToUpper(word[0]) + word.Substring(1).ToLower()).ToArray();
+        return System.String.Join(" ", capitalizedWords);
     }
 
     public static PersonAttribute[] GetAllValues(this PersonAttributeType attrType)

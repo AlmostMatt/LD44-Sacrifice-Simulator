@@ -203,11 +203,50 @@ public class UIManager : MonoBehaviour {
 
 			mPendingDialogMessages.RemoveAt(0);
 		}
-	}
+    }
 
     public GameObject GetUiDemand(GodDemand demand)
     {
-        return mUiDemandMap.GetValue(demand);
+        if (mUiDemandMap.ContainsKey(demand))
+        {
+            return mUiDemandMap.GetValue(demand);
+        }
+        return null;
+    }
+
+    public GameObject GetUiPerson(Person person)
+    {
+        if (mUiPeopleMap.ContainsKey(person)) {
+            return mUiPeopleMap.GetValue(person);
+        }
+        return null;
+    }
+
+    public List<Person> GetPeopleBeingDragged()
+    {
+        List<Person> result = new List<Person>();
+        // When an object is being dragged the parent is the canvas.
+        foreach (GameObject uiPerson in mUiPeopleMap.Values)
+        {
+            if (uiPerson.transform.parent == Utilities.GetCanvas())
+            {
+                result.Add(mUiPeopleMap.GetKey(uiPerson));
+            }
+        }
+        return result;
+    }
+
+    public List<GodDemand> GetPartiallyCompletedDemands()
+    {
+        List<GodDemand> result = new List<GodDemand>();
+        foreach (GodDemand demand in mGod.Demands)
+        {
+            if (demand.GetAssociatedPeople().Count > 0)
+            {
+                result.Add(demand);
+            }
+        }
+        return result;
     }
 
     // Called when a GameObject is dropped on a profession area
