@@ -353,6 +353,9 @@ public class Person : MonoBehaviour, IRenderable
             uiPrefab.transform.Find("H/XP/Bar").GetComponent<Image>().color = new Color(1f, 1f, 0f);
             uiPrefab.transform.Find("H/XP/Bar").localScale = new Vector3(1f, GetLevelUpProgressPercent()/100f, 1f);
         }
+        // Highlight
+        bool isHighlighted = false;
+        uiPrefab.transform.Find("Background").GetComponent<Outline>().enabled = isHighlighted;
     }
 }
 

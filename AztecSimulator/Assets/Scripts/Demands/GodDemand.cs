@@ -198,6 +198,10 @@ public class GodDemand : IRenderable
         // Show the filler if < 3 slots were used.
         GetSlot(uiPrefab, -1).gameObject.SetActive(demandSlotIndex < 3);
         GetSlot(uiPrefab, 3).gameObject.SetActive(demandSlotIndex < 3);
+
+        // Highlight
+        bool isHighlighted = false;
+        uiPrefab.transform.Find("Background").GetComponent<Outline>().enabled = isHighlighted;
     }
 
     private Transform GetSlot(GameObject uiPrefab, int i)
