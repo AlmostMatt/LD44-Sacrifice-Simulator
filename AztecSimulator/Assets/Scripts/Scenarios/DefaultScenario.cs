@@ -49,7 +49,7 @@ public class DefaultScenario : IScenario
             result.Add(renewableDemand);
         }
         // A group of random demands
-        GenerateDemandGroup(3);
+        result.AddRange(GenerateDemandGroup(3));
         // The victory demand
         SacrificeDemand victoryDemand = new SacrificeDemand();
         int numToChoose = 1;
