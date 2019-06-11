@@ -7,17 +7,16 @@ public class DefaultScenario : IScenario
 {
     public bool IsTutorial { get { return false; } }
     public string Name { get { return "Normal Game"; } }
-    private SacrificeDemand mVictoryDemand;
-    public SacrificeDemand VictoryDemand { get { return mVictoryDemand; } }
     private List<PersonAttribute> mAvailableProfessions;
     public List<PersonAttribute> AvailableProfessions { get { return mAvailableProfessions; } }
     private List<PersonManager.SpawnPersonRecord> mStartingPeople;
     public List<PersonManager.SpawnPersonRecord> StartingPeople { get { return mStartingPeople; } }
 
+    private int mNextDemandGroupId = 0;
+
     public DefaultScenario()
     {
-        PersonAttribute[] allProfessions = PersonAttributeType.PROFESSION.GetAllValues();
-        mAvailableProfessions = allProfessions.ToList();
+        mAvailableProfessions = PersonAttributeType.PROFESSION.GetAllValues().ToList();
 
         mStartingPeople = new List<PersonManager.SpawnPersonRecord>();
         // I know these are more verbose compared to defining constructors, but I don't like
@@ -33,8 +32,26 @@ public class DefaultScenario : IScenario
         PersonManager.SpawnPersonRecord p3 = new PersonManager.SpawnPersonRecord();
         p3.attr = PersonAttribute.CIVILIAN;
         mStartingPeople.Add(p3);
+    }
 
-        mVictoryDemand = new SacrificeDemand();
+    public List<GodDemand> GenerateInitialDemands()
+    {
+        // Renewable demands
+        List<GodDemand> result = new List<GodDemand>();
+        foreach (SacrificeResult sr in BoonLibrary.sGuaranteedRenewableBoons)
+        {
+            GodDemand renewableDemand = new GodDemand(
+                                            DemandGenerator.ScaledDemand(0),
+                                            sr,
+                                            null
+                                        );
+            renewableDemand.mIsRenewable = true;
+            result.Add(renewableDemand);
+        }
+        // A group of random demands
+        GenerateDemandGroup(3);
+        // The victory demand
+        SacrificeDemand victoryDemand = new SacrificeDemand();
         int numToChoose = 1;
         int requiredLevel = 7;
         int requiredCount = 3;
@@ -44,6 +61,7 @@ public class DefaultScenario : IScenario
             requiredLevel = 6;
             requiredCount = 1;
         }
+        PersonAttribute[] allProfessions = PersonAttributeType.PROFESSION.GetAllValues();
         PersonAttribute[] randomProfessions = Utilities.RandomSubset<PersonAttribute>(allProfessions, numToChoose);
         foreach (PersonAttribute profession in randomProfessions)
         {
@@ -51,7 +69,42 @@ public class DefaultScenario : IScenario
             profC.mMinLevel = requiredLevel;
             profC.mAttributes.Add(profession);
             profC.mCount = requiredCount;
-            mVictoryDemand.mCriteria.Add(profC);
+            victoryDemand.mCriteria.Add(profC);
         }
+        result.Add(new GodDemand(victoryDemand, new VictoryResult(), null));
+        return result;
+    }
+
+    // When a normal demand is removed, do nothing
+    public List<GodDemand> DemandWasRemoved(GodDemand oldDemand)
+    {
+        return new List<GodDemand>();
+    }
+
+    // When a group is removed, make a new group
+    public List<GodDemand> DemandGroupWasRemoved(int groupSize)
+    {
+        return GenerateDemandGroup(groupSize);
+    }
+
+    // Generate a group of demands that will all be removed when any one of them is purchased.
+    private List<GodDemand> GenerateDemandGroup(int groupSize)
+    {
+        List<GodDemand> result = new List<GodDemand>();
+        // 3 groups at each tier, starting with tier 0.
+        int groupId = mNextDemandGroupId++;
+        int tier = Mathf.FloorToInt(groupId / 3f);
+        SacrificeResultFactory[] boons = BoonLibrary.RandomBoonFactories(groupSize);
+        foreach (SacrificeResultFactory boonFactory in boons)
+        {
+            GodDemand demand = new GodDemand(
+                DemandGenerator.ScaledDemand(tier),
+                boonFactory.Make(tier, GameState.Favour),
+                null
+            );
+            demand.GroupId = groupId;
+            result.Add(demand);
+        }
+        return result;
     }
 }

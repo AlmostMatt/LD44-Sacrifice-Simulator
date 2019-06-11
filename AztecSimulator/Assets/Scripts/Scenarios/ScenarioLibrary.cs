@@ -11,6 +11,7 @@ public class ScenarioLibrary {
 		// TODO: is there some reflection thing that could be used to only store the type and then instantiate on-demand?
 		sScenarios = new List<IScenario>();
         sScenarios.Add(new TutorialScenario());
+        sScenarios.Add(new TutorialScenario2());
         sScenarios.Add(new DefaultScenario());
         sScenarios.Add(new DefaultScenario());
     }

@@ -35,8 +35,15 @@ public class God : MonoBehaviour {
 		mFleetingDemandTimer = fleetingDemandTimer;
 		mNumFleetingDemands = 0;
 
-        GenerateInitialDemands();
-	}
+        mDemands.AddRange(GameState.Scenario.GenerateInitialDemands());
+        if (logDemandsOnStart)
+        {
+            foreach (GodDemand gd in mDemands)
+            {
+                Utilities.LogEvent("YOUR GOD DEMANDS " + gd.GetShortDescription(), 2f, true);
+            }
+        }
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -102,53 +109,6 @@ public class God : MonoBehaviour {
 		}
 	}
 
-    private void GenerateInitialDemands()
-    {
-        foreach (SacrificeResult sr in BoonLibrary.sGuaranteedRenewableBoons)
-        {
-            GodDemand renewableDemand = new GodDemand(
-                                            DemandGenerator.ScaledDemand(0),
-                                            sr,
-                                            null
-                                        );
-            renewableDemand.mIsRenewable = true;
-            mDemands.Add(renewableDemand);
-        }
-        GenerateDemandGroup(3);
-        GodDemand victoryDemand = new GodDemand(
-                                      GameState.Scenario.VictoryDemand,
-                                      new VictoryResult(),
-                                      null
-                                  );
-        mDemands.Add(victoryDemand);
-        if (logDemandsOnStart)
-        {
-            foreach (GodDemand gd in mDemands)
-            {
-                Utilities.LogEvent("YOUR GOD DEMANDS " + gd.GetShortDescription(), 2f, true);
-            }
-        }
-    }
-
-    private void GenerateDemandGroup(int groupSize)
-    {
-        // The first group ID will be 0.
-        int groupId = mNextDemandGroupId++;
-        // 3 groups at each tier, starting with tier 0.
-        int tier = Mathf.FloorToInt(groupId / 3f);
-        SacrificeResultFactory[] boons = BoonLibrary.RandomBoonFactories(groupSize);
-        foreach (SacrificeResultFactory boonFactory in boons)
-        {
-            GodDemand demand = new GodDemand(
-                DemandGenerator.ScaledDemand(tier),
-                boonFactory.Make(tier, GameState.Favour),
-                null
-            );
-            demand.GroupId = groupId;
-            mDemands.Add(demand);
-        }
-    }
-
     public int AddFleetingDemand(int tier, SacrificeResult satisfiedResult, SacrificeResult ignoredResult, float time, string msg)
 	{
 		GodDemand demand = new GodDemand(
@@ -180,48 +140,34 @@ public class God : MonoBehaviour {
 	public List<SacrificeResult> MakeSacrifice(GodDemand demand, List<Person> people) {
 		List<SacrificeResult> results = new List<SacrificeResult>();
         int demandId = demand.mId;
-        if (demandId > 0) {
-			if(demand.mDemand.CheckSatisfaction(people))
-			{
-				Utilities.LogEvent("YES, THIS SACRIFICE PLEASES ME", 2f, true);
-				SacrificeResult sr = demand.mSatisfiedResult;
-				if(sr != null)
-				{
-					results.Add(sr);
-				}
-
-				if(!demand.mIsRenewable)
-				{
-                    if (demand.GroupId != -1)
-                    {
-                        int groupSize = RemoveDemandGroup(demand.GroupId);
-                        GenerateDemandGroup(groupSize);
-                    } else
-                    {
-                        RemoveDemand(demandId);
-                    }
-                }
-			}
-			else
-			{
-				Utilities.LogEvent("NO WHAT ARE YOU DOING", 2f, true);
-			}
-		}
-		else {
-			Utilities.LogEvent("THIS POINTLESS SACRIFICE PLEASES ME", 2f, true);
-		}
-
-		foreach(Person p in people)
-		{
-			Debug.Log("goodbye " + p.Name);
-		}
-		PersonManager personMgr = Utilities.GetPersonManager();
-		personMgr.RemovePeople(people);
-
-		// Apply results after the relevant people are sacrificed.
-		foreach(SacrificeResult r in results)
-		{
-			r.DoEffect();
+        if (demandId < 0 || !demand.mDemand.CheckSatisfaction(people))
+        {
+            Debug.Log("WARNING: Trying to sacrifice but some requirements not met");
+            return results;
+        }
+        // Sacrifice the people
+        foreach (Person p in people)
+        {
+            Debug.Log("goodbye " + p.Name);
+        }
+        PersonManager personMgr = Utilities.GetPersonManager();
+        personMgr.RemovePeople(people);
+        // Apply results after sacrificing people
+        if (demand.mSatisfiedResult != null)
+        {
+            results.Add(demand.mSatisfiedResult);
+        }
+        if (demand.mSatisfiedResult != null || demand.mIgnoredResult != null)
+        {
+            Utilities.LogEvent("YES, THIS SACRIFICE PLEASES ME", 2f, true);
+        }
+        else
+        {
+            Utilities.LogEvent("THIS POINTLESS SACRIFICE PLEASES ME", 2f, true);
+        }
+        foreach (SacrificeResult r in results)
+        {
+            r.DoEffect();
         }
         // If a renewable demand was successful and did something, create a new result of the same type
         // This is relevant if the text or any internal variables changed.
@@ -236,7 +182,20 @@ public class God : MonoBehaviour {
             XpBuff currentBoon = (XpBuff)demand.mSatisfiedResult;
             demand.mSatisfiedResult = new XpBuff(currentBoon.mProfession);
         }
-
+        // Remove the demand. (Scenario is null if the result was VICTORY)
+        if (!demand.mIsRenewable && GameState.Scenario != null)
+        {
+            if (demand.GroupId != -1)
+            {
+                int groupSize = RemoveDemandGroup(demand.GroupId);
+                mDemands.AddRange(GameState.Scenario.DemandGroupWasRemoved(groupSize));
+            }
+            else
+            {
+                RemoveDemand(demandId);
+                mDemands.AddRange(GameState.Scenario.DemandWasRemoved(demand));
+            }
+        }
         if (GameState.HasBoon(BoonType.SACRIFICE_BONUS_XP))
 		{
 			List<Person> underleveled = personMgr.People.FindAll(x => x.Level < GameState.GetLevelCap(x.GetAttribute(PersonAttributeType.PROFESSION)));
@@ -248,7 +207,6 @@ public class God : MonoBehaviour {
 				p.AddXp(xpBonus);
 			}
 		}
-
 		if(GameState.HasBoon(BoonType.SACRIFICE_BONUS_HEALING))
 		{
 			List<Person> needHealing = personMgr.People.FindAll(x => x.Health < x.MaxHealth);
@@ -260,12 +218,10 @@ public class God : MonoBehaviour {
 				p.Heal(heal);
 			}
 		}
-
 		if(GameState.HasBoon(BoonType.SACRIFICE_BONUS_FOOD))
 		{
 			// not sure how to do this one yet. would have to be timed to make sense?
 		}
-
 		return(results);
 	}
 

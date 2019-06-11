@@ -5,13 +5,15 @@ public interface IScenario {
 
     string Name { get; }
 
-    SacrificeDemand VictoryDemand { get; }
-
     List<PersonAttribute> AvailableProfessions { get; }
 
     List<PersonManager.SpawnPersonRecord> StartingPeople { get; }
 
-    // Maybe: guaranteed boons
-    // Maybe: pool of possible boons
+    List<GodDemand> GenerateInitialDemands();
+
+    List<GodDemand> DemandWasRemoved(GodDemand oldDemand);
+
+    List<GodDemand> DemandGroupWasRemoved(int groupSize);
+
     // Maybe: variables related to difficulty
 }
