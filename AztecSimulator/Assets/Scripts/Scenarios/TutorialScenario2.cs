@@ -49,4 +49,6 @@ public class TutorialScenario2 : IScenario
     {
         return new List<GodDemand>();
     }
+
+	public void ScenarioScriptSetup() {}
 }

@@ -107,4 +107,6 @@ public class DefaultScenario : IScenario
         }
         return result;
     }
+
+	public void ScenarioScriptSetup() {}
 }

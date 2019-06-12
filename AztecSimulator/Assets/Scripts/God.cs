@@ -43,6 +43,10 @@ public class God : MonoBehaviour {
                 Utilities.LogEvent("YOUR GOD DEMANDS " + gd.GetShortDescription(), 2f, true);
             }
         }
+
+		// I don't think we have a specific "game starts now" place
+		// but if we get one, maybe this can be moved there
+		GameState.Scenario.ScenarioScriptSetup();
     }
 	
 	// Update is called once per frame

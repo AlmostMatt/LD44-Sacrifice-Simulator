@@ -15,5 +15,7 @@ public interface IScenario {
 
     List<GodDemand> DemandGroupWasRemoved(int groupSize);
 
+	void ScenarioScriptSetup();
+
     // Maybe: variables related to difficulty
 }

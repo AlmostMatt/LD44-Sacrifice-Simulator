@@ -49,4 +49,12 @@ public class TutorialScenario : IScenario
     {
         return new List<GodDemand>();
     }
+
+	public void ScenarioScriptSetup()
+	{
+		GameObject scriptObject = new GameObject();
+		scriptObject.AddComponent<TutorialScript>();
+
+		// uhh is that enough? will it survive? will it leak?
+	}
 }
