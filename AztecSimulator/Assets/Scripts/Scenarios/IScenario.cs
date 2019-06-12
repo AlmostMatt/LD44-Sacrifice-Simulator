@@ -4,6 +4,4 @@ public interface IScenario {
 
 	List<PersonManager.SpawnPersonRecord> GetStartingPeople();
 
-	void SeedRandomEvents();
-
 }
