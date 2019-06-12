@@ -6,24 +6,25 @@ using UnityEngine.UI;
 
 public class ProfessionArea : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IDropHandler
 {
-    public PersonAttribute associatedProfession;
+    private PersonAttribute mProfession;
     public GameObject placeholderObject;
 
-    public void Awake()
+    public void SetProfession(PersonAttribute profession)
     {
-        this.name = associatedProfession.ToString();
+        mProfession = profession;
+        this.name = mProfession.ToString();
         // Update visuals
-        transform.Find("Top bar/Icon").GetComponent<Image>().sprite = Utilities.GetSpriteManager().GetSprite(associatedProfession);
-        Color32 profColor = associatedProfession.GetColor();
+        transform.Find("Top bar/Icon").GetComponent<Image>().sprite = Utilities.GetSpriteManager().GetSprite(mProfession);
+        Color32 profColor = mProfession.GetColor();
         // Color the background based on the profession's associated color
         GetComponent<Image>().color = new Color32(profColor.r, profColor.g, profColor.b, 30);
         // TODO: use the associated profession's color for icon color once the icons are white
         //transform.Find("Top bar/Icon").GetComponent<Image>().color = ;
         string labelString = string.Format(
             "{0} ({1} + {2}/lvl)",
-            associatedProfession.GetDescription(),
-            associatedProfession.GetEfficiencyBase(),
-            associatedProfession.GetEfficiencyPerLevel());
+            mProfession.GetDescription(),
+            mProfession.GetEfficiencyBase(),
+            mProfession.GetEfficiencyPerLevel());
         transform.Find("Top bar/Text").GetComponent<Text>().text = labelString;
     }
 
@@ -44,7 +45,7 @@ public class ProfessionArea : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     {
         Transform contentGrid = transform.Find("Scrollable/Viewport/Content (G)");
         DetachPlaceholder(eventData);
-        bool changeSuccessful = Utilities.GetUIManager().OnChangeProfession(eventData.pointerDrag, associatedProfession);
+        bool changeSuccessful = Utilities.GetUIManager().OnChangeProfession(eventData.pointerDrag, mProfession);
         if (changeSuccessful)
         {
             eventData.pointerDrag.transform.localPosition = Vector3.zero;

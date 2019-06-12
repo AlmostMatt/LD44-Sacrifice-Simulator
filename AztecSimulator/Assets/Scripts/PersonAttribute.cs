@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Linq;
 
 public enum PersonAttribute
 {
@@ -8,16 +9,13 @@ public enum PersonAttribute
      *  - update the SpriteManager prefab
      * When adding a new profession:
      *  - update Description / EfficiencyBase / EfficiencyPerLevel / Color extension functions
-     *  - add a new ProfessionGroup to the UI canvas prefab and set the associateProfession
-     *  
-     *  TODO: have the UICanvas instatiate ProfessionGroups dynamically
-     *  Note: VictoryDemand isn't generalized to any profession
      **/
 
     FARMER = 0,
     WARRIOR,
     CIVILIAN,
     SCRIBE,
+    WITCH_DOCTOR,
     TALL,
     SHORT,
     BLUE_EYES,
@@ -55,6 +53,7 @@ public static class PersonAttributeExtensions
             case PersonAttribute.WARRIOR:
             case PersonAttribute.CIVILIAN:
             case PersonAttribute.SCRIBE:
+            case PersonAttribute.WITCH_DOCTOR:
                 return PersonAttributeType.PROFESSION;
             case PersonAttribute.TALL:
             case PersonAttribute.SHORT:
@@ -86,7 +85,9 @@ public static class PersonAttributeExtensions
             case PersonAttribute.CIVILIAN:
                 return "Civilians increase birthrate"; // TODO: explain this more
             case PersonAttribute.SCRIBE:
-                return "Scribes produce XP"; // TODO: explain this more
+                return "Scribes produces XP"; // TODO: explain this more
+            case PersonAttribute.WITCH_DOCTOR:
+                return "Witch Doctors provides healing"; // TODO: add a % and a "per second somewhere" 
             default:
                 return attr.CapitalizedString() + " <GetDescription>";
         }
@@ -104,6 +105,8 @@ public static class PersonAttributeExtensions
                 return 0.5f;
             case PersonAttribute.SCRIBE:
                 return 6f;
+            case PersonAttribute.WITCH_DOCTOR:
+                return 2f;
             default:
                 return 1f;
         }
@@ -127,7 +130,9 @@ public static class PersonAttributeExtensions
             case PersonAttribute.CIVILIAN:
                 return new Color32(23, 19, 102, 255);
             case PersonAttribute.SCRIBE:
-                return new Color32(166,0,226,255);
+                return new Color32(166, 0, 226, 255);
+            case PersonAttribute.WITCH_DOCTOR:
+                return new Color32(239, 96, 13, 255);
             case PersonAttribute.NONE:
                 return new Color32(29, 29, 29, 255);
             default:
@@ -138,8 +143,9 @@ public static class PersonAttributeExtensions
 
     public static string CapitalizedString(this PersonAttribute attr)
     {
-        string str = attr.ToString();
-        return char.ToUpper(str[0]) + str.Substring(1).ToLower();
+        string[] words = attr.ToString().Split(new [] { '-', '_' }, System.StringSplitOptions.RemoveEmptyEntries);
+        var capitalizedWords = words.Select(word => char.ToUpper(word[0]) + word.Substring(1).ToLower()).ToArray();
+        return System.String.Join(" ", capitalizedWords);
     }
 
     public static PersonAttribute[] GetAllValues(this PersonAttributeType attrType)

@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TutorialScenario : IScenario
+public class TutorialScenario2 : IScenario
 {
     public bool IsTutorial { get { return true; } }
-    public string Name { get { return "Professions and Sacrifices"; } }
+    public string Name { get { return "Civilians"; } }
     private List<PersonAttribute> mAvailableProfessions;
     public List<PersonAttribute> AvailableProfessions { get { return mAvailableProfessions; } }
     private List<PersonManager.SpawnPersonRecord> mStartingPeople;
     public List<PersonManager.SpawnPersonRecord> StartingPeople { get { return mStartingPeople; } }
 
-    public TutorialScenario()
+    public TutorialScenario2()
     {
-        mAvailableProfessions = new List<PersonAttribute> { PersonAttribute.FARMER, PersonAttribute.WARRIOR };
+        mAvailableProfessions = new List<PersonAttribute> { PersonAttribute.FARMER, PersonAttribute.CIVILIAN };
 
         mStartingPeople = new List<PersonManager.SpawnPersonRecord>();
         // I know these are more verbose compared to defining constructors, but I don't like
@@ -33,8 +33,8 @@ public class TutorialScenario : IScenario
         SacrificeDemand victoryDemand = new SacrificeDemand();
         Criterion profC = new Criterion();
         profC.mMinLevel = 1;
-        profC.mAttributes.Add(PersonAttribute.WARRIOR);
-        profC.mCount = 1;
+        profC.mAttributes.Add(PersonAttribute.FARMER);
+        profC.mCount = 3;
         victoryDemand.mCriteria.Add(profC);
         GodDemand victory = new GodDemand(victoryDemand, new VictoryResult(), null);
         return new List<GodDemand>() {victory};

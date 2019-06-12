@@ -209,11 +209,6 @@ public class Person : MonoBehaviour, IRenderable
         {
             // Allow 2 seconds before starvation will cause damage.
             mHungryBuffer = 2f;
-            if(GameState.HasBoon(BoonType.SURPLUS_FOOD_TO_HEALING))
-		    {
-			    float healAmount = GameState.GetBoonValue(BoonType.SURPLUS_FOOD_TO_HEALING) / 100f;
-			    healthDecayRate -=  healAmount * GameState.FoodSurplus;
-		    }
         }
         Damage(healthDecayRate * GameState.GameDeltaTime);
 		// Time since health changed is strictly for UI purposes, so it does not use game-time.
@@ -319,13 +314,34 @@ public class Person : MonoBehaviour, IRenderable
 		}
 
 		return(attributes);
-	}
+    }
 
-	public void RenderTo(GameObject uiPrefab) {
-        // TODO: use hovered or partially completed demand to control the person's highlight
-        // GodDemand selectedDemand = Utilities.GetSelectedDemand();
-        // selectedDemand.mDemand.IsRelevantAttribute(profession)
+    private bool IsHighlighted()
+    {
+        UIManager uiManager = Utilities.GetUIManager();
+        // If this is being dragged, highlight it
+        if (uiManager.GetPeopleBeingDragged().Contains(this))
+        {
+            return true;
+        }
 
+        foreach (GodDemand demand in uiManager.GetPartiallyCompletedDemands())
+        {
+            // If this is attached to a demand slot, highlight it
+            if (demand.GetAssociatedPeople().Contains(uiManager.GetUiPerson(this)))
+            {
+                return true;
+            }
+            // If this could fill one of the remaining slots of a partially completed demand, highlight it
+            if (demand.GetRelevantSlots(this).Count > 0)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void RenderTo(GameObject uiPrefab) {
         // Level txt
         uiPrefab.transform.Find("H/Level").GetComponent<Text>().text = mLevel.ToString();
         // Profession
@@ -358,6 +374,8 @@ public class Person : MonoBehaviour, IRenderable
             uiPrefab.transform.Find("H/XP/Bar").GetComponent<Image>().color = new Color(1f, 1f, 0f);
             uiPrefab.transform.Find("H/XP/Bar").localScale = new Vector3(1f, GetLevelUpProgressPercent()/100f, 1f);
         }
+        // Highlight
+        uiPrefab.transform.Find("Background").GetComponent<Outline>().enabled = IsHighlighted();
     }
 }
 

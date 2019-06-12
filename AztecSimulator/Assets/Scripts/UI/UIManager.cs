@@ -12,8 +12,10 @@ public class UIManager : MonoBehaviour {
 	public GameObject uiDemandObject;
 	public GameObject uiProfessionObject;
 	public GameObject uiOngoingObject;
+    public GameObject uiDividerObject;
+    public GameObject uiProfessionAreaObject;
 
-	private List<GameObject> mUiPeoplePool = new List<GameObject>();
+    private List<GameObject> mUiPeoplePool = new List<GameObject>();
     private BidirectionalMap<Person, GameObject> mUiPeopleMap = new BidirectionalMap<Person, GameObject>();
     private List<GameObject> mUiDemandPool = new List<GameObject>();
     private BidirectionalMap<GodDemand, GameObject> mUiDemandMap = new BidirectionalMap<GodDemand, GameObject>();
@@ -54,6 +56,19 @@ public class UIManager : MonoBehaviour {
 		mGod = Utilities.GetGod();
 		mPersonManager = Utilities.GetPersonManager();
 		mSpriteManager = Utilities.GetSpriteManager();
+
+        Transform professionAreaHolder = transform.Find("Center (H)/ProfessionGroups/V");
+        bool isFirstArea = true;
+        foreach (PersonAttribute profession in GameState.Scenario.AvailableProfessions)
+        {
+            if (!isFirstArea)
+            {
+                Instantiate(uiDividerObject, professionAreaHolder);
+            }
+            GameObject professionArea = Instantiate(uiProfessionAreaObject, professionAreaHolder);
+            professionArea.GetComponent<ProfessionArea>().SetProfession(profession);
+            isFirstArea = false;
+        }
     }
 
     void UpdateRenderables<T>(
@@ -203,11 +218,50 @@ public class UIManager : MonoBehaviour {
 
 			mPendingDialogMessages.RemoveAt(0);
 		}
-	}
+    }
 
     public GameObject GetUiDemand(GodDemand demand)
     {
-        return mUiDemandMap.GetValue(demand);
+        if (mUiDemandMap.ContainsKey(demand))
+        {
+            return mUiDemandMap.GetValue(demand);
+        }
+        return null;
+    }
+
+    public GameObject GetUiPerson(Person person)
+    {
+        if (mUiPeopleMap.ContainsKey(person)) {
+            return mUiPeopleMap.GetValue(person);
+        }
+        return null;
+    }
+
+    public List<Person> GetPeopleBeingDragged()
+    {
+        List<Person> result = new List<Person>();
+        // When an object is being dragged the parent is the canvas.
+        foreach (GameObject uiPerson in mUiPeopleMap.Values)
+        {
+            if (uiPerson.transform.parent == Utilities.GetCanvas())
+            {
+                result.Add(mUiPeopleMap.GetKey(uiPerson));
+            }
+        }
+        return result;
+    }
+
+    public List<GodDemand> GetPartiallyCompletedDemands()
+    {
+        List<GodDemand> result = new List<GodDemand>();
+        foreach (GodDemand demand in mGod.Demands)
+        {
+            if (demand.GetAssociatedPeople().Count > 0)
+            {
+                result.Add(demand);
+            }
+        }
+        return result;
     }
 
     // Called when a GameObject is dropped on a profession area

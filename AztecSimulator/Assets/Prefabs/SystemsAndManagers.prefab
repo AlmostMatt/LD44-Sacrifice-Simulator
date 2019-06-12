@@ -27,6 +27,7 @@ GameObject:
   - component: {fileID: 114797501282310160}
   - component: {fileID: 114723087305912066}
   - component: {fileID: 114004416537550020}
+  - component: {fileID: 114355451412797418}
   m_Layer: 0
   m_Name: SystemsAndManagers
   m_TagString: SystemsAndManagers
@@ -67,6 +68,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b0341afb3e049354cbafddfc4e054ff3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114355451412797418
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1964679472227468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 697d30e5a11b49c4daa8a138e3d71f87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &114418207911983054
@@ -155,6 +167,8 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: 2bb21c146cf96f54c8ddcbc4143abaa3, type: 3}
   - name: WEAK
     sprite: {fileID: 21300000, guid: 0ea6d2bec7ba92141ad2ee820411e21b, type: 3}
+  - name: WITCH_DOCTOR
+    sprite: {fileID: 21300000, guid: 1baec468b7083694b98c27abc0b29636, type: 3}
   namedIcons:
   - name: DROUGHT
     sprite: {fileID: 21300000, guid: 85f3d33b35b8cf047a8e3f0c58ec2fac, type: 3}

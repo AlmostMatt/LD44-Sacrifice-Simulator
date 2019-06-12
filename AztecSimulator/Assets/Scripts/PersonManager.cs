@@ -28,7 +28,7 @@ public class PersonManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         mPeople.Clear();
-		List<SpawnPersonRecord> startingPeople = GameState.Scenario.GetStartingPeople();
+		List<SpawnPersonRecord> startingPeople = GameState.Scenario.StartingPeople;
 		foreach(SpawnPersonRecord record in startingPeople)
 		{
 			SpawnPerson(record);
