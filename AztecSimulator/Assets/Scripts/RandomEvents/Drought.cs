@@ -38,7 +38,7 @@ public class Drought : RandomEventSystem.RandomEvent {
         string description = "-50% food production for " + mDuration + " seconds";
         mOngoing = new Ongoing("DROUGHT", "Drought!", description, mDuration, false);
 		GameState.Ongoings.Add(mOngoing);
-		Utilities.LogEvent("A drought has befallen your farmland", 1f);
+		Utilities.LogEvent("A drought has befallen your farmland", Utilities.MEDIUM_LOG_DURATION);
 		mDemandId = Utilities.GetGod().AddFleetingDemand(
 			(int)diffIncrease,
 			new GodIntervention(this), 
@@ -57,9 +57,9 @@ public class Drought : RandomEventSystem.RandomEvent {
 	public override void Removed() {
 
 		if(mIntervened)
-			Utilities.LogEvent("God blessed the rains down in your city. The drought has ended and food production can return to normal.", 1.5f);
+			Utilities.LogEvent("God blessed the rains down in your city. The drought has ended.", Utilities.MEDIUM_LOG_DURATION);
 		else
-			Utilities.LogEvent("The drought has ended.", 1f);
+			Utilities.LogEvent("The drought has ended.", Utilities.SHORT_LOG_DURATION);
 
 		if(mDemandId > 0) Utilities.GetGod().RemoveDemand(mDemandId);
 

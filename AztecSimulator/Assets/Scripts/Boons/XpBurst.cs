@@ -18,7 +18,7 @@ public class XpBurst : SacrificeResult {
 	}
 
 	public override void DoEffect() {
-		Utilities.LogEvent("God teaches your people", 1f);
+		Utilities.LogEvent("God teaches your people", Utilities.SHORT_LOG_DURATION);
 		foreach(Person p in Utilities.GetPersonManager().People)
 		{
 			p.AddXp(mAmount);

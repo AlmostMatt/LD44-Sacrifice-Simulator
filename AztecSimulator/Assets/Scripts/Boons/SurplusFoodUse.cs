@@ -26,7 +26,7 @@ public class SurplusFoodUse : SacrificeResult {
 	public override void DoEffect()
 	{
 		// amount is divided by 100f when retrieved
-		Utilities.LogEvent(mMsg, 1f);
+		Utilities.LogEvent(mMsg, Utilities.SHORT_LOG_DURATION);
 		if(mToBirthrate)
 			GameState.SetBoon(BoonType.SURPLUS_FOOD_TO_BIRTHRATE, mBoost);
 		else

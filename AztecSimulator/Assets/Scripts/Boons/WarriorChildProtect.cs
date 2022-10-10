@@ -20,7 +20,7 @@ public class WarriorChildProtect : SacrificeResult {
 
 	public override void DoEffect()
 	{
-		Utilities.LogEvent("Your warriors are devoted to protecting the youth.", 1f);
+		Utilities.LogEvent("Your warriors are devoted to protecting the youth.", Utilities.SHORT_LOG_DURATION);
 		GameState.SetBoon(BoonType.WARRIOR_CHILD_PROTECT_AGE, mAge);
 		GameState.SetBoon(BoonType.WARRIOR_CHILD_PROTECT, mEffectiveness);
 	}

@@ -21,7 +21,7 @@ public class Favour : SacrificeResult {
         "STAR") {}
 
 	public override void DoEffect() {
-		Utilities.LogEvent("Your people find favour with god", 1f);
+		Utilities.LogEvent("Your people find favour with god", Utilities.SHORT_LOG_DURATION);
 		GameState.Favour++;
 	}
 

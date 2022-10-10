@@ -5,6 +5,10 @@ using UnityEngine.UI;
 
 public static class Utilities {
 
+    public const float SHORT_LOG_DURATION = 1.4f;
+    public const float MEDIUM_LOG_DURATION = 2f;
+    public const float LONG_LOG_DURATION = 2.8f;
+
 	public static SpriteManager GetSpriteManager()
 	{
 		// TODO: optimize this function for frequent calls by storing spriteManager in a variable

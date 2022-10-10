@@ -299,7 +299,7 @@ public class UIManager : MonoBehaviour {
             if (mGod != null)
             {
                 string sacrificedNames = Utilities.ConcatStrings(peopleToSacrifice.ConvertAll(person => person.Name));
-                LogEvent("You sacrifice " + sacrificedNames + " to " + mGod.Name, 1f);
+                LogEvent("You sacrifice " + sacrificedNames + " to " + mGod.Name, Utilities.SHORT_LOG_DURATION);
                 mGod.MakeSacrifice(demand, peopleToSacrifice);
             }
 

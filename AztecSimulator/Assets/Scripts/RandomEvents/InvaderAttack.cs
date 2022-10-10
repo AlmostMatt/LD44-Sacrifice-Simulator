@@ -30,7 +30,7 @@ public class InvaderAttack : RandomEventSystem.RandomEvent {
 		mRequiredWarriors = Random.Range(1, 3) + difficultyBoost;
 		GameState.InvaderSize = mRequiredWarriors;
 
-		Utilities.LogEvent("An enemy army approaches! They look to be " + mRequiredWarriors + " strong");
+		Utilities.LogEvent("An enemy army approaches! They look to be " + mRequiredWarriors + " strong", Utilities.MEDIUM_LOG_DURATION);
 		mOngoing = new Ongoing("ATTACK", "Invaders!", mRequiredWarriors + " enemy warrior" + (mRequiredWarriors == 1 ? " approaches" : "s approach") + "!\r\n(Match their numbers with your army)", mDuration, false);
 		GameState.Ongoings.Add(mOngoing);
 
@@ -54,7 +54,7 @@ public class InvaderAttack : RandomEventSystem.RandomEvent {
 	{
 		if(mIntervened)
 		{
-			Utilities.LogEvent("God intervened and killed the enemies before they attacked.");
+			Utilities.LogEvent("God intervened and killed the enemies before they attacked.", Utilities.SHORT_LOG_DURATION);
 		}
 		else
 		{
@@ -63,7 +63,7 @@ public class InvaderAttack : RandomEventSystem.RandomEvent {
 			int warriorStrength = Mathf.FloorToInt(GameState.ArmyStrength);
 			int warriorDiff = mRequiredWarriors - warriorStrength;
 			if(warriorDiff <= 0) {
-				Utilities.LogEvent("Your warriors fended off the invaders and your people took no casualties.");
+				Utilities.LogEvent("Your warriors fended off the invaders and your people took no casualties.", Utilities.SHORT_LOG_DURATION);
 
 				int bonusHealing = GameState.GetBoonValue(BoonType.COMBAT_VICTORY_BONUS_HEALING);
 				if(bonusHealing > 0) {
@@ -72,7 +72,7 @@ public class InvaderAttack : RandomEventSystem.RandomEvent {
 					{
 						Person p = Utilities.RandomSelection<Person>(peopleToHeal.ToArray());
 						p.Heal(bonusHealing);
-						Utilities.LogEvent(p.Name + " feels revitalized by the victory. +" + bonusHealing + " lifeforce");
+						Utilities.LogEvent(p.Name + " feels revitalized by the victory. +" + bonusHealing + " lifeforce", Utilities.SHORT_LOG_DURATION);
 					}
 				}
 
@@ -83,13 +83,13 @@ public class InvaderAttack : RandomEventSystem.RandomEvent {
 					{
 						Person p = Utilities.RandomSelection<Person>(peopleToGetXp.ToArray());
 						p.AddXp(bonusXp);
-						Utilities.LogEvent(p.Name + " has learned from the victory! +" + bonusXp + "xp");
+						Utilities.LogEvent(p.Name + " has learned from the victory! +" + bonusXp + "xp", Utilities.SHORT_LOG_DURATION);
 					}
 				}
 			}
 			else if(warriorDiff > 0) {
 				List<Person> people = personMgr.People;
-				Utilities.LogEvent(warriorDiff + " invaders made it past your army.");
+				Utilities.LogEvent(warriorDiff + " invaders made it past your army.", Utilities.MEDIUM_LOG_DURATION);
 				int[] hurtPeople = Utilities.RandomList(people.Count, warriorDiff);
 				foreach(int i in hurtPeople) {
 					int dmg = Random.Range(40,90);

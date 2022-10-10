@@ -50,7 +50,7 @@ public class FertilityBoon : SacrificeResult {
 
 	public override void DoEffect()
 	{
-		Utilities.LogEvent(sDesc, 1f);
+		Utilities.LogEvent(sDesc, Utilities.SHORT_LOG_DURATION);
 		Utilities.GetEventSystem().ScheduleEvent(new FertilityEvent(mBoost, mDuration), 0);
 	}
 }

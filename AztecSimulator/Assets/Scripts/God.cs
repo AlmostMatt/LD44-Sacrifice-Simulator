@@ -40,7 +40,7 @@ public class God : MonoBehaviour {
         {
             foreach (GodDemand gd in mDemands)
             {
-                Utilities.LogEvent("YOUR GOD DEMANDS " + gd.GetShortDescription(), 2f, true);
+                Utilities.LogEvent("YOUR GOD DEMANDS " + gd.GetShortDescription(), Utilities.MEDIUM_LOG_DURATION, true);
             }
         }
 
@@ -124,7 +124,7 @@ public class God : MonoBehaviour {
 		mDemands.Add(demand);
 
 		if(msg != null) {
-			Utilities.LogEvent(msg + demand.GetShortDescription(), 2f, false);
+			Utilities.LogEvent(msg + demand.GetShortDescription(), Utilities.MEDIUM_LOG_DURATION, false);
 		}
 
 		return(demand.mId);
@@ -163,11 +163,11 @@ public class God : MonoBehaviour {
         }
         if (demand.mSatisfiedResult != null || demand.mIgnoredResult != null)
         {
-            Utilities.LogEvent("YES, THIS SACRIFICE PLEASES ME", 2f, true);
+            Utilities.LogEvent("YES, THIS SACRIFICE PLEASES ME", Utilities.SHORT_LOG_DURATION, true);
         }
         else
         {
-            Utilities.LogEvent("THIS POINTLESS SACRIFICE PLEASES ME", 2f, true);
+            Utilities.LogEvent("THIS POINTLESS SACRIFICE PLEASES ME", Utilities.MEDIUM_LOG_DURATION, true);
         }
         foreach (SacrificeResult r in results)
         {
@@ -207,7 +207,7 @@ public class God : MonoBehaviour {
 			{
 				int xpBonus = GameState.GetBoonValue(BoonType.SACRIFICE_BONUS_XP);
 				Person p = Utilities.RandomSelection<Person>(underleveled.ToArray());
-				Utilities.LogEvent(p.Name + " got " + xpBonus + " bonus xp from the sacrifice");
+				Utilities.LogEvent(p.Name + " got " + xpBonus + " bonus xp from the sacrifice", Utilities.SHORT_LOG_DURATION);
 				p.AddXp(xpBonus);
 			}
 		}
@@ -218,7 +218,7 @@ public class God : MonoBehaviour {
 			{
 				float heal = GameState.GetBoonValue(BoonType.SACRIFICE_BONUS_HEALING);
 				Person p = Utilities.RandomSelection<Person>(needHealing.ToArray());
-				Utilities.LogEvent("The sacrifice restored " + heal + " lifeforce to " + p.Name);
+				Utilities.LogEvent("The sacrifice restored " + heal + " lifeforce to " + p.Name, Utilities.SHORT_LOG_DURATION);
 				p.Heal(heal);
 			}
 		}
