@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class VictoryResult : SacrificeResult {
 
@@ -14,14 +13,7 @@ public class VictoryResult : SacrificeResult {
 		Utilities.LogEvent("GOD HAS BEEN APPEASED. HE LEAVES YOUR PEOPLE IN PEACE", 3f, true);
         // TODO: save the fact that the current scenario has been completed
         // GameState.Victory = true;
-        // Go back to the menu after 2 seconds
-        // TODO: add a short delay (Invoke and Coroutine probably both require a MonoBehaviour)
-        BackToMenu();
-    }
-
-    private void BackToMenu()
-    {
-        GameState.Scenario = null;
-        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+        // Tell UI manager to go back to the menu
+        Utilities.GetUIManager().GoBackToMenu();
     }
 }

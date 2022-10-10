@@ -85,9 +85,9 @@ public static class PersonAttributeExtensions
             case PersonAttribute.CIVILIAN:
                 return "Civilians increase birthrate"; // TODO: explain this more
             case PersonAttribute.SCRIBE:
-                return "Scribes produces XP"; // TODO: explain this more
+                return "Scribes provide XP to all"; // TODO: explain this more
             case PersonAttribute.WITCH_DOCTOR:
-                return "Witch Doctors provides healing"; // TODO: add a % and a "per second somewhere" 
+                return "Witch Doctors provide healing"; // TODO: add a % and a "per second somewhere" 
             default:
                 return attr.CapitalizedString() + " <GetDescription>";
         }

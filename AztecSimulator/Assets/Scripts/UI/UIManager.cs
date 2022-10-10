@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq; // for First()
+using UnityEngine.SceneManagement;
 
 // Creates and manages UI objects.
 public class UIManager : MonoBehaviour {
@@ -305,8 +306,6 @@ public class UIManager : MonoBehaviour {
         }
     }
 
-
-
     public void LogEvent(string message, float duration=2f, bool isGod=false) {
 		message = message.Trim();
 		mEventMessages.Add(message);
@@ -325,6 +324,23 @@ public class UIManager : MonoBehaviour {
 			mNotificationDurations.Add(duration);
 		}
 	}
+
+    public void GoBackToMenu()
+    {
+        // Go back to menu after current event log queue completes
+        float totalEventLogQueue = 0f;
+        foreach (float f in mNotificationDurations)
+        {
+            totalEventLogQueue += f;
+        }
+        Invoke("GoBackToMenuInternal", totalEventLogQueue);
+    }
+
+    private void GoBackToMenuInternal()
+    {
+        GameState.Scenario = null;
+        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+    }
 
 	public int GetSelectedTabIndex() {
 		Transform tabGroup = transform.Find("Left/TabGroup");
