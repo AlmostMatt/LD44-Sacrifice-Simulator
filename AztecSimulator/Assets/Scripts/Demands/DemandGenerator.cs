@@ -224,6 +224,11 @@ public class DemandGenerator {
 		// then we're guaranted to be able to satisfy it. The bonus is that 
 		// some other people might share that attribute, so we get player choice involved basically for free
 		List<Person> people = Utilities.GetPersonManager().People;
+        if (people.Count == 0)
+        {
+            Debug.LogWarning("Unable to generate satisfiable demand because no people exist");
+            return demands;
+        }
 
 		while(preferredNum-- > 0)
 		{

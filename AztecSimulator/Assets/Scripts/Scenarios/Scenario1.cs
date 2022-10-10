@@ -38,6 +38,7 @@ public class Scenario1 : IScenario
 
     public List<GodDemand> GenerateInitialDemands()
     {
+        Debug.Log("Scenario1 start generating demands");
         // Renewable demands
         List<GodDemand> result = new List<GodDemand>();
         foreach (SacrificeResult sr in BoonLibrary.sGuaranteedRenewableBoons)
@@ -50,8 +51,10 @@ public class Scenario1 : IScenario
             renewableDemand.mIsRenewable = true;
             result.Add(renewableDemand);
         }
+        Debug.Log("Created renewable demands");
         // A group of random demands
         result.AddRange(GenerateDemandGroup(3));
+        Debug.Log("Created random demands");
         // The victory demand
         SacrificeDemand victoryDemand = new SacrificeDemand();
         int numToChoose = 1;
@@ -63,7 +66,7 @@ public class Scenario1 : IScenario
             requiredLevel = 6;
             requiredCount = 1;
         }
-        PersonAttribute[] allProfessions = PersonAttributeType.PROFESSION.GetAllValues();
+        PersonAttribute[] allProfessions = mAvailableProfessions.ToArray();
         PersonAttribute[] randomProfessions = Utilities.RandomSubset<PersonAttribute>(allProfessions, numToChoose);
         foreach (PersonAttribute profession in randomProfessions)
         {
@@ -73,6 +76,7 @@ public class Scenario1 : IScenario
             profC.mCount = requiredCount;
             victoryDemand.mCriteria.Add(profC);
         }
+        Debug.Log("Created victory demand");
         result.Add(new GodDemand(victoryDemand, new VictoryResult(), null));
         return result;
     }

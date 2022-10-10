@@ -62,7 +62,7 @@ public class DefaultScenario : IScenario
             requiredLevel = 6;
             requiredCount = 1;
         }
-        PersonAttribute[] allProfessions = PersonAttributeType.PROFESSION.GetAllValues();
+        PersonAttribute[] allProfessions = mAvailableProfessions.ToArray();
         PersonAttribute[] randomProfessions = Utilities.RandomSubset<PersonAttribute>(allProfessions, numToChoose);
         foreach (PersonAttribute profession in randomProfessions)
         {
