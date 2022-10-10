@@ -39,6 +39,7 @@ public class Draggable : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
         originalPosition = transform.localPosition;
         originalScale = transform.localScale;
         transform.SetParent(canvas, true);
+        transform.localScale = new Vector3(1f, 1f, 1f); // Undo any scaling from DemandSlot
         GridLayoutGroup grid = originalParent.GetComponent<GridLayoutGroup>();
         if (grid != null)
         {

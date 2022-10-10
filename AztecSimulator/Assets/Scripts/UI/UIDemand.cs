@@ -4,6 +4,8 @@ using UnityEngine.EventSystems;
 
 public class UIDemand : MonoBehaviour, IDropHandler
 {
+    private const float UI_PERSON_SCALE_WHEN_DROPPED = 0.75f;
+
     public void OnDrop(PointerEventData eventData)
     {
         List<int> relevantSlots = Utilities.GetUIManager().OnDropPersonOnDemand(eventData.pointerDrag, gameObject);
@@ -24,6 +26,8 @@ public class UIDemand : MonoBehaviour, IDropHandler
             Transform personSlot = GetSlot(closestIndex);
             eventData.pointerDrag.transform.SetParent(personSlot, false);
             eventData.pointerDrag.transform.localPosition = Vector3.zero;
+            eventData.pointerDrag.transform.localScale = new Vector3(
+                UI_PERSON_SCALE_WHEN_DROPPED, UI_PERSON_SCALE_WHEN_DROPPED, UI_PERSON_SCALE_WHEN_DROPPED);
             Utilities.GetUIManager().MaybeSacrifice(gameObject);
         }
     }
