@@ -306,9 +306,11 @@ public class Person : MonoBehaviour, IRenderable
         PersonAttribute[] attributes = new PersonAttribute[howMany + (alsoRandomProfession ? 1 : 0)];
         if (alsoRandomProfession)
         {
-            attributes[howMany] = PersonAttributeType.PROFESSION.GetRandomValue();
+            var availableProfessions = GameState.Scenario.AvailableProfessions;
+            attributes[howMany] = availableProfessions[Random.Range(0, availableProfessions.Count)];
+            // attributes[howMany] = PersonAttributeType.PROFESSION.GetRandomValue();
         }
-		for(int i = 0; i < howMany; ++i)
+        for (int i = 0; i < howMany; ++i)
 		{
 			attributes[i] = randomAttributes[i].GetRandomValue();
 		}

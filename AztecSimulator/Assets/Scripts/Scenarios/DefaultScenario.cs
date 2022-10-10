@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-// This scenario has everything - including new classes
+// This scenario has all features, and a subset of classes
 public class DefaultScenario : IScenario
 {
     public bool IsTutorial { get { return false; } }
-    public string Name { get { return "Normal Game +Extras"; } }
+    private string mName = "Default Scenario Name";
+    public string Name { get { return mName; } }
     private List<PersonAttribute> mAvailableProfessions;
     public List<PersonAttribute> AvailableProfessions { get { return mAvailableProfessions; } }
     private List<PersonManager.SpawnPersonRecord> mStartingPeople;
@@ -15,9 +16,10 @@ public class DefaultScenario : IScenario
 
     private int mNextDemandGroupId = 0;
 
-    public DefaultScenario()
+    public DefaultScenario(string name, List<PersonAttribute> availableProfessions)
     {
-        mAvailableProfessions = PersonAttributeType.PROFESSION.GetAllValues().ToList();
+        mName = name;
+        mAvailableProfessions = availableProfessions;
 
         mStartingPeople = new List<PersonManager.SpawnPersonRecord>();
         // I know these are more verbose compared to defining constructors, but I don't like
@@ -39,7 +41,7 @@ public class DefaultScenario : IScenario
     {
         // Renewable demands
         List<GodDemand> result = new List<GodDemand>();
-        foreach (SacrificeResult sr in BoonLibrary.sGuaranteedRenewableBoons)
+        foreach (SacrificeResult sr in BoonLibrary.GetGuaranteedRenewableBoons(this))
         {
             GodDemand renewableDemand = new GodDemand(
                                             DemandGenerator.ScaledDemand(0),
@@ -62,8 +64,8 @@ public class DefaultScenario : IScenario
             requiredLevel = 6;
             requiredCount = 1;
         }
-        PersonAttribute[] allProfessions = mAvailableProfessions.ToArray();
-        PersonAttribute[] randomProfessions = Utilities.RandomSubset<PersonAttribute>(allProfessions, numToChoose);
+        PersonAttribute[] randomProfessions = Utilities.RandomSubset<PersonAttribute>(
+            mAvailableProfessions.ToArray(), numToChoose);
         foreach (PersonAttribute profession in randomProfessions)
         {
             Criterion profC = new Criterion();

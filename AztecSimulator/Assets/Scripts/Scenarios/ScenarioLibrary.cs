@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ScenarioLibrary {
@@ -12,8 +13,13 @@ public class ScenarioLibrary {
 		sScenarios = new List<IScenario>();
         sScenarios.Add(new TutorialScenario());
         sScenarios.Add(new TutorialScenario2());
-        sScenarios.Add(new Scenario1());
-        sScenarios.Add(new DefaultScenario());
+        sScenarios.Add(new DefaultScenario(
+            "Normal Game",
+            new List<PersonAttribute> {
+                PersonAttribute.FARMER, PersonAttribute.WARRIOR, PersonAttribute.CIVILIAN}));
+        sScenarios.Add(new DefaultScenario(
+            "Normal Game With Extras",
+            PersonAttributeType.PROFESSION.GetAllValues().ToList()));
     }
 
     public static List<IScenario> Scenarios { get { return sScenarios; } }

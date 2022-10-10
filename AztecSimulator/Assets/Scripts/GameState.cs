@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GameState {
@@ -159,7 +160,7 @@ public class GameState {
 	}
 
     // default to a DefaultScenario in case the game scene was loaded directly
-	private IScenario mScenario = new DefaultScenario();
+	private IScenario mScenario = new DefaultScenario("Default", PersonAttributeType.PROFESSION.GetAllValues().ToList());
 	public static IScenario Scenario
 	{
 		get { return(sGameState.mScenario); }

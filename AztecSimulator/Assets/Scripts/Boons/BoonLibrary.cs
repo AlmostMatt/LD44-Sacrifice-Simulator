@@ -16,13 +16,11 @@ public class BoonLibrary {
 		new PlagueCurse()
 	};
 
-    public static SacrificeResult[] sGuaranteedRenewableBoons
+    public static SacrificeResult[] GetGuaranteedRenewableBoons(IScenario scenario)
     {
-        get {
-            return System.Array.ConvertAll<PersonAttribute, SacrificeResult>(
-                PersonAttributeType.PROFESSION.GetAllValues(),
-                attr => new XpBuff(attr));
-        }
+        return System.Array.ConvertAll<PersonAttribute, SacrificeResult>(
+            scenario.AvailableProfessions.ToArray(),
+            attr => new XpBuff(attr));
     }
 
 	private static SacrificeResultFactory[] sRandomizedBoons = {
