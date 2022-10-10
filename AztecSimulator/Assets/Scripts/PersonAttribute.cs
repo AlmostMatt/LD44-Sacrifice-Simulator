@@ -85,9 +85,9 @@ public static class PersonAttributeExtensions
             case PersonAttribute.CIVILIAN:
                 return "Civilians increase birthrate"; // TODO: explain this more
             case PersonAttribute.SCRIBE:
-                return "Scribes provide XP to all"; // TODO: explain this more
+                return "Scribes provide XP to all"; // TODO: explain this more, add a "%/s" suffix and use brackets 
             case PersonAttribute.WITCH_DOCTOR:
-                return "Witch Doctors provide healing"; // TODO: add a % and a "per second somewhere" 
+                return "Witch Doctors provide healing"; // TODO: add a "%/s" suffix and use brackets
             default:
                 return attr.CapitalizedString() + " <GetDescription>";
         }
@@ -106,7 +106,7 @@ public static class PersonAttributeExtensions
             case PersonAttribute.SCRIBE:
                 return 6f;
             case PersonAttribute.WITCH_DOCTOR:
-                return 2f;
+                return 3f;
             default:
                 return 1f;
         }

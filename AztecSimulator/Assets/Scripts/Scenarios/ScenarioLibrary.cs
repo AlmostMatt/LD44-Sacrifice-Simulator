@@ -12,7 +12,7 @@ public class ScenarioLibrary {
 		sScenarios = new List<IScenario>();
         sScenarios.Add(new TutorialScenario());
         sScenarios.Add(new TutorialScenario2());
-        sScenarios.Add(new DefaultScenario());
+        sScenarios.Add(new Scenario1());
         sScenarios.Add(new DefaultScenario());
     }
 

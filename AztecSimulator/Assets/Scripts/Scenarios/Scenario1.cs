@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-// This scenario has everything - including new classes
-public class DefaultScenario : IScenario
+// This imitates the LD scenario - farmer, warrior, civilian
+public class Scenario1 : IScenario
 {
     public bool IsTutorial { get { return false; } }
-    public string Name { get { return "Normal Game +Extras"; } }
+    public string Name { get { return "Normal Game"; } }
     private List<PersonAttribute> mAvailableProfessions;
     public List<PersonAttribute> AvailableProfessions { get { return mAvailableProfessions; } }
     private List<PersonManager.SpawnPersonRecord> mStartingPeople;
@@ -15,9 +15,10 @@ public class DefaultScenario : IScenario
 
     private int mNextDemandGroupId = 0;
 
-    public DefaultScenario()
+    public Scenario1()
     {
-        mAvailableProfessions = PersonAttributeType.PROFESSION.GetAllValues().ToList();
+        mAvailableProfessions = new List<PersonAttribute> {
+            PersonAttribute.FARMER, PersonAttribute.WARRIOR, PersonAttribute.CIVILIAN};
 
         mStartingPeople = new List<PersonManager.SpawnPersonRecord>();
         // I know these are more verbose compared to defining constructors, but I don't like
