@@ -374,8 +374,19 @@ public class Person : MonoBehaviour, IRenderable
             uiPrefab.transform.Find("H/XP/Bar").GetComponent<Image>().color = new Color(1f, 1f, 0f);
             uiPrefab.transform.Find("H/XP/Bar").localScale = new Vector3(1f, GetLevelUpProgressPercent()/100f, 1f);
         }
-        // Highlight
-        uiPrefab.transform.Find("Background").GetComponent<Outline>().enabled = IsHighlighted();
+        // Highlight outline or flashing starving outline
+        Outline outline = uiPrefab.transform.Find("Background").GetComponent<Outline>();
+        bool isHighlighted = IsHighlighted();
+        bool isStarving = mIsHungry;
+        outline.enabled = isHighlighted || isStarving;
+        if (isStarving)
+        {
+            outline.effectColor = new Color32(0xff, 0x00, 0x00, 0x64); // x64 is alpha of 100/255
+        } else if (isHighlighted)
+        {
+            // TODO - maybe make this flash to be more obvious
+            outline.effectColor = new Color32(0x00, 0xff, 0x00, 0x80);
+        }
     }
 }
 
