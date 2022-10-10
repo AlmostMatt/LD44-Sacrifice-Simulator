@@ -7,8 +7,10 @@ using UnityEngine.SceneManagement;
 
 // Creates and manages UI objects.
 public class UIManager : MonoBehaviour {
+    private static Color GOD_MSG_COLOR = new Color(1f, .9f, .9f, 0.9f);
+    private static Color NOTIF_COLOR = new Color(.9f, .9f, 1f, 0.9f);
 
-	public GameObject uiNotificationObject;
+    public GameObject uiNotificationObject;
 	public GameObject uiPersonObject;
 	public GameObject uiDemandObject;
 	public GameObject uiProfessionObject;
@@ -151,12 +153,12 @@ public class UIManager : MonoBehaviour {
 				if(mNotificationIsGod[i])
 				{
 					uiNotification.transform.SetParent(godContainer, false);
-					uiNotification.GetComponent<Image>().color = Color.gray;
+					uiNotification.GetComponent<Image>().color = GOD_MSG_COLOR;
 				}
 				else
 				{
 					uiNotification.transform.SetParent(notificationContainer, false);
-					uiNotification.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.8f);
+					uiNotification.GetComponent<Image>().color = NOTIF_COLOR;
 				}
 			}
 
