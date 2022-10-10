@@ -116,6 +116,8 @@ public class UIManager : MonoBehaviour {
             renderableObjectMap.RemoveValue(uiObject);
             objectPool.Add(uiObject);
             uiObject.SetActive(false);
+            // Undo any scaling of this object before it is reused
+            uiObject.transform.localScale = new Vector3(1f, 1f, 1f);
             uiObject.transform.SetParent(null, false);
         }
 	}
